@@ -12,6 +12,12 @@ namespace bibliothek
     DateTime creationDate;
     string messageText;
 
+
+    public Message()
+    {
+    }
+
+
     public int Id 
     {
         get { return id; }

@@ -41,29 +41,41 @@ namespace LibraryForm
       tb_charges.Text = loggedCustomer.ChargeAccount.Charges.ToString();
 
       // LoanAccount infos
-      loggedCustomer.LoanAccount.SampleList = libraryDB.GetSampleListByPersonId(person.Id);
+      loggedCustomer.LoanAccount = new LoanAccount(libraryDB.GetSampleListByPersonId(person.Id));
 
-      foreach (Sample sample in loggedCustomer.LoanAccount.SampleList)
+      if (loggedCustomer.LoanAccount.SampleList.Count() != 0)
       {
-          string loanSample = sample.Id.ToString() + " - " + sample.Book.Title.ToString() + " - " + sample.EndOfLoan.ToString();
-          lb_loanAccount.Items.Add(loanSample);
+          foreach (Sample sample in loggedCustomer.LoanAccount.SampleList)
+          {
+              string loanSample = sample.Id.ToString() + " - " + sample.Book.Title.ToString() + " - " + sample.EndOfLoan.ToString();
+              lb_loanAccount.Items.Add(loanSample);
+          }
       }
 
       // PreorderAccount infos
-      foreach (Sample sample in loggedCustomer.PreorderAccount.SampleList)
+      loggedCustomer.PreorderAccount = new PreorderAccount(libraryDB.GetSampleListByPersonId(person.Id));
+
+      if (loggedCustomer.PreorderAccount.SampleList.Count() != 0)
       {
-          string preorderSample = sample.Id.ToString() + " - " + sample.Book.Title.ToString();
-          lb_loanAccount.Items.Add(preorderSample);
+          foreach (Sample sample in loggedCustomer.PreorderAccount.SampleList)
+          {
+              string preorderSample = sample.Id.ToString() + " - " + sample.Book.Title.ToString();
+              lb_loanAccount.Items.Add(preorderSample);
+          }
       }
 
       // messageAccount infos
-      loggedCustomer.MessageAccount = libraryDB.GetMessageAccountByPersonId(person.Id);
+      loggedCustomer.MessageAccount = new MessageAccount(libraryDB.GetMessageDictByPersonId(person.Id));
 
-      foreach (KeyValuePair<int, bibliothek.Message> entry in loggedCustomer.MessageAccount.MessageDict)
+      if (loggedCustomer.MessageAccount.MessageDict.Count != 0)
       {
-          dgv_messages.Rows.Add(entry.Key.ToString() + " - " + entry.Value.MessageText + " - " + entry.Value.CreationDate.ToString());
+          foreach (KeyValuePair<int, bibliothek.Message> entry in loggedCustomer.MessageAccount.MessageDict)
+          {
+              dgv_messages.Rows.Add(entry.Key.ToString() + " - " + entry.Value.MessageText + " - " + entry.Value.CreationDate.ToString());
+          }
       }
     }
+
 
     private void tb_bookSearch_TextChanged(object sender, EventArgs e)
     {
@@ -150,17 +162,15 @@ namespace LibraryForm
 
     private void tb_payIn_TextChanged(object sender, EventArgs e)
     {
-        string payInString = tb_bookSearch.Text;
-
         // enabled the payIn button, if text inside the tb_payIn
-        if (!string.IsNullOrWhiteSpace(payInString))
+        if (!string.IsNullOrWhiteSpace(tb_payIn.Text))
         {
-            btn_payIn.Enabled = true;
+            btn_payIn.Enabled = false;
         }
         // disabled
         else
         {
-            btn_payIn.Enabled = false;
+            btn_payIn.Enabled = true;
         }
     }
 

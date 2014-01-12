@@ -217,11 +217,25 @@ namespace LibraryForm.Class
                 customer.Firstname = reader["firstname"].ToString();
                 customer.Lastname = reader["lastname"].ToString();
                 customer.Birthday = DateTime.Parse(reader["birthday"].ToString());
+            }
+
+            reader.Close();
+            reader.Dispose();
+
+            // create query
+            command.CommandText = "SELECT * FROM customers WHERE person_id = " + id;
+
+            //craete reader
+            reader = command.ExecuteReader();
+
+            if (reader.Read())
+            {
                 customer.RegisterDate = DateTime.Parse(reader["register_date"].ToString());
             }
 
             reader.Close();
             reader.Dispose();
+
             command.Dispose();
 
             return customer;
@@ -470,7 +484,7 @@ namespace LibraryForm.Class
             SQLiteCommand command = new SQLiteCommand(connection);
 
             // create query
-            command.CommandText = "SELECT charges FROM persons WHERE person_id = " + personId;
+            command.CommandText = "SELECT charges FROM persons WHERE id = " + personId;
 
             //craete reader
             SQLiteDataReader reader = command.ExecuteReader();
@@ -501,9 +515,9 @@ namespace LibraryForm.Class
         }
 
 
-        public MessageAccount GetMessageAccountByPersonId(int personId)
+        public Dictionary<int, Message> GetMessageDictByPersonId(int personId)
         {
-            MessageAccount messageAccount = new MessageAccount();
+            Dictionary<int, Message> messageDict = new Dictionary<int,Message>();
 
             // create command
             SQLiteCommand command = new SQLiteCommand(connection);
@@ -522,14 +536,14 @@ namespace LibraryForm.Class
                 message.MessageText = reader["message_text"].ToString();
                 message.CreationDate = DateTime.Parse(reader["creation_date"].ToString());
 
-                messageAccount.MessageDict.Add(message.Id, message);
+                messageDict.Add(message.Id, message);
             }
 
             reader.Close();
             reader.Dispose();
             command.Dispose();
 
-            return messageAccount;
+            return messageDict;
         }
 
 
@@ -572,15 +586,21 @@ namespace LibraryForm.Class
 
             // admin behrend
 
-            command.CommandText = "INSERT INTO persons(rank, pw, lastname, firstname, birthday, charges) VALUES (1, 'admin', 'Behrend', 'Mario', '15.09.1989', 0)";
+            command.CommandText = "INSERT INTO persons(id, rank, pw, lastname, firstname, birthday, charges) VALUES (1, 1, 'admin', 'Behrend', 'Mario', '15.09.1989', 0)";
+            command.ExecuteNonQuery();
+            command.CommandText = "INSERT INTO employees(person_id) VALUES (1)";
             command.ExecuteNonQuery();
 
             // admin belger
-            command.CommandText = "INSERT INTO persons(rank, pw, lastname, firstname, birthday, charges) VALUES (1, 'admin', 'Belger', 'Norman', '18.01.1984', 0)";
+            command.CommandText = "INSERT INTO persons(id, rank, pw, lastname, firstname, birthday, charges) VALUES (2, 1, 'admin', 'Belger', 'Norman', '18.01.1984', 0)";
+            command.ExecuteNonQuery();
+            command.CommandText = "INSERT INTO employees(person_id) VALUES (2)";
             command.ExecuteNonQuery();
 
             // test muster
-            command.CommandText = "INSERT INTO persons(rank, pw, lastname, firstname, birthday, charges) VALUES (2, 'test', 'Muster', 'Max', '01.01.1970', 10)";
+            command.CommandText = "INSERT INTO persons(id, rank, pw, lastname, firstname, birthday, charges) VALUES (3, 2, 'test', 'Muster', 'Max', '01.01.1970', 10)";
+            command.ExecuteNonQuery();
+            command.CommandText = "INSERT INTO customers(person_id, register_date) VALUES (3, '12.01.2014')";
             command.ExecuteNonQuery();
 
             command.Dispose();

@@ -10,6 +10,18 @@ namespace bibliothek
     Dictionary<int ,Message> messageDict = null;
 
 
+    public MessageAccount() 
+    {
+        messageDict = new Dictionary<int, Message>();
+    }
+
+
+    public MessageAccount(Dictionary<int, Message> messageDict) 
+    {
+        this.messageDict = messageDict;
+    }
+
+
     public Dictionary<int, Message> MessageDict 
     {
         get { return messageDict; }

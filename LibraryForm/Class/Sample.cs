@@ -11,7 +11,7 @@ namespace bibliothek
     private Book book;
     private int customerId;
     private DateTime endOfLoan;
-    private string status;         //status
+    private string status;
 
     public int Id
     {

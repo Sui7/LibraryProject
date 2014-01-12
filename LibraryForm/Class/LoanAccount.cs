@@ -10,6 +10,18 @@ namespace bibliothek
     List<Sample> sampleList;
 
 
+    public LoanAccount() 
+    {
+        this.sampleList = new List<Sample>();
+    }
+
+
+    public LoanAccount(List<Sample> sampleList)
+    {
+        this.sampleList = sampleList;
+    }
+
+
     public List<Sample> SampleList
     {
         get { return sampleList; }

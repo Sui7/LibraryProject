@@ -10,6 +10,18 @@ namespace bibliothek
         List<Sample> sampleList;
 
 
+        public PreorderAccount() 
+        {
+            this.sampleList = new List<Sample>();
+        }
+
+
+        public PreorderAccount(List<Sample> sampleList)
+        {
+            this.sampleList = sampleList;
+     }
+
+
         public List<Sample> SampleList
         {
             get { return sampleList; }

@@ -14,13 +14,15 @@ namespace LibraryForm
     [STAThread]
     static void Main()
     {
-        LibraryDB libraryDB = new LibraryDB();
-        libraryDB.InitializeConnetion();
-        libraryDB.CreateAllTables();
+        // initialize tables by first run
+        // LibraryDB libraryDB = new LibraryDB();
+        // libraryDB.InitializeConnetion();
+        // libraryDB.CreateAllTables();
+        // libraryDB.CloseConnection();
 
-      //Application.EnableVisualStyles();
-      //Application.SetCompatibleTextRenderingDefault(false);
-      //Application.Run(new Form1());
+        Application.EnableVisualStyles();
+        Application.SetCompatibleTextRenderingDefault(false);
+        Application.Run(new Form1());
     }
   }
 }

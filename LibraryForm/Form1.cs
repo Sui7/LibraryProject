@@ -36,7 +36,7 @@ namespace LibraryForm
             foreach (Person person in personList)
             {
                 // check if name and pw is in person list
-                if (tb_loginName.Text.Equals(person.Firstname + " " + person.Lastname) && tb_password.Text.Equals(person.Pw))
+                if (tb_loginName.Text.Equals(person.Lastname) && tb_password.Text.Equals(person.Pw))
                 {
                     // rank 1 = employee
                     if (person.Rank == 1)
@@ -57,11 +57,10 @@ namespace LibraryForm
                         MessageBox.Show("Unbekannter Systemfehler!");
                     }
                 }
-                else
-                {
-                    MessageBox.Show("Name und/oder Passwort falsch!");
-                }
             }
+
+            MessageBox.Show("Bitte Namen und Passwort eingeben.");
+            return;
         }
         else
         {

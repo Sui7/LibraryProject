@@ -8,6 +8,7 @@ namespace bibliothek
   class Message
   {
     int id;
+    int personId;
     DateTime creationDate;
     string messageText;
 
@@ -15,6 +16,13 @@ namespace bibliothek
     {
         get { return id; }
         set { this.id = Id; } 
+    }
+
+
+    public int PersonId
+    {
+        get { return personId; }
+        set { this.personId = PersonId; }
     }
 
 

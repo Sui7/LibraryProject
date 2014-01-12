@@ -188,7 +188,7 @@ namespace LibraryForm.Class
             reader.Dispose();
 
             // create query
-            command.CommandText = "INSERT INTO employees(person_id, register_date) VALUES (" + newId + ", '" + customer.RegisterDate + "');";
+            command.CommandText = "INSERT INTO customers(person_id, register_date) VALUES (" + newId + ", '" + customer.RegisterDate + "');";
             command.ExecuteNonQuery();
 
             command.Dispose();
@@ -465,6 +465,7 @@ namespace LibraryForm.Class
             {  
                 Message message = new Message();
                 message.Id = int.Parse(reader["id"].ToString());
+                message.PersonId = int.Parse(reader["person_id"].ToString());
                 message.MessageText = reader["message"].ToString();
                 message.CreationDate = DateTime.Parse(reader["creation_date"].ToString());
 
@@ -484,8 +485,31 @@ namespace LibraryForm.Class
             // create command
             SQLiteCommand command = new SQLiteCommand(connection);
 
-            // create persons table query
-            command.CommandText = "CREATE TABLE IF NOT EXISTS persons ( id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, rank INTEGER NOT NULL, pw VARCHAR(100) NOT NULL, lastname VARCHAR(100) NOT NULL, firstname VARCHAR(100) NOT NULL, birthday VARCHAR(100) NOT NULL, charges DOUBLE NULL);";
+            // create tables query
+            command.CommandText = "CREATE TABLE IF NOT EXISTS persons (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, rank INTEGER NOT NULL, pw VARCHAR(100) NOT NULL, lastname VARCHAR(100) NOT NULL, firstname VARCHAR(100) NOT NULL, birthday VARCHAR(100) NOT NULL, charges DOUBLE NULL);";
+            command.ExecuteNonQuery();
+
+            command.CommandText = "CREATE TABLE IF NOT EXISTS employees (person_id INTEGER NOT NULL);";
+            command.ExecuteNonQuery();
+
+            command.CommandText = "CREATE TABLE IF NOT EXISTS customers (person_id INTEGER NOT NULL, register_date VARCHAR(100) NOT NULL);";
+            command.ExecuteNonQuery();
+
+            command.CommandText = "CREATE TABLE IF NOT EXISTS books (id INTEGER NOT NULL, title VARCHAR(100) NOT NULL, author VARCHAR(100) NOT NULL, genre VARCHAR(100) NOT NULL, access VARCHAR(100) NOT NULL, count INTEGER NOT NULL);";
+            command.ExecuteNonQuery();
+
+            command.CommandText = "CREATE TABLE IF NOT EXISTS samples (id INTEGER NOT NULL, book_id INTEGER NOT NULL, customer_id INTEGER NOT NULL, end_of_loan VARCHAR(100) NOT NULL, status VARCHAR(100) NOT NULL);";
+            command.ExecuteNonQuery();
+
+            command.CommandText = "CREATE TABLE IF NOT EXISTS samples (id INTEGER NOT NULL, person_id INTEGER NOT NULL, message VARCHAR(100) NOT NULL, creation_date VARCHAR(100) NOT NULL);";
+            command.ExecuteNonQuery();
+
+            // admin behrend
+            command.CommandText = "INSERT INTO persons(rank, pw, lastname, firstname, birthday, charges) VALUES (1, 'admin', 'behrend', 'mario', '15.09.1989', 0)";
+            command.ExecuteNonQuery();
+
+            // admin belger
+            command.CommandText = "INSERT INTO persons(rank, pw, lastname, firstname, birthday, charges) VALUES (1, 'admin', 'belger', 'norman', '18.01.1984', 0)";
             command.ExecuteNonQuery();
 
             command.Dispose();

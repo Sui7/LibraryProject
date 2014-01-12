@@ -17,42 +17,42 @@ namespace bibliothek
     public int Id 
     {
         get { return id; }
-        set { this.id = Id; }
+        set { this.id = value; }
     }
 
 
     public int Rank 
     {
         get { return rank; }
-        set { this.rank = Rank; }
+        set { this.rank = value; }
     }
 
 
     public string Pw 
     {
         get { return pw; }
-        set { this.pw = Pw; }
+        set { this.pw = value; }
     }
 
 
     public string Firstname 
     {
         get { return firstname; }
-        set { this.firstname = Firstname; }
+        set { this.firstname = value; }
     }
 
 
     public string Lastname 
     {
         get { return lastname; }
-        set { this.lastname = Lastname; }
+        set { this.lastname = value; }
     }
 
 
     public DateTime Birthday 
     {
         get { return birthday; }
-        set { this.birthday = Birthday; }
+        set { this.birthday = value; }
     }
 
 

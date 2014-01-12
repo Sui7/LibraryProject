@@ -16,31 +16,31 @@ namespace bibliothek
     public int Id
     {
         get { return id; }
-        set { this.id = Id; }
+        set { this.id = value; }
     }
 
     public Book Book 
     {
         get { return book; }
-        set { this.book = Book; }
+        set { this.book = value; }
     }
 
     public int CustomerId 
     { 
         get { return customerId; }
-        set { this.customerId = CustomerId; }
+        set { this.customerId = value; }
     }
 
     public DateTime EndOfLoan 
     {
         get { return endOfLoan; }
-        set { this.endOfLoan = EndOfLoan; } 
+        set { this.endOfLoan = value; } 
     }
 
     public string Status
     {
         get { return status; }
-        set { this.status = Status; }
+        set { this.status = value; }
     }
 
 

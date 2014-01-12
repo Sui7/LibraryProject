@@ -15,28 +15,28 @@ namespace bibliothek
     public int Id 
     {
         get { return id; }
-        set { this.id = Id; } 
+        set { this.id = value; } 
     }
 
 
     public int PersonId
     {
         get { return personId; }
-        set { this.personId = PersonId; }
+        set { this.personId = value; }
     }
 
 
     public DateTime CreationDate 
     {
         get { return creationDate; }
-        set { this.creationDate = CreationDate; } 
+        set { this.creationDate = value; } 
     }
 
 
     public string MessageText 
     {
         get { return messageText; }
-        set { this.messageText = MessageText; }
+        set { this.messageText = value; }
     }
   }
 

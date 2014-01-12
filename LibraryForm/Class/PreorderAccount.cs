@@ -13,7 +13,7 @@ namespace bibliothek
         public List<Sample> SampleList
         {
             get { return sampleList; }
-            set { this.sampleList = SampleList; }
+            set { this.sampleList = value; }
         }
 
 

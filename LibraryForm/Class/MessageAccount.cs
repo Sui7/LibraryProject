@@ -13,7 +13,7 @@ namespace bibliothek
     public Dictionary<int, Message> MessageDict 
     {
         get { return messageDict; }
-        set { this.messageDict = MessageDict; }
+        set { this.messageDict = value; }
     }
 
 

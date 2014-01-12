@@ -16,7 +16,6 @@ namespace LibraryForm
     {
         LibraryDB libraryDB = new LibraryDB();
         libraryDB.InitializeConnetion();
-
         libraryDB.CreateAllTables();
 
       //Application.EnableVisualStyles();

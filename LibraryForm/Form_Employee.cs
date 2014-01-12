@@ -12,7 +12,7 @@ using LibraryForm.Class;
 
 namespace LibraryForm
 {
-  public partial class Form_Employee : Form
+  partial class Form_Employee : Form
   {
       LibraryDB libraryDB;
 

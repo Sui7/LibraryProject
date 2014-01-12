@@ -11,7 +11,7 @@ using LibraryForm.Class;
 
 namespace LibraryForm
 {
-  public partial class Form_Customer : Form
+  partial class Form_Customer : Form
   {
       // customer infos
       Customer loggedCustomer;

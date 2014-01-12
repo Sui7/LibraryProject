@@ -19,7 +19,7 @@ namespace LibraryForm.Class
         public void InitializeConnetion()
         {
             this.connection = new SQLiteConnection();
-            this.connection.ConnectionString = "DataSource=" + datasource;
+            this.connection.ConnectionString = "Data Source=" + datasource;
             this.connection.Open();
         }
 

@@ -496,13 +496,13 @@ namespace LibraryForm.Class
             command.CommandText = "CREATE TABLE IF NOT EXISTS customers (person_id INTEGER NOT NULL, register_date VARCHAR(100) NOT NULL);";
             command.ExecuteNonQuery();
 
-            command.CommandText = "CREATE TABLE IF NOT EXISTS books (id INTEGER NOT NULL, title VARCHAR(100) NOT NULL, author VARCHAR(100) NOT NULL, genre VARCHAR(100) NOT NULL, access VARCHAR(100) NOT NULL, count INTEGER NOT NULL);";
+            command.CommandText = "CREATE TABLE IF NOT EXISTS books (id INTEGER NOT NULL AUTOINCREMENT, title VARCHAR(100) NOT NULL, author VARCHAR(100) NOT NULL, genre VARCHAR(100) NOT NULL, access VARCHAR(100) NOT NULL, count INTEGER NOT NULL);";
             command.ExecuteNonQuery();
 
-            command.CommandText = "CREATE TABLE IF NOT EXISTS samples (id INTEGER NOT NULL, book_id INTEGER NOT NULL, customer_id INTEGER NOT NULL, end_of_loan VARCHAR(100) NOT NULL, status VARCHAR(100) NOT NULL);";
+            command.CommandText = "CREATE TABLE IF NOT EXISTS samples (id INTEGER NOT NULL AUTOINCREMENT, book_id INTEGER NOT NULL, customer_id INTEGER NOT NULL, end_of_loan VARCHAR(100) NOT NULL, status VARCHAR(100) NOT NULL);";
             command.ExecuteNonQuery();
 
-            command.CommandText = "CREATE TABLE IF NOT EXISTS samples (id INTEGER NOT NULL, person_id INTEGER NOT NULL, message VARCHAR(100) NOT NULL, creation_date VARCHAR(100) NOT NULL);";
+            command.CommandText = "CREATE TABLE IF NOT EXISTS samples (id INTEGER NOT NULL AUTOINCREMENT, person_id INTEGER NOT NULL, message VARCHAR(100) NOT NULL, creation_date VARCHAR(100) NOT NULL);";
             command.ExecuteNonQuery();
 
             // admin behrend

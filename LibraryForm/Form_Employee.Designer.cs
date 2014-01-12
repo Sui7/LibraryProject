@@ -50,12 +50,10 @@
             this.bdayPerson = new System.Windows.Forms.DateTimePicker();
             this.chkCustomer = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.idPerson = new System.Windows.Forms.TextBox();
             this.searchPerson = new System.Windows.Forms.Button();
             this.createPerson = new System.Windows.Forms.Button();
             this.namePerson = new System.Windows.Forms.TextBox();
             this.lastnamePerson = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.deletePersonButton = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
@@ -97,6 +95,8 @@
             this.btn_logout = new System.Windows.Forms.Button();
             this.lbl_personName = new System.Windows.Forms.Label();
             this.gb_header = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.idPerson = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tp_PersonManagement.SuspendLayout();
             this.dgv_persons.SuspendLayout();
@@ -359,13 +359,6 @@
             this.label2.TabIndex = 21;
             this.label2.Text = "Geburtsdatum:";
             // 
-            // idPerson
-            // 
-            this.idPerson.Location = new System.Drawing.Point(250, 20);
-            this.idPerson.Name = "idPerson";
-            this.idPerson.Size = new System.Drawing.Size(100, 20);
-            this.idPerson.TabIndex = 20;
-            // 
             // searchPerson
             // 
             this.searchPerson.Location = new System.Drawing.Point(370, 56);
@@ -399,15 +392,6 @@
             this.lastnamePerson.Name = "lastnamePerson";
             this.lastnamePerson.Size = new System.Drawing.Size(100, 20);
             this.lastnamePerson.TabIndex = 15;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(196, 23);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(21, 13);
-            this.label5.TabIndex = 14;
-            this.label5.Text = "ID:";
             // 
             // deletePersonButton
             // 
@@ -812,6 +796,22 @@
             this.gb_header.TabIndex = 6;
             this.gb_header.TabStop = false;
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(196, 23);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(21, 13);
+            this.label5.TabIndex = 14;
+            this.label5.Text = "ID:";
+            // 
+            // idPerson
+            // 
+            this.idPerson.Location = new System.Drawing.Point(250, 20);
+            this.idPerson.Name = "idPerson";
+            this.idPerson.Size = new System.Drawing.Size(100, 20);
+            this.idPerson.TabIndex = 20;
+            // 
             // Form_Employee
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -874,12 +874,10 @@
     private System.Windows.Forms.Button btn_AddSample;
     private System.Windows.Forms.TextBox tb_SampleID;
     private System.Windows.Forms.GroupBox groupBox2;
-    private System.Windows.Forms.TextBox idPerson;
     private System.Windows.Forms.Button searchPerson;
     private System.Windows.Forms.Button createPerson;
     private System.Windows.Forms.TextBox namePerson;
     private System.Windows.Forms.TextBox lastnamePerson;
-    private System.Windows.Forms.Label label5;
     private System.Windows.Forms.Button deletePersonButton;
     private System.Windows.Forms.Label label6;
     private System.Windows.Forms.Label label7;
@@ -915,6 +913,8 @@
     private System.Windows.Forms.DataGridViewTextBoxColumn column_SampleBeginOfLoan;
     private System.Windows.Forms.DataGridViewTextBoxColumn column_SampleEndOfLoan;
     private System.Windows.Forms.DataGridViewTextBoxColumn column_SampleState;
+    private System.Windows.Forms.TextBox idPerson;
+    private System.Windows.Forms.Label label5;
 
   }
 }

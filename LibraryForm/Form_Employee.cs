@@ -188,6 +188,7 @@ namespace LibraryForm
           dgv_Sample.DataSource = sampleList;
       }
 
+
     private void createPerson_Click(object sender, EventArgs e)
     {
         if (namePerson.Text == "" || namePerson.Text.Length < 3)
@@ -215,14 +216,13 @@ namespace LibraryForm
                 DateTime bday = DateTime.ParseExact(bdayPerson.Text, "dd.MM.yyyy", CultureInfo.InvariantCulture);
 
                 Employee newEmployee = new Employee();
-                newEmployee.Id = Convert.ToInt32(idPerson.Text);
                 newEmployee.Rank = 2;
                 newEmployee.Pw = pwPerson.Text;
                 newEmployee.Firstname = namePerson.Text;
                 newEmployee.Lastname = lastnamePerson.Text;
                 newEmployee.Birthday = bday;
 
-                employeeList.Add(newEmployee);
+                libraryDB.CreateEmployee(newEmployee);
 
                 refreshStaffList();
                 resetTextBoxes();
@@ -237,18 +237,17 @@ namespace LibraryForm
         {
             try
             {
-                DateTime bday = DateTime.ParseExact(bdayPerson.Text, "dd.MM.yyyy", CultureInfo.InvariantCulture);
-
                 Customer newCustomer = new Customer();
-                newCustomer.Id = Convert.ToInt32(idPerson.Text);
                 newCustomer.Rank = 2;
                 newCustomer.Pw = pwPerson.Text;
                 newCustomer.Firstname = namePerson.Text;
                 newCustomer.Lastname = lastnamePerson.Text;
+
+                DateTime bday = DateTime.ParseExact(bdayPerson.Text, "dd.MM.yyyy", CultureInfo.InvariantCulture);
                 newCustomer.Birthday = bday;
                 newCustomer.RegisterDate = DateTime.Now;
 
-                customerList.Add(newCustomer);
+                libraryDB.CreateCustomer(newCustomer);
 
                 refreshCustomerList();
                 resetTextBoxes();

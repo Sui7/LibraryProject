@@ -74,7 +74,7 @@ namespace LibraryForm.Class
             SQLiteCommand command = new SQLiteCommand(connection);
 
             // create query
-            command.CommandText = "INSERT INTO persons(id, rank, pw, firstname, lastname, birthday) VALUES (NULL, 1, '" + employee.Pw + "', '" + employee.Firstname + "', '" + employee.Lastname + "', '" + employee.Birthday.ToString() + "');";
+            command.CommandText = "INSERT INTO persons(rank, pw, firstname, lastname, birthday, charges) VALUES (1, '" + employee.Pw + "', '" + employee.Firstname + "', '" + employee.Lastname + "', '" + employee.Birthday.ToString() + "', 0);";
             command.ExecuteNonQuery();
 
             // create query
@@ -171,7 +171,7 @@ namespace LibraryForm.Class
             SQLiteCommand command = new SQLiteCommand(connection);
 
             // create query
-            command.CommandText = "INSERT INTO persons(id, rank, pw, firstname, lastname, birthday) VALUES (NULL, 1, '" + customer.Pw + "', '" + customer.Firstname + "', '" + customer.Lastname + "', '" + customer.Birthday.ToString() + "');";
+            command.CommandText = "INSERT INTO persons(rank, pw, firstname, lastname, birthday, charges) VALUES (2, '" + customer.Pw + "', '" + customer.Firstname + "', '" + customer.Lastname + "', '" + customer.Birthday.ToString() + "', 0);";
             command.ExecuteNonQuery();
 
             // create query
@@ -264,6 +264,19 @@ namespace LibraryForm.Class
         }
 
 
+        public void DeletePerson(int personId)
+        {
+            // create command
+            SQLiteCommand command = new SQLiteCommand(connection);
+
+            // create query
+            command.CommandText = "DELETE FROM persons WHERE id = " + personId;
+            command.ExecuteNonQuery();
+
+            command.Dispose();
+        }
+
+
         public void CreateBook(Book book)
         {
             // create command
@@ -338,6 +351,19 @@ namespace LibraryForm.Class
             command.Dispose();
 
             return bookList;
+        }
+
+
+        public void DeleteBook(int bookId)
+        {
+            // create command
+            SQLiteCommand command = new SQLiteCommand(connection);
+
+            // create query
+            command.CommandText = "DELETE FROM books WHERE id = " + bookId;
+            command.ExecuteNonQuery();
+
+            command.Dispose();
         }
 
 
@@ -423,6 +449,19 @@ namespace LibraryForm.Class
         }
 
 
+        public void DeleteSample(int sampleId)
+        {
+            // create command
+            SQLiteCommand command = new SQLiteCommand(connection);
+
+            // create query
+            command.CommandText = "DELETE FROM samples WHERE id = " + sampleId;
+            command.ExecuteNonQuery();
+
+            command.Dispose();
+        }
+
+
         public ChargeAccount GetChargeAccountByPersonId(int personId)
         {
             ChargeAccount chargeAccount = new ChargeAccount();
@@ -449,6 +488,19 @@ namespace LibraryForm.Class
         }
 
 
+        public void CreateMessage(Message message)
+        {
+            // create command
+            SQLiteCommand command = new SQLiteCommand(connection);
+
+            // create query
+            command.CommandText = "INSERT INTO messages(person_id, message_text, creation_date) VALUES ('" + message.PersonId + "', '" + message.MessageText + "', '" + message.CreationDate.ToString() + "');";
+            command.ExecuteNonQuery();
+
+            command.Dispose();
+        }
+
+
         public MessageAccount GetMessageAccountByPersonId(int personId)
         {
             MessageAccount messageAccount = new MessageAccount();
@@ -467,7 +519,7 @@ namespace LibraryForm.Class
                 Message message = new Message();
                 message.Id = int.Parse(reader["id"].ToString());
                 message.PersonId = int.Parse(reader["person_id"].ToString());
-                message.MessageText = reader["message"].ToString();
+                message.MessageText = reader["message_text"].ToString();
                 message.CreationDate = DateTime.Parse(reader["creation_date"].ToString());
 
                 messageAccount.MessageDict.Add(message.Id, message);
@@ -478,6 +530,19 @@ namespace LibraryForm.Class
             command.Dispose();
 
             return messageAccount;
+        }
+
+
+        public void DeleteMessage(int messageId)
+        {
+            // create command
+            SQLiteCommand command = new SQLiteCommand(connection);
+
+            // create query
+            command.CommandText = "DELETE FROM messages WHERE id = " + messageId;
+            command.ExecuteNonQuery();
+
+            command.Dispose();
         }
 
 
@@ -502,7 +567,7 @@ namespace LibraryForm.Class
             command.CommandText = "CREATE TABLE IF NOT EXISTS samples (id INTEGER NOT NULL PRIMARY KEY  AUTOINCREMENT, book_id INTEGER NOT NULL, customer_id INTEGER NOT NULL, end_of_loan VARCHAR(100) NOT NULL, status VARCHAR(100) NOT NULL);";
             command.ExecuteNonQuery();
 
-            command.CommandText = "CREATE TABLE IF NOT EXISTS samples (id INTEGER NOT NULL PRIMARY KEY  AUTOINCREMENT, person_id INTEGER NOT NULL, message VARCHAR(100) NOT NULL, creation_date VARCHAR(100) NOT NULL);";
+            command.CommandText = "CREATE TABLE IF NOT EXISTS messages (id INTEGER NOT NULL PRIMARY KEY  AUTOINCREMENT, person_id INTEGER NOT NULL, message_text VARCHAR(100) NOT NULL, creation_date VARCHAR(100) NOT NULL);";
             command.ExecuteNonQuery();
 
             // admin behrend

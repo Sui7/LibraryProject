@@ -64,6 +64,7 @@
     <Compile Include="Class\Message.cs" />
     <Compile Include="Class\MessageAccount.cs" />
     <Compile Include="Class\Person.cs" />
+    <Compile Include="Class\PreorderAccount.cs" />
     <Compile Include="Class\Sample.cs" />
     <Compile Include="Class\LibraryDB.cs" />
     <Compile Include="Form1.cs">

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace bibliothek
 {
-    public class LoanAccount
+  class LoanAccount
   {
     List<Sample> sampleList;
 

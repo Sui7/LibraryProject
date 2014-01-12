@@ -5,7 +5,7 @@ using System.Text;
 
 namespace bibliothek
 {
-  public class Person
+  class Person
   {
     int id;
     int rank;

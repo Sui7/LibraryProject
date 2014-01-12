@@ -5,7 +5,7 @@ using System.Text;
 
 namespace bibliothek
 {
-  public class Message
+  class Message
   {
     int id;
     DateTime creationDate;

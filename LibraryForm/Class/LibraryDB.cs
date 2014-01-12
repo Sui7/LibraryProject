@@ -7,7 +7,7 @@ using System.Data.SQLite;
 
 namespace LibraryForm.Class
 {
-    public class LibraryDB
+    class LibraryDB
     {
         // sqlite connection
         SQLiteConnection connection;

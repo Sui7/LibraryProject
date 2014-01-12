@@ -5,7 +5,7 @@ using System.Text;
 
 namespace bibliothek
 {
-  public class ChargeAccount
+  class ChargeAccount
   {
        
     double charges; //Gebühren

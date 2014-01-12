@@ -5,7 +5,7 @@ using System.Text;
 
 namespace bibliothek
 {
-    public class PreorderAccount
+    class PreorderAccount
     {
         List<Sample> sampleList;
 

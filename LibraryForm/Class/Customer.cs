@@ -5,7 +5,7 @@ using System.Text;
 
 namespace bibliothek
 {
-   public class Customer : Person
+   class Customer : Person
   {
       LoanAccount loanAccount;
       ChargeAccount chargeAccount;

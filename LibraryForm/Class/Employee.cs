@@ -5,10 +5,10 @@ using System.Text;
 
 namespace bibliothek
 {
-    public class Employee : Person
-{
-    public Employee()
+    class Employee : Person
     {
-    }  
-}
+        public Employee()
+        {
+        }  
+    }
 }

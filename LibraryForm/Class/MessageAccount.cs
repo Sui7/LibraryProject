@@ -5,7 +5,7 @@ using System.Text;
 
 namespace bibliothek
 {
-  public class MessageAccount
+  class MessageAccount
   {
     Dictionary<int ,Message> messageDict = null;
 

@@ -74,7 +74,7 @@ namespace LibraryForm.Class
             SQLiteCommand command = new SQLiteCommand(connection);
 
             // create query
-            command.CommandText = "INSERT INTO persons(id, rank, pw, firstname, lastname, birthday) VALUES (NULL, 1, '" + employee.Pw + "', '" + employee.Firstname + "', '" + employee.Lastname + "', '" + employee.Birthday + "');";
+            command.CommandText = "INSERT INTO persons(id, rank, pw, firstname, lastname, birthday) VALUES (NULL, 1, '" + employee.Pw + "', '" + employee.Firstname + "', '" + employee.Lastname + "', '" + employee.Birthday.ToString() + "');";
             command.ExecuteNonQuery();
 
             // create query
@@ -171,7 +171,7 @@ namespace LibraryForm.Class
             SQLiteCommand command = new SQLiteCommand(connection);
 
             // create query
-            command.CommandText = "INSERT INTO persons(id, rank, pw, firstname, lastname, birthday) VALUES (NULL, 1, '" + customer.Pw + "', '" + customer.Firstname + "', '" + customer.Lastname + "', '" + customer.Birthday + "');";
+            command.CommandText = "INSERT INTO persons(id, rank, pw, firstname, lastname, birthday) VALUES (NULL, 1, '" + customer.Pw + "', '" + customer.Firstname + "', '" + customer.Lastname + "', '" + customer.Birthday.ToString() + "');";
             command.ExecuteNonQuery();
 
             // create query
@@ -189,7 +189,7 @@ namespace LibraryForm.Class
             reader.Dispose();
 
             // create query
-            command.CommandText = "INSERT INTO customers(person_id, register_date) VALUES (" + newId + ", '" + customer.RegisterDate + "');";
+            command.CommandText = "INSERT INTO customers(person_id, register_date) VALUES (" + newId + ", '" + customer.RegisterDate.ToString() + "');";
             command.ExecuteNonQuery();
 
             command.Dispose();
@@ -347,7 +347,7 @@ namespace LibraryForm.Class
             SQLiteCommand command = new SQLiteCommand(connection);
 
             // create query
-            command.CommandText = "INSERT INTO samples(id, book_id, customer_id, end_of_loan, status) VALUES (NULL, '" + sample.Book.Id + "', '" + sample.CustomerId + "', '" + sample.EndOfLoan + "', '" + sample.Status + "');";
+            command.CommandText = "INSERT INTO samples(id, book_id, customer_id, end_of_loan, status) VALUES (NULL, '" + sample.Book.Id + "', '" + sample.CustomerId + "', '" + sample.EndOfLoan.ToString() + "', '" + sample.Status + "');";
             command.ExecuteNonQuery();
 
             command.Dispose();

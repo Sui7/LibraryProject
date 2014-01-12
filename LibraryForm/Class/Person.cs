@@ -57,7 +57,7 @@ namespace bibliothek
 
 
     // constructor
-    public Person(int Id,int Rank,string Pw, string Firstname, string Lastname,DateTime Birthday)
+    public Person(int Id,int Rank,string Pw, string Firstname, string Lastname, DateTime Birthday)
     {
         id = Id;
         rank = Rank;

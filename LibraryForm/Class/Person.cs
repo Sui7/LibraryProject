@@ -7,12 +7,12 @@ namespace bibliothek
 {
   class Person
   {
-    int id;
-    int rank;
-    string pw;
-    string firstname;
-    string lastname;
-    DateTime birthday;
+    private int id;
+    private int rank;
+    private string pw;
+    private string firstname;
+    private string lastname;
+    private DateTime birthday;
       
     public int Id 
     {
@@ -57,6 +57,16 @@ namespace bibliothek
 
 
     // constructor
+    public Person(int Id,int Rank,string Pw, string Firstname, string Lastname,DateTime Birthday)
+    {
+        id = Id;
+        rank = Rank;
+        pw = Pw;
+        firstname = Firstname;
+        lastname = Lastname;
+        birthday = Birthday;
+    }
+
     public Person()
     {
     }

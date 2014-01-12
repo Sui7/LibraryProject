@@ -47,15 +47,16 @@ namespace LibraryForm.Class
 
             while (reader.Read())
             {
-                Person person = new Person();
 
-                person.Id = int.Parse(reader["id"].ToString());
-                person.Rank = int.Parse(reader["rank"].ToString());
-                person.Pw = reader["pw"].ToString();
-                person.Firstname = reader["firstname"].ToString();
-                person.Lastname = reader["lastname"].ToString();
-                person.Birthday = DateTime.Parse(reader["birthday"].ToString());
+                int Id = int.Parse(reader["id"].ToString());
+                int Rank = int.Parse(reader["rank"].ToString());
+                string Pw = reader["pw"].ToString();
+                string Firstname = reader["firstname"].ToString();
+                string Lastname = reader["lastname"].ToString();
+                DateTime Birthday = DateTime.Parse(reader["birthday"].ToString());
 
+
+                Person person = new Person(Id,Rank,Pw,Firstname,Lastname,Birthday);
                 personList.Add(person);                
             }
 
@@ -505,6 +506,7 @@ namespace LibraryForm.Class
             command.ExecuteNonQuery();
 
             // admin behrend
+
             command.CommandText = "INSERT INTO persons(rank, pw, lastname, firstname, birthday, charges) VALUES (1, 'admin', 'behrend', 'mario', '15.09.1989', 0)";
             command.ExecuteNonQuery();
 

@@ -189,6 +189,21 @@ namespace LibraryForm
       }
 
 
+      private void IdPerson_TextChanged(object sender, EventArgs e)
+      {
+          // enabled the create Person button, if text inside the idPerson
+          if (!string.IsNullOrWhiteSpace(idPerson.Text))
+          {
+              idPerson.Enabled = false;
+          }
+          // disabled
+          else
+          {
+              idPerson.Enabled = true;
+          }
+      }
+
+
     private void createPerson_Click(object sender, EventArgs e)
     {
         if (namePerson.Text == "" || namePerson.Text.Length < 3)

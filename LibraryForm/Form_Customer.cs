@@ -34,7 +34,7 @@ namespace LibraryForm
       lbl_idTag.Text = loggedCustomer.Id.ToString();
       lbl_lastnameTag.Text = loggedCustomer.Lastname;
       lbl_firstnameTag.Text = loggedCustomer.Firstname;
-      lbl_birthdayTag.Text = loggedCustomer.Birthday.ToString();
+      lbl_birthdayTag.Text = loggedCustomer.Birthday.ToShortDateString();
 
       // get account infos
       RefreshChargeAccount();
@@ -181,6 +181,7 @@ namespace LibraryForm
             dgv_books.Rows.Add(book.Author, book.Title, book.Genre, book.Count, freeCounter);
         }
     }
+
 
     private void tb_payIn_TextChanged(object sender, EventArgs e)
     {

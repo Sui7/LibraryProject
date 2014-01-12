@@ -250,7 +250,7 @@ namespace LibraryForm.Class
             SQLiteCommand command = new SQLiteCommand(connection);
 
             // create query
-            command.CommandText = "SELECT * FROM persons WHERE rank = 2";
+            command.CommandText = "SELECT * FROM persons, customers WHERE persons.rank = 2 AND persons.id = customers.person_id";
 
             //craete reader
             SQLiteDataReader reader = command.ExecuteReader();
@@ -272,6 +272,7 @@ namespace LibraryForm.Class
 
             reader.Close();
             reader.Dispose();
+
             command.Dispose();
 
             return customerList;

@@ -811,6 +811,7 @@
             this.idPerson.Name = "idPerson";
             this.idPerson.Size = new System.Drawing.Size(100, 20);
             this.idPerson.TabIndex = 20;
+            this.idPerson.TextChanged += new System.EventHandler(this.IdPerson_TextChanged);
             // 
             // Form_Employee
             // 

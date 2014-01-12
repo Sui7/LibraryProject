@@ -36,44 +36,66 @@ namespace LibraryForm
       lbl_firstnameTag.Text = loggedCustomer.Firstname;
       lbl_birthdayTag.Text = loggedCustomer.Birthday.ToString();
 
-      // ChargeAccount infos
-      loggedCustomer.ChargeAccount = libraryDB.GetChargeAccountByPersonId(person.Id);
-      tb_charges.Text = loggedCustomer.ChargeAccount.Charges.ToString();
+      // get account infos
+      RefreshChargeAccount();
+      RefreshLoanAccount();
+      RefreshPreorderAccount();
+      RefreshMessageAccount();
+    }
 
-      // LoanAccount infos
-      loggedCustomer.LoanAccount = new LoanAccount(libraryDB.GetSampleListByPersonId(person.Id));
 
-      if (loggedCustomer.LoanAccount.SampleList.Count() != 0)
-      {
-          foreach (Sample sample in loggedCustomer.LoanAccount.SampleList)
-          {
-              string loanSample = sample.Id.ToString() + " - " + sample.Book.Title.ToString() + " - " + sample.EndOfLoan.ToString();
-              lb_loanAccount.Items.Add(loanSample);
-          }
-      }
+    private void RefreshChargeAccount()
+    {
+        // ChargeAccount infos
+        loggedCustomer.ChargeAccount = libraryDB.GetChargeAccountByPersonId(loggedCustomer.Id);
+        tb_charges.Text = loggedCustomer.ChargeAccount.Charges.ToString();
+    }
 
-      // PreorderAccount infos
-      loggedCustomer.PreorderAccount = new PreorderAccount(libraryDB.GetSampleListByPersonId(person.Id));
 
-      if (loggedCustomer.PreorderAccount.SampleList.Count() != 0)
-      {
-          foreach (Sample sample in loggedCustomer.PreorderAccount.SampleList)
-          {
-              string preorderSample = sample.Id.ToString() + " - " + sample.Book.Title.ToString();
-              lb_loanAccount.Items.Add(preorderSample);
-          }
-      }
+    private void RefreshLoanAccount()
+    {
+        // LoanAccount infos
+        loggedCustomer.LoanAccount = new LoanAccount(libraryDB.GetSampleListByPersonId(loggedCustomer.Id));
 
-      // messageAccount infos
-      loggedCustomer.MessageAccount = new MessageAccount(libraryDB.GetMessageDictByPersonId(person.Id));
+        if (loggedCustomer.LoanAccount.SampleList.Count() != 0)
+        {
+            foreach (Sample sample in loggedCustomer.LoanAccount.SampleList)
+            {
+                string loanSample = sample.Id.ToString() + " - " + sample.Book.Title.ToString() + " - " + sample.EndOfLoan.ToString();
+                lb_loanAccount.Items.Add(loanSample);
+            }
+        }
+    }
 
-      if (loggedCustomer.MessageAccount.MessageDict.Count != 0)
-      {
-          foreach (KeyValuePair<int, bibliothek.Message> entry in loggedCustomer.MessageAccount.MessageDict)
-          {
-              dgv_messages.Rows.Add(entry.Key.ToString() + " - " + entry.Value.MessageText + " - " + entry.Value.CreationDate.ToString());
-          }
-      }
+
+    private void RefreshPreorderAccount()
+    {
+        // PreorderAccount infos
+        loggedCustomer.PreorderAccount = new PreorderAccount(libraryDB.GetSampleListByPersonId(loggedCustomer.Id));
+
+        if (loggedCustomer.PreorderAccount.SampleList.Count() != 0)
+        {
+            foreach (Sample sample in loggedCustomer.PreorderAccount.SampleList)
+            {
+                string preorderSample = sample.Id.ToString() + " - " + sample.Book.Title.ToString();
+                lb_loanAccount.Items.Add(preorderSample);
+            }
+        }
+    }
+
+
+    private void RefreshMessageAccount()
+    {
+        // messageAccount infos
+        loggedCustomer.MessageAccount = new MessageAccount(libraryDB.GetMessageDictByPersonId(loggedCustomer.Id));
+
+        if (loggedCustomer.MessageAccount.MessageDict.Count != 0)
+        {
+            foreach (KeyValuePair<int, bibliothek.Message> entry in loggedCustomer.MessageAccount.MessageDict)
+            {
+                dgv_messages.Rows.Add(entry.Key.ToString() + " - " + entry.Value.MessageText + " - " + entry.Value.CreationDate.ToString());
+            }
+        }
     }
 
 
@@ -165,63 +187,57 @@ namespace LibraryForm
         // enabled the payIn button, if text inside the tb_payIn
         if (!string.IsNullOrWhiteSpace(tb_payIn.Text))
         {
-            btn_payIn.Enabled = false;
+            btn_payIn.Enabled = true;
         }
         // disabled
         else
         {
-            btn_payIn.Enabled = true;
+            btn_payIn.Enabled = false;
         }
     }
 
     private void btn_payIn_Click(object sender, EventArgs e)
     {
-        string payInString = tb_bookSearch.Text;
-
-        // replace comma with point
-        payInString = payInString.Replace(",", ".");
-
         double realPayIn;
 
-        // check if string a double
-        if (double.TryParse(payInString, out realPayIn))
+        if (double.TryParse(tb_payIn.Text, out realPayIn)) {
+
+        // check 2 decimal places
+        if (realPayIn * 100 == Math.Floor(realPayIn * 100))
         {
-            // check 2 decimal places
-            if (realPayIn * 100 == Math.Floor(realPayIn * 100))
-            {
-                // payIn more than charges 
-                if (realPayIn > loggedCustomer.ChargeAccount.Charges)
+            // payIn more than charges 
+            if (realPayIn >= loggedCustomer.ChargeAccount.Charges)
                 {
                     // clear charges and send message
                     loggedCustomer.ChargeAccount.clearChargeAccount();
+                    libraryDB.ClearCharges(loggedCustomer.Id);
                     tb_charges.Text = "0";
                 }
                 else
                 {
                     // pay in charges
-                    loggedCustomer.ChargeAccount.payIn(realPayIn);
+                    double newCharges = loggedCustomer.ChargeAccount.payIn(realPayIn);
+                    libraryDB.PayInCharges(loggedCustomer.Id, newCharges);
                     tb_charges.Text = loggedCustomer.ChargeAccount.Charges.ToString();
                 }
 
                 // clear textbox payIn
                 tb_payIn.Text = "";
+                return;
             }
             else
             {
                 MessageBox.Show("Nur zwei Nachkommastellen beachten!");
             }
         }
-        else
-        {
-            MessageBox.Show("Korrekten Betrag angeben (Bsp.: 12.75)!");
-        }
+        MessageBox.Show("Korrekten Betrag angeben (Bsp.: 12.75)!");
+        
     }
 
     private void btn_logout_Click(object sender, EventArgs e)
     {
         // return to login form
-        Form1 loginForm = new Form1();
-        loginForm.ShowDialog();
+        this.Close();
     }
   }
 }

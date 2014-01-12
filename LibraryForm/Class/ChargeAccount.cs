@@ -41,17 +41,19 @@ namespace bibliothek
     }
 
 
-    public void payIn(double amount)
+    public double payIn(double amount)
     {
         if (amount <= charges)
         {
-            amount -= charges;
+            charges -= amount;
         }
 
         if (charges < 0)
         {
             charges = 0;
         }
+
+        return charges;
     }
 
 

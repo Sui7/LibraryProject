@@ -306,6 +306,8 @@
             this.tb_payIn.Name = "tb_payIn";
             this.tb_payIn.Size = new System.Drawing.Size(100, 20);
             this.tb_payIn.TabIndex = 11;
+            this.tb_payIn.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.tb_payIn.TextChanged += new System.EventHandler(this.tb_payIn_TextChanged);
             // 
             // btn_payIn
             // 

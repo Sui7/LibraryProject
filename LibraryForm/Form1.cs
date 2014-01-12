@@ -79,15 +79,7 @@ namespace LibraryForm
 
     private void btn_close_Click(object sender, EventArgs e)
     {
-        // close connection
-        libraryDB.CloseConnection();
-    }
-
-
-    private void Form1_FormClosing(Object sender, FormClosingEventArgs e)
-    {
-        // close connection
-        libraryDB.CloseConnection();
+        this.Close();
     }
   }
 }

@@ -502,6 +502,32 @@ namespace LibraryForm.Class
         }
 
 
+        public void ClearCharges(int personId)
+        {
+            // create command
+            SQLiteCommand command = new SQLiteCommand(connection);
+
+            // create query
+            command.CommandText = "UPDATE persons SET charges = 0 WHERE id = " + personId;
+            command.ExecuteNonQuery();
+
+            command.Dispose();
+        }
+
+
+        public void PayInCharges(int personId, double charges)
+        {
+            // create command
+            SQLiteCommand command = new SQLiteCommand(connection);
+
+            // create query
+            command.CommandText = "UPDATE persons SET charges = " + charges + " WHERE id = " + personId;
+            command.ExecuteNonQuery();
+
+            command.Dispose();
+        }
+
+
         public void CreateMessage(Message message)
         {
             // create command

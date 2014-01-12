@@ -25,7 +25,7 @@ namespace LibraryForm
 
       libraryDB.CreateAllTables();
 
-      personList = libraryDB.GetPersonList();
+      this.personList = libraryDB.GetPersonList();
     }
 
     private void btn_login_Click(object sender, EventArgs e)
@@ -35,6 +35,8 @@ namespace LibraryForm
         {
             foreach (Person person in personList)
             {
+                //MessageBox.Show(person.Lastname + " - " + person.Pw);
+
                 // check if name and pw is in person list
                 if (tb_loginName.Text.Equals(person.Lastname) && tb_password.Text.Equals(person.Pw))
                 {
@@ -59,7 +61,7 @@ namespace LibraryForm
                 }
             }
 
-            MessageBox.Show("Bitte Namen und Passwort eingeben.");
+            MessageBox.Show("Name und/oder Passwort falsch!");
             return;
         }
         else

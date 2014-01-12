@@ -19,49 +19,49 @@ namespace bibliothek
       public int Id 
       {
           get { return id; }
-          set { this.id = Id; }
+          set { this.id = value; }
       }
 
 
       public string Title
       {
           get { return title; }
-          set { this.title = Title; }
+          set { this.title = value; }
       }
 
 
       public string Access
       {
           get { return access; }
-          set { this.access = Access; }
+          set { this.access = value; }
       }
 
 
       public string Author
       {
           get { return author; }
-          set { this.author = Author; }
+          set { this.author = value; }
       }
 
 
       public string Genre
       {
           get { return genre; }
-          set { this.genre = Genre; }
+          set { this.genre = value; }
       }
 
 
       public int Count
       {
           get { return count; }
-          set { this.count = Count; }
+          set { this.count = value; }
       }
 
 
       public List<Sample> Sample
       {
           get { return sample; }
-          set { this.sample = Sample; }
+          set { this.sample = value; }
       }
 
 

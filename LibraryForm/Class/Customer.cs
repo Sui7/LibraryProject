@@ -20,35 +20,35 @@ namespace bibliothek
       public LoanAccount LoanAccount 
       {
           get { return loanAccount; }
-          set { this.loanAccount = LoanAccount; } 
+          set { this.loanAccount = value; } 
       }
 
 
       public ChargeAccount ChargeAccount 
       {
           get { return chargeAccount; }
-          set { this.chargeAccount = ChargeAccount; }
+          set { this.chargeAccount = value; }
       }
 
 
       public MessageAccount MessageAccount 
       {
           get { return messageAccount; }
-          set { this.messageAccount = MessageAccount; }
+          set { this.messageAccount = value; }
       }
 
 
       public PreorderAccount PreorderAccount 
       {
           get { return preorderAccount; }
-          set { this.preorderAccount = PreorderAccount; }
+          set { this.preorderAccount = value; }
       }
 
 
       public DateTime RegisterDate 
       {
           get { return registerDate; }
-          set { this.registerDate = RegisterDate; }
+          set { this.registerDate = value; }
       }
   }
 }

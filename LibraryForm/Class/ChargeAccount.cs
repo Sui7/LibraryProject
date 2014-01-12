@@ -28,7 +28,7 @@ namespace bibliothek
 
         set
         {
-            this.charges = Charges;
+            this.charges = value;
         }
     }
 

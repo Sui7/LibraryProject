@@ -23,8 +23,6 @@ namespace LibraryForm
       libraryDB = new LibraryDB();
       libraryDB.InitializeConnetion();
 
-      libraryDB.CreateAllTables();
-
       this.personList = libraryDB.GetPersonList();
     }
 
@@ -35,10 +33,8 @@ namespace LibraryForm
         {
             foreach (Person person in personList)
             {
-                //MessageBox.Show(person.Lastname + " - " + person.Pw);
-
                 // check if name and pw is in person list
-                if (tb_loginName.Text.Equals(person.Lastname) && tb_password.Text.Equals(person.Pw))
+                if (tb_loginName.Text.ToLower().Equals(person.Lastname.ToLower()) && tb_password.Text.Equals(person.Pw))
                 {
                     // rank 1 = employee
                     if (person.Rank == 1)
@@ -46,6 +42,11 @@ namespace LibraryForm
                         //TODO: employee aus datenbank holen
                         Form_Employee form_employee = new Form_Employee(libraryDB, person);
                         form_employee.ShowDialog();
+
+                        // clear textboxes
+                        tb_loginName.Clear();
+                        tb_password.Clear();
+                        return;
                     }
                     // rank 2 = customer
                     else if (person.Rank == 2)
@@ -53,6 +54,11 @@ namespace LibraryForm
                         //TODO: customer aus datenbank holen
                         Form_Customer form_customer = new Form_Customer(libraryDB, person);
                         form_customer.ShowDialog();
+
+                        // clear textboxes
+                        tb_loginName.Clear();
+                        tb_password.Clear();
+                        return;
                     }
                     else
                     {
@@ -70,5 +76,18 @@ namespace LibraryForm
         }
     }
 
+
+    private void btn_close_Click(object sender, EventArgs e)
+    {
+        // close connection
+        libraryDB.CloseConnection();
+    }
+
+
+    private void Form1_FormClosing(Object sender, FormClosingEventArgs e)
+    {
+        // close connection
+        libraryDB.CloseConnection();
+    }
   }
 }

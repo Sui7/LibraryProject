@@ -61,16 +61,17 @@
             this.btn_close.Location = new System.Drawing.Point(191, 57);
             this.btn_close.Name = "btn_close";
             this.btn_close.Size = new System.Drawing.Size(75, 23);
-            this.btn_close.TabIndex = 5;
+            this.btn_close.TabIndex = 4;
             this.btn_close.Text = "Schließen";
             this.btn_close.UseVisualStyleBackColor = true;
+            this.btn_close.Click += new System.EventHandler(this.btn_close_Click);
             // 
             // tb_password
             // 
             this.tb_password.Location = new System.Drawing.Point(65, 59);
             this.tb_password.Name = "tb_password";
             this.tb_password.Size = new System.Drawing.Size(100, 20);
-            this.tb_password.TabIndex = 4;
+            this.tb_password.TabIndex = 2;
             // 
             // btn_login
             // 

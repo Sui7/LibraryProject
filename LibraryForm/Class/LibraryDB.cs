@@ -572,11 +572,15 @@ namespace LibraryForm.Class
 
             // admin behrend
 
-            command.CommandText = "INSERT INTO persons(rank, pw, lastname, firstname, birthday, charges) VALUES (1, 'admin', 'behrend', 'mario', '15.09.1989', 0)";
+            command.CommandText = "INSERT INTO persons(rank, pw, lastname, firstname, birthday, charges) VALUES (1, 'admin', 'Behrend', 'Mario', '15.09.1989', 0)";
             command.ExecuteNonQuery();
 
             // admin belger
-            command.CommandText = "INSERT INTO persons(rank, pw, lastname, firstname, birthday, charges) VALUES (1, 'admin', 'belger', 'norman', '18.01.1984', 0)";
+            command.CommandText = "INSERT INTO persons(rank, pw, lastname, firstname, birthday, charges) VALUES (1, 'admin', 'Belger', 'Norman', '18.01.1984', 0)";
+            command.ExecuteNonQuery();
+
+            // test muster
+            command.CommandText = "INSERT INTO persons(rank, pw, lastname, firstname, birthday, charges) VALUES (2, 'test', 'Muster', 'Max', '01.01.1970', 10)";
             command.ExecuteNonQuery();
 
             command.Dispose();

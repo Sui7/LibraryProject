@@ -78,7 +78,7 @@ namespace LibraryForm.Class
             command.ExecuteNonQuery();
 
             // create query
-            command.CommandText = "SELECT id FROM persons WHERE firstname = " + employee.Firstname + " AND lastname = " + employee.Lastname;
+            command.CommandText = "SELECT id FROM persons WHERE lastname = '" + employee.Lastname + "' AND birthday = '" + employee.Birthday.ToString() + "'";
             SQLiteDataReader reader = command.ExecuteReader();
 
             int newId = 0;
@@ -175,7 +175,7 @@ namespace LibraryForm.Class
             command.ExecuteNonQuery();
 
             // create query
-            command.CommandText = "SELECT id FROM persons WHERE firstname = " + customer.Firstname + " AND lastname = " + customer.Lastname;
+            command.CommandText = "SELECT id FROM persons WHERE lastname = '" + customer.Lastname + "' AND birthday = '" + customer.Birthday.ToString() + "';";
             SQLiteDataReader reader = command.ExecuteReader();
 
             int newId = 0;
@@ -283,7 +283,7 @@ namespace LibraryForm.Class
             SQLiteCommand command = new SQLiteCommand(connection);
 
             // create query
-            command.CommandText = "INSERT INTO books(id, title, author, genre, access, count) VALUES (NULL, '" + book.Title + "', '" + book.Author + "', '" + book.Genre + "', '" + book.Access + "', 1);";
+            command.CommandText = "INSERT INTO books(title, author, genre, access, count) VALUES ('" + book.Title + "', '" + book.Author + "', '" + book.Genre + "', '" + book.Access + "', 1);";
             command.ExecuteNonQuery();
             
             command.Dispose();
@@ -373,7 +373,7 @@ namespace LibraryForm.Class
             SQLiteCommand command = new SQLiteCommand(connection);
 
             // create query
-            command.CommandText = "INSERT INTO samples(id, book_id, customer_id, end_of_loan, status) VALUES (NULL, '" + sample.Book.Id + "', '" + sample.CustomerId + "', '" + sample.EndOfLoan.ToString() + "', '" + sample.Status + "');";
+            command.CommandText = "INSERT INTO samples(book_id, customer_id, end_of_loan, status) VALUES ('" + sample.Book.Id + "', '" + sample.CustomerId + "', '" + sample.EndOfLoan.ToString() + "', '" + sample.Status + "');";
             command.ExecuteNonQuery();
 
             command.Dispose();
@@ -470,7 +470,7 @@ namespace LibraryForm.Class
             SQLiteCommand command = new SQLiteCommand(connection);
 
             // create query
-            command.CommandText = "SELECT charges FROM persons WHERE person_id =" + personId;
+            command.CommandText = "SELECT charges FROM persons WHERE person_id = " + personId;
 
             //craete reader
             SQLiteDataReader reader = command.ExecuteReader();
@@ -509,7 +509,7 @@ namespace LibraryForm.Class
             SQLiteCommand command = new SQLiteCommand(connection);
 
             // create query
-            command.CommandText = "SELECT * FROM messages WHERE person_id =" + personId;
+            command.CommandText = "SELECT * FROM messages WHERE person_id = " + personId;
 
             //craete reader
             SQLiteDataReader reader = command.ExecuteReader();

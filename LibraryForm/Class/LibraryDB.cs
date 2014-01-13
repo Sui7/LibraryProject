@@ -405,6 +405,20 @@ namespace LibraryForm.Class
             command.Dispose();
         }
 
+
+        public void UpdateSampleToCustomer(int bookId, int customerId, DateTime endOfLoan, string status)
+        {
+            // create command
+            SQLiteCommand command = new SQLiteCommand(connection);
+
+            // create query
+            command.CommandText = "UPDATE samples SET customer_id = " + customerId + ", end_of_loan = '" + endOfLoan.ToShortDateString() + "', status = '" + status + "' WHERE book_id = " + bookId + ";";
+            command.ExecuteNonQuery();
+
+            command.Dispose();
+        }
+
+
         public List<Sample> GetSampleList()
         {
             List<Sample> sampleList = new List<Sample>();
@@ -437,6 +451,32 @@ namespace LibraryForm.Class
             command.Dispose();
 
             return sampleList;
+        }
+
+
+        public int CountFreeSamplesByBookId(int bookId)
+        {
+            int count = 0;
+
+            // create command
+            SQLiteCommand command = new SQLiteCommand(connection);
+
+            // create query
+            command.CommandText = "SELECT COUNT(id) FROM samples WHERE book_id =" + bookId + " AND status = 'frei'";
+
+            //craete reader
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                count = int.Parse(reader[0].ToString());
+            }
+
+            reader.Close();
+            reader.Dispose();
+            command.Dispose();
+
+            return count;
         }
 
 
@@ -604,6 +644,12 @@ namespace LibraryForm.Class
             SQLiteCommand command = new SQLiteCommand(connection);
 
             // create tables query
+            command.CommandText = "CREATE TABLE IF NOT EXISTS library (name VARCHAR(100) NOT NULL, address VARCHAR(100) NOT NULL, period_of_loan INTEGER NOT NULL, charge INTEGER NOT NULL, overdrow_charge INTEGER NOT NULL, opening_time INTEGER NOT NULL, closing_time INTEGER NOT NULL);";
+            command.ExecuteNonQuery();
+            command.CommandText = "INSERT INTO library(name, address, period_of_loan, charge, overdrow_charge, opening_time, closing_time) VALUES ('Stadt Bibliothek', 'Schlossstraße 5, 12345 Berlin', 7, 4, 2, 8, 20)";
+            command.ExecuteNonQuery();
+
+            // create tables query
             command.CommandText = "CREATE TABLE IF NOT EXISTS persons (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, rank INTEGER NOT NULL, pw VARCHAR(100) NOT NULL, lastname VARCHAR(100) NOT NULL, firstname VARCHAR(100) NOT NULL, birthday VARCHAR(100) NOT NULL, charges DOUBLE NULL);";
             command.ExecuteNonQuery();
 
@@ -616,7 +662,7 @@ namespace LibraryForm.Class
             command.CommandText = "DROP TABLE book; CREATE TABLE IF NOT EXISTS books (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, title VARCHAR(100) NOT NULL, author VARCHAR(100) NOT NULL, genre VARCHAR(100) NOT NULL, access VARCHAR(100) NOT NULL, count INTEGER NULL);";
             command.ExecuteNonQuery();
 
-            command.CommandText = "CREATE TABLE IF NOT EXISTS samples (id INTEGER NOT NULL PRIMARY KEY  AUTOINCREMENT, book_id INTEGER NOT NULL, customer_id INTEGER NOT NULL, end_of_loan VARCHAR(100) NOT NULL, status VARCHAR(100) NOT NULL);";
+            command.CommandText = "CREATE TABLE IF NOT EXISTS samples (id INTEGER NOT NULL PRIMARY KEY  AUTOINCREMENT, book_id INTEGER NOT NULL, customer_id INTEGER NULL, end_of_loan VARCHAR(100) NULL, status VARCHAR(100) NOT NULL);";
             command.ExecuteNonQuery();
 
             command.CommandText = "CREATE TABLE IF NOT EXISTS messages (id INTEGER NOT NULL PRIMARY KEY  AUTOINCREMENT, person_id INTEGER NOT NULL, message_text VARCHAR(100) NOT NULL, creation_date VARCHAR(100) NOT NULL);";
@@ -639,6 +685,22 @@ namespace LibraryForm.Class
             command.CommandText = "INSERT INTO persons(id, rank, pw, lastname, firstname, birthday, charges) VALUES (3, 2, 'test', 'Muster', 'Max', '01.01.1970', 10)";
             command.ExecuteNonQuery();
             command.CommandText = "INSERT INTO customers(person_id, register_date) VALUES (3, '12.01.2014')";
+            command.ExecuteNonQuery();
+
+            // test books
+            command.CommandText = "INSERT INTO books(id, title, author, genre, access, count) VALUES (1, 'Herr der Ringe', 'Tolkien', 'Fantasy', 'Reihe H', 3)";
+            command.ExecuteNonQuery();
+            command.CommandText = "INSERT INTO samples(id, book_id, customer_id, end_of_loan, status) VALUES (1, 1, NULL, NULL, 'frei');";
+            command.ExecuteNonQuery();
+            command.CommandText = "INSERT INTO samples(id, book_id, customer_id, end_of_loan, status) VALUES (2, 1, NULL, NULL, 'frei');";
+            command.ExecuteNonQuery();
+            command.CommandText = "INSERT INTO samples(id, book_id, customer_id, end_of_loan, status) VALUES (3, 1, NULL, NULL, 'frei');";
+            command.ExecuteNonQuery();
+
+            command.CommandText = "INSERT INTO books(id, title, author, genre, access, count) VALUES (2, 'Sakrileg', 'Brown', 'Thriller', 'Reihe S', 0)";
+            command.ExecuteNonQuery();
+
+            command.CommandText = "INSERT INTO messages(id, person_id, message_text, creation_date) VALUES (1, 3, 'Ihre Gesamtgebühren zum 1. Januar 2014 betragen 12 Euro', '01.01.2014')";
             command.ExecuteNonQuery();
 
             command.Dispose();

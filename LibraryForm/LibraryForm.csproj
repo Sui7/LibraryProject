@@ -59,7 +59,7 @@
     <Compile Include="Class\ChargeAccount.cs" />
     <Compile Include="Class\Customer.cs" />
     <Compile Include="Class\Employee.cs" />
-    <Compile Include="Class\Libary.cs" />
+    <Compile Include="Class\LibraryInfo.cs" />
     <Compile Include="Class\LoanAccount.cs" />
     <Compile Include="Class\Message.cs" />
     <Compile Include="Class\MessageAccount.cs" />

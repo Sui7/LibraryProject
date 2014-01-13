@@ -18,7 +18,7 @@ namespace LibraryForm
 
       LibraryDB libraryDB;
 
-      List<Book> bookList;
+      List<Book> bookList = new List<Book>();
 
     public Form_Customer(LibraryDB libraryDB, Person person)
     {
@@ -36,11 +36,34 @@ namespace LibraryForm
       lbl_firstnameTag.Text = loggedCustomer.Firstname;
       lbl_birthdayTag.Text = loggedCustomer.Birthday.ToShortDateString();
 
+      // get book list
+      RefreshBookList();
+
       // get account infos
       RefreshChargeAccount();
       RefreshLoanAccount();
       RefreshPreorderAccount();
       RefreshMessageAccount();
+    }
+
+
+    private void RefreshBookList()
+    {
+        // Book infos
+        bookList = libraryDB.GetBookList();
+
+        if (bookList.Count() != 0)
+        {
+            foreach (Book book in bookList)
+            {
+                // count free samples
+                int freeSamples = libraryDB.CountFreeSamplesByBookId(book.Id);
+
+                dgv_books.Rows.Add(book.Id, book.Author, book.Title, book.Genre, book.Count, freeSamples);                
+            }
+        }
+
+        dgv_books.ClearSelection();
     }
 
 
@@ -93,65 +116,81 @@ namespace LibraryForm
         {
             foreach (KeyValuePair<int, bibliothek.Message> entry in loggedCustomer.MessageAccount.MessageDict)
             {
-                dgv_messages.Rows.Add(entry.Key.ToString() + " - " + entry.Value.MessageText + " - " + entry.Value.CreationDate.ToString());
+                dgv_messages.Rows.Add(entry.Value.MessageText, entry.Value.CreationDate.ToShortDateString());
             }
+        }
+
+        dgv_messages.ClearSelection();
+    }
+
+
+    private void btn_bookSearch_Click(object sender, EventArgs e)
+    {
+        bool bookFound = false;
+
+        if (rb_bookTitle.Checked)
+        {
+            dgv_books.Rows.Clear();
+
+            foreach (Book book in bookList)
+            {
+                if (book.Title.ToLower().Contains(tb_bookSearch.Text.ToLower()))
+                {
+                    // count free samples
+                    int freeSamples = libraryDB.CountFreeSamplesByBookId(book.Id);
+
+                    // add book to dgv_books
+                    dgv_books.Rows.Add(book.Id, book.Author, book.Title, book.Genre, book.Count, freeSamples);
+
+                    // book found
+                    bookFound = true;
+                }
+            }
+        }
+        else if (rb_bookAuthor.Checked) 
+        {
+            dgv_books.Rows.Clear();
+
+            foreach (Book book in bookList)
+            {
+                if (book.Author.ToLower().Contains(tb_bookSearch.Text.ToLower()))
+                {
+                    // count free samples
+                    int freeSamples = libraryDB.CountFreeSamplesByBookId(book.Id);
+
+                    // add book to dgv_books
+                    dgv_books.Rows.Add(book.Id, book.Author, book.Title, book.Genre, book.Count, freeSamples);
+
+                    // book found
+                    bookFound = true;
+                }
+            }
+        }
+        else {
+            MessageBox.Show("Bitte wählen Sie Titel oder Author.");
+        }
+
+        if (! bookFound)
+        {
+            MessageBox.Show("Keinen Treffer.");
         }
     }
 
 
     private void tb_bookSearch_TextChanged(object sender, EventArgs e)
     {
-        // enabled the search button, if text inside the tb_bookSearch
-        btn_bookSearch.Enabled = ! string.IsNullOrWhiteSpace(this.tb_bookSearch.Text);
-    }
-
-    private void btn_bookSearch_Click(object sender, EventArgs e)
-    {
-        // list for founded books
-        List<Book> foundBookList = libraryDB.GetBookList();
-
-        // search for title
-        if (rb_bookTitle.Checked)
+        // enabled the btn_bookSearch, if text inside the tb_bookSearch
+        if (!string.IsNullOrWhiteSpace(tb_bookSearch.Text))
         {
-            foreach (Book book in bookList) {
-                if (book.Title.Contains(tb_bookSearch.Text)) {
-                    foundBookList.Add(book);
-                }
-            }
+            btn_bookSearch.Enabled = true;
         }
-        // search for author
-        else if (rb_bookAuthor.Checked)
+        // disabled
+        else
         {
-            // fill dgv_books with all books
-            foreach (Book book in bookList)
-            {
-                if (book.Author.Contains(tb_bookSearch.Text))
-                {
-                    foundBookList.Add(book);
-                }
-            }
-        }
-
-        // show all search results
-        if (foundBookList.Count > 0)
-        {
-            foreach (Book book in foundBookList)
-            {
-                int freeCounter = 0;
-
-                // count the free books
-                foreach (Sample sample in book.Sample)
-                {
-                    if (sample.Status == "frei")
-                    {
-                        freeCounter++;
-                    }
-                }
-
-                dgv_books.Rows.Add(book.Author, book.Title, book.Genre, book.Count, freeCounter); 
-            }
+            btn_bookSearch.Enabled = false;
         }
     }
+
 
     private void btn_clearBookSearch_Click(object sender, EventArgs e)
     {
@@ -178,7 +217,7 @@ namespace LibraryForm
             }
 
             // add new result into single row
-            dgv_books.Rows.Add(book.Author, book.Title, book.Genre, book.Count, freeCounter);
+            dgv_books.Rows.Add(book.Id, book.Author, book.Title, book.Genre, book.Count, freeCounter);
         }
     }
 
@@ -231,14 +270,38 @@ namespace LibraryForm
                 MessageBox.Show("Nur zwei Nachkommastellen beachten!");
             }
         }
-        MessageBox.Show("Korrekten Betrag angeben (Bsp.: 12.75)!");
-        
+
+        MessageBox.Show("Korrekten Betrag angeben (Bsp.: 12.75)!");        
     }
 
     private void btn_logout_Click(object sender, EventArgs e)
     {
         // return to login form
         this.Close();
+    }
+
+    private void btn_loanBook_Click(object sender, EventArgs e)
+    {
+        int id = int.Parse(dgv_books.SelectedRows[0].Cells["Id"].Value.ToString());
+        int count = int.Parse(dgv_books.SelectedRows[0].Cells["Anzahl"].Value.ToString());
+        int freeBooks = int.Parse(dgv_books.SelectedRows[0].Cells["verfügbar"].Value.ToString());
+
+        if (count != 0)
+        {
+            if (freeBooks != 0)
+            {
+                DateTime endOfLoan = DateTime.Now.AddDays(Libary.);
+                libraryDB.UpdateSampleToCustomer(id, loggedCustomer.Id, endOfLoan, "ausgeliehen");
+            }
+            else
+            {
+                MessageBox.Show("Derzeit keine freien Exemplare verfügbar.");
+            }
+        }
+        else
+        {
+            MessageBox.Show("Derzeit verfügen wir über keine Exemplare.");
+        }
     }
   }
 }

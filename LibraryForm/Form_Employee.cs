@@ -299,8 +299,8 @@ namespace LibraryForm
         {
             try
             {
-
                 employeeList.Remove((Employee)dgv_employeeList.SelectedRows[0].DataBoundItem);
+                libraryDB.DeletePerson(((bibliothek.Person)(dgv_employeeList.SelectedRows[0].DataBoundItem)).Id);
                 refreshStaffList();
             }
             catch (Exception ex)

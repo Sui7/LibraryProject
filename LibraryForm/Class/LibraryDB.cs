@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using bibliothek;
 using System.Data.SQLite;
+using System.Data;
 
 namespace LibraryForm.Class
 {
@@ -294,14 +295,24 @@ namespace LibraryForm.Class
 
         public void CreateBook(Book book)
         {
-            // create command
-            SQLiteCommand command = new SQLiteCommand(connection);
+            try
+            {
+                // create command
+                SQLiteCommand command = new SQLiteCommand(connection);
+              
+                
 
-            // create query
-            command.CommandText = "INSERT INTO books(title, author, genre, access, count) VALUES ('" + book.Title + "', '" + book.Author + "', '" + book.Genre + "', '" + book.Access + "', 1);";
-            command.ExecuteNonQuery();
-            
-            command.Dispose();
+                // create query
+                command.CommandText = "INSERT INTO books(title, author, genre, access, count) VALUES ('" + book.Title + "', '" + book.Author + "', '" + book.Genre + "', '" + book.Access + "', 0);";
+                command.ExecuteNonQuery();
+
+                command.Dispose();
+            }
+            catch (Exception ex)
+            {
+                string test = ex.Message;
+                //MessageBox.Show(ex.Message);
+            }
         }
 
 
@@ -602,7 +613,7 @@ namespace LibraryForm.Class
             command.CommandText = "CREATE TABLE IF NOT EXISTS customers (person_id INTEGER NOT NULL, register_date VARCHAR(100) NOT NULL);";
             command.ExecuteNonQuery();
 
-            command.CommandText = "CREATE TABLE IF NOT EXISTS books (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, title VARCHAR(100) NOT NULL, author VARCHAR(100) NOT NULL, genre VARCHAR(100) NOT NULL, access VARCHAR(100) NOT NULL, count INTEGER NOT NULL);";
+            command.CommandText = "DROP TABLE book; CREATE TABLE IF NOT EXISTS books (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, title VARCHAR(100) NOT NULL, author VARCHAR(100) NOT NULL, genre VARCHAR(100) NOT NULL, access VARCHAR(100) NOT NULL, count INTEGER NULL);";
             command.ExecuteNonQuery();
 
             command.CommandText = "CREATE TABLE IF NOT EXISTS samples (id INTEGER NOT NULL PRIMARY KEY  AUTOINCREMENT, book_id INTEGER NOT NULL, customer_id INTEGER NOT NULL, end_of_loan VARCHAR(100) NOT NULL, status VARCHAR(100) NOT NULL);";

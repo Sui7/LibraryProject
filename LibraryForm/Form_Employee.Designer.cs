@@ -50,10 +50,12 @@
             this.bdayPerson = new System.Windows.Forms.DateTimePicker();
             this.chkCustomer = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.idPerson = new System.Windows.Forms.TextBox();
             this.searchPerson = new System.Windows.Forms.Button();
             this.createPerson = new System.Windows.Forms.Button();
             this.namePerson = new System.Windows.Forms.TextBox();
             this.lastnamePerson = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.deletePersonButton = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
@@ -95,8 +97,6 @@
             this.btn_logout = new System.Windows.Forms.Button();
             this.lbl_personName = new System.Windows.Forms.Label();
             this.gb_header = new System.Windows.Forms.GroupBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.idPerson = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tp_PersonManagement.SuspendLayout();
             this.dgv_persons.SuspendLayout();
@@ -342,6 +342,8 @@
             // chkCustomer
             // 
             this.chkCustomer.AutoSize = true;
+            this.chkCustomer.Checked = true;
+            this.chkCustomer.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkCustomer.Location = new System.Drawing.Point(223, 80);
             this.chkCustomer.Name = "chkCustomer";
             this.chkCustomer.Size = new System.Drawing.Size(57, 17);
@@ -358,6 +360,15 @@
             this.label2.Size = new System.Drawing.Size(76, 13);
             this.label2.TabIndex = 21;
             this.label2.Text = "Geburtsdatum:";
+            // 
+            // idPerson
+            // 
+            this.idPerson.Location = new System.Drawing.Point(250, 20);
+            this.idPerson.Name = "idPerson";
+            this.idPerson.Size = new System.Drawing.Size(100, 20);
+            this.idPerson.TabIndex = 20;
+            this.idPerson.Visible = false;
+            this.idPerson.TextChanged += new System.EventHandler(this.IdPerson_TextChanged);
             // 
             // searchPerson
             // 
@@ -392,6 +403,16 @@
             this.lastnamePerson.Name = "lastnamePerson";
             this.lastnamePerson.Size = new System.Drawing.Size(100, 20);
             this.lastnamePerson.TabIndex = 15;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(196, 23);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(21, 13);
+            this.label5.TabIndex = 14;
+            this.label5.Text = "ID:";
+            this.label5.Visible = false;
             // 
             // deletePersonButton
             // 
@@ -795,23 +816,6 @@
             this.gb_header.Size = new System.Drawing.Size(561, 54);
             this.gb_header.TabIndex = 6;
             this.gb_header.TabStop = false;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(196, 23);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(21, 13);
-            this.label5.TabIndex = 14;
-            this.label5.Text = "ID:";
-            // 
-            // idPerson
-            // 
-            this.idPerson.Location = new System.Drawing.Point(250, 20);
-            this.idPerson.Name = "idPerson";
-            this.idPerson.Size = new System.Drawing.Size(100, 20);
-            this.idPerson.TabIndex = 20;
-            this.idPerson.TextChanged += new System.EventHandler(this.IdPerson_TextChanged);
             // 
             // Form_Employee
             // 

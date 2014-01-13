@@ -72,6 +72,8 @@
             this.tb_password.Name = "tb_password";
             this.tb_password.Size = new System.Drawing.Size(100, 20);
             this.tb_password.TabIndex = 2;
+            this.tb_password.Text = "admin";
+            this.tb_password.UseSystemPasswordChar = true;
             // 
             // btn_login
             // 
@@ -107,6 +109,7 @@
             this.tb_loginName.Name = "tb_loginName";
             this.tb_loginName.Size = new System.Drawing.Size(100, 20);
             this.tb_loginName.TabIndex = 1;
+            this.tb_loginName.Text = "behrend";
             // 
             // gb_header
             // 

@@ -94,6 +94,8 @@ namespace bibliothek
           bookGenreList.Add("Komödie");
           bookGenreList.Add("Dokumentation");
           bookGenreList.Add("Biographie");
+          bookGenreList.Add("Fantasy");
+          bookGenreList.Add("SciFi");
 
           return bookGenreList;
       }

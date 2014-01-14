@@ -350,12 +350,13 @@ namespace LibraryForm.Class
         public List<Book> GetBookList()
         {
             List<Book> bookList = new List<Book>();
+            bookList.Clear();
 
             // create command
             SQLiteCommand command = new SQLiteCommand(connection);
 
             // create query
-            command.CommandText = "SELECT books.id AS BookId, title,author,genre,access,count,samples.id AS SamplesId, customer_id,end_of_loan,status FROM books JOIN samples ON books.id = samples.book_id";
+            command.CommandText = "SELECT books.id AS BookId, title,author,genre,access,count,samples.id AS SamplesId, (case when customer_id is null then 0 else customer_id end) AS customer_id ,CASE end_of_loan WHEN null THEN 1 ELSE 0 END AS chk_end_of_loan,end_of_loan,status FROM books JOIN samples ON books.id = samples.book_id";
 
             //craete reader
             SQLiteDataReader reader = command.ExecuteReader();
@@ -366,18 +367,26 @@ namespace LibraryForm.Class
                 if (bookId != Convert.ToInt32(reader["BookId"]))  // Überprüfe ob neues Buch oder gleiches Buch 
                 {                    
                     Book book = new Book();
-                    book.Id = int.Parse(reader["id"].ToString());
+                    book.Id = int.Parse(reader["BookId"].ToString());
                     book.Title = reader["title"].ToString();
                     book.Author = reader["author"].ToString();
                     book.Genre = reader["genre"].ToString();
                     book.Count = int.Parse(reader["count"].ToString());
                     bookList.Add(book);  
                     z++;
+                    bookId = Convert.ToInt32(reader["BookId"]);                    
                 }
 
                 string sampleId = reader["SamplesId"].ToString();
-                int customerId = Convert.ToInt32(reader["customer_id"]);
-                DateTime endOfLoan = Convert.ToDateTime(reader["end_of_loan]"];)
+                var customerId = int.Parse(reader["customer_id"].ToString());
+                int chk_endOfLoan = int.Parse(reader["chk_end_of_loan"].ToString());
+
+                DateTime endOfLoan = new DateTime(1970,01,01);
+                if (chk_endOfLoan == 1)
+                {
+                    endOfLoan = Convert.ToDateTime(reader["end_of_loan]"]);
+                }
+
                 string status = reader["status"].ToString();
                 
                 bookList[z].AddSample(sampleId,customerId,endOfLoan,status);  // Füge Exemplar zur Exemplarliste des Buches                
@@ -404,13 +413,13 @@ namespace LibraryForm.Class
         }
 
 
-        public void CreateSample(Sample sample)
+        public void CreateSample(Sample sample,int bookId)
         {
             // create command
             SQLiteCommand command = new SQLiteCommand(connection);
 
             // create query
-						command.CommandText = "INSERT INTO samples(id,book_id, customer_id, end_of_loan, status) VALUES ('" + sample.Id + "', '" + sample.Book.Id + "', '" + sample.CustomerId + "', null, '" + sample.Status + "');";
+						command.CommandText = "INSERT INTO samples(id,book_id, customer_id, end_of_loan, status) VALUES ('" + sample.Id + "', '" + bookId.ToString() + "', '" + sample.CustomerId + "', null, '" + sample.Status + "');";
             command.ExecuteNonQuery();
 
             command.Dispose();
@@ -452,7 +461,6 @@ namespace LibraryForm.Class
                 sample.EndOfLoan = DateTime.Parse(reader["end_of_loan"].ToString());
                 sample.Status = reader["status"].ToString();
 
-                sample.Book = GetBookBySampleId(sample.Id);
 
                 sampleList.Add(sample);
             }
@@ -513,7 +521,6 @@ namespace LibraryForm.Class
                 sample.EndOfLoan = DateTime.Parse(reader["end_of_loan"].ToString());
                 sample.Status = reader["status"].ToString();
 
-                sample.Book = GetBookBySampleId(sample.Id);
 
                 sampleList.Add(sample);
             }

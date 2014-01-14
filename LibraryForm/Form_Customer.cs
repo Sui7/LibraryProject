@@ -117,7 +117,7 @@ namespace LibraryForm
         {
             foreach (Sample sample in loggedCustomer.PreorderAccount.SampleList)
             {
-                string preorderSample = sample.Id.ToString() + " - " + sample.Book.Title.ToString();
+                string preorderSample = sample.Id.ToString() + " - " + getBookBySample(sample).Title.ToString();
                 lb_loanAccount.Items.Add(preorderSample);
             }
         }

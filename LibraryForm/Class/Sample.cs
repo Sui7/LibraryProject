@@ -43,6 +43,12 @@ namespace bibliothek
     {
     }
 
+    public Sample(string Id, string Status)
+    {
+        id = Id;
+        status = Status;
+    }
+
 
     public Sample(string Id,int CustomerId, DateTime EndOfLoan, string Status)
     {

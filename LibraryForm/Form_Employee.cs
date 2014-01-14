@@ -23,7 +23,7 @@ namespace LibraryForm
       List<String> bookGenreList;
       List<String> bookAccessList;
       List<Book> bookList;
-      List<Sample> sampleList;
+      List<Sample> sampleList = new List<Sample>();
       List<String> bookStatus;
 
 
@@ -61,6 +61,12 @@ namespace LibraryForm
       {
           dgv_employeeList.DataSource = null;  
           dgv_employeeList.DataSource = libraryDB.GetEmployeeList();  
+      }
+
+      public void refreshSampleList()
+      {
+          dgv_Sample.DataSource = null;
+          dgv_Sample.DataSource = libraryDB.GetSampleList();
       }
 
       public void refreshBookList()
@@ -175,6 +181,7 @@ namespace LibraryForm
 
       public void loadSampleList()
       {
+          sampleList.Clear();
           foreach (var book in bookList)
           {
               foreach (var Sample in book.Sample)
@@ -504,7 +511,7 @@ namespace LibraryForm
         {
             Book book = (Book)((LibraryForm.ComboboxItem)(cbo_BookList.SelectedItem)).Value;						
             //book.AddSample(tb_SampleID.Text, book, cbo_bookStatus.Text);
-			libraryDB.CreateSample(new Sample(tb_SampleID.Text,book,cbo_bookStatus.Text));
+			libraryDB.CreateSample(new Sample(tb_SampleID.Text,cbo_bookStatus.Text),book.Id);
         }
         catch (Exception ex)
         {
@@ -512,7 +519,7 @@ namespace LibraryForm
         }
         finally
         {
-            loadSampleList();
+            refreshSampleList();
         }
 
     }

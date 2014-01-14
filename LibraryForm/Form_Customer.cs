@@ -290,8 +290,8 @@ namespace LibraryForm
         {
             if (freeBooks != 0)
             {
-                DateTime endOfLoan = DateTime.Now.AddDays(Libary.);
-                libraryDB.UpdateSampleToCustomer(id, loggedCustomer.Id, endOfLoan, "ausgeliehen");
+								//DateTime endOfLoan = DateTime.Now.AddDays(Libary);
+								//libraryDB.UpdateSampleToCustomer(id, loggedCustomer.Id, endOfLoan, "ausgeliehen");
             }
             else
             {

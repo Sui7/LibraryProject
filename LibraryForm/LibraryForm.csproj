@@ -109,6 +109,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="bin\Debug\LibraryForm.vshost.exe.manifest" />
     <None Include="obj\x86\Debug\DesignTimeResolveAssemblyReferences.cache" />
     <None Include="obj\x86\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
     <None Include="obj\x86\Debug\LibraryForm.csproj.GenerateResource.Cache" />
@@ -125,6 +126,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bin\Debug\LibraryForm.vshost.exe" />
+    <Content Include="bin\Debug\System.Data.SQLite.dll" />
+    <Content Include="bin\Debug\System.Data.SQLite.Linq.dll" />
+    <Content Include="bin\Debug\System.Data.SQLite.xml" />
+    <Content Include="bin\Debug\x86\SQLite.Interop.dll" />
     <Content Include="obj\x86\Debug\LibraryForm.csproj.FileListAbsolute.txt" />
     <Content Include="obj\x86\Debug\LibraryForm.exe" />
     <Content Include="obj\x86\Debug\LibraryForm.pdb" />
@@ -136,6 +142,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="bin\Release\" />
     <Folder Include="obj\x86\Debug\TempPE\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

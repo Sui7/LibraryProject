@@ -26,3 +26,5 @@ C:\Users\behrend\Source\Repos\LibraryProject\LibraryForm\bin\Debug\x86\SQLite.In
 C:\Users\behrend\Source\Repos\LibraryProject\LibraryForm\bin\Debug\System.Data.SQLite.dll
 C:\Users\behrend\Source\Repos\LibraryProject\LibraryForm\bin\Debug\System.Data.SQLite.Linq.dll
 C:\Users\behrend\Source\Repos\LibraryProject\LibraryForm\bin\Debug\System.Data.SQLite.xml
+C:\Users\behrend\Source\Repos\LibraryProject\LibraryForm\bin\Debug\LibraryForm.exe
+C:\Users\behrend\Source\Repos\LibraryProject\LibraryForm\bin\Debug\LibraryForm.pdb

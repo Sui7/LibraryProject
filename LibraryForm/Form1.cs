@@ -18,14 +18,16 @@ namespace LibraryForm
 
     public Form1()
     {
-      InitializeComponent();
+        InitializeComponent();
 
-      libraryDB = new LibraryDB();
-      libraryDB.InitializeConnetion();
+        libraryDB = new LibraryDB();
+        libraryDB.InitializeConnetion();
 
-      this.personList = libraryDB.GetPersonList();
+        this.personList = libraryDB.GetPersonList();
 
-      lbl_welcome.Text = "Willkommen in Ihrer " + libraryDB.GetLibraryInfo().Name;
+        lbl_welcome.Text = "Willkommen in Ihrer " + libraryDB.GetLibraryInfo().Name;
+
+        DeleteOldMessages();
      }
 
     private void btn_login_Click(object sender, EventArgs e)

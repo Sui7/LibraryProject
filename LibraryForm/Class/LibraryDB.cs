@@ -355,22 +355,32 @@ namespace LibraryForm.Class
             SQLiteCommand command = new SQLiteCommand(connection);
 
             // create query
-            command.CommandText = "SELECT * FROM books";
+            command.CommandText = "SELECT books.id AS BookId, title,author,genre,access,count,samples.id AS SamplesId, customer_id,end_of_loan,status FROM books JOIN samples ON books.id = samples.book_id";
 
             //craete reader
             SQLiteDataReader reader = command.ExecuteReader();
-
+            int bookId = 0;
+            int z = -1;
             while (reader.Read())
             {
-                Book book = new Book();
+                if (bookId != Convert.ToInt32(reader["BookId"]))  // Überprüfe ob neues Buch oder gleiches Buch 
+                {                    
+                    Book book = new Book();
+                    book.Id = int.Parse(reader["id"].ToString());
+                    book.Title = reader["title"].ToString();
+                    book.Author = reader["author"].ToString();
+                    book.Genre = reader["genre"].ToString();
+                    book.Count = int.Parse(reader["count"].ToString());
+                    bookList.Add(book);  
+                    z++;
+                }
 
-                book.Id = int.Parse(reader["id"].ToString());
-                book.Title = reader["title"].ToString();
-                book.Author = reader["author"].ToString();
-                book.Genre = reader["genre"].ToString();
-                book.Count = int.Parse(reader["count"].ToString());
-
-                bookList.Add(book);
+                string sampleId = reader["SamplesId"].ToString();
+                int customerId = Convert.ToInt32(reader["customer_id"]);
+                DateTime endOfLoan = Convert.ToDateTime(reader["end_of_loan]"];)
+                string status = reader["status"].ToString();
+                
+                bookList[z].AddSample(sampleId,customerId,endOfLoan,status);  // Füge Exemplar zur Exemplarliste des Buches                
             }
 
             reader.Close();

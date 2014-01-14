@@ -24,3 +24,15 @@ C:\Users\behrend\Source\Repos\LibraryProject\LibraryForm\bin\Debug\x64\SQLite.In
 C:\Users\behrend\Source\Repos\LibraryProject\LibraryForm\bin\Debug\x86\SQLite.Interop.dll
 C:\Users\behrend\Source\Repos\LibraryProject\LibraryForm\bin\Debug\LibraryForm.exe
 C:\Users\behrend\Source\Repos\LibraryProject\LibraryForm\bin\Debug\LibraryForm.pdb
+C:\Users\Mario\Source\Repos\LibraryProject\LibraryForm\obj\x86\Debug\LibraryForm.exe
+C:\Users\Mario\Source\Repos\LibraryProject\LibraryForm\obj\x86\Debug\LibraryForm.pdb
+C:\Users\Mario\Source\Repos\LibraryProject\LibraryForm\bin\Debug\x64\SQLite.Interop.dll
+C:\Users\Mario\Source\Repos\LibraryProject\LibraryForm\bin\Debug\x86\SQLite.Interop.dll
+C:\Users\Mario\Source\Repos\LibraryProject\LibraryForm\bin\Debug\LibraryForm.exe
+C:\Users\Mario\Source\Repos\LibraryProject\LibraryForm\bin\Debug\LibraryForm.pdb
+C:\Users\Mario\Source\Repos\LibraryProject\LibraryForm\obj\x86\Debug\LibraryForm.csprojResolveAssemblyReference.cache
+C:\Users\Mario\Source\Repos\LibraryProject\LibraryForm\obj\x86\Debug\LibraryForm.Form1.resources
+C:\Users\Mario\Source\Repos\LibraryProject\LibraryForm\obj\x86\Debug\LibraryForm.Form_Customer.resources
+C:\Users\Mario\Source\Repos\LibraryProject\LibraryForm\obj\x86\Debug\LibraryForm.Form_Employee.resources
+C:\Users\Mario\Source\Repos\LibraryProject\LibraryForm\obj\x86\Debug\LibraryForm.Properties.Resources.resources
+C:\Users\Mario\Source\Repos\LibraryProject\LibraryForm\obj\x86\Debug\LibraryForm.csproj.GenerateResource.Cache

@@ -84,11 +84,28 @@ namespace LibraryForm
         {
             foreach (Sample sample in loggedCustomer.LoanAccount.SampleList)
             {
-                string loanSample = sample.Id.ToString() + " - " + sample.Book.Title.ToString() + " - " + sample.EndOfLoan.ToString();
+                string loanSample = sample.Id.ToString() + " - " + getBookBySample(sample).Title.ToString() + " - " + sample.EndOfLoan.ToString();
                 lb_loanAccount.Items.Add(loanSample);
             }
         }
     }
+
+    Book getBookBySample(Sample searchedSample)
+    {
+        foreach (var book in bookList)                     // Durchläuft die Bücherliste
+        {
+            foreach (var sample in book.Sample)            // Durchläuft die Exemplarliste die in dem Buch steckt
+            {
+                if (sample.Equals(searchedSample))         // Überprüft ob das gesuchte Exemplar in der Exemplarliste des Buches steckt
+                {
+                    return book;                           // Gibt das Buch zurück
+                }
+            }
+        }
+
+        return null;
+    }
+
 
 
     private void RefreshPreorderAccount()

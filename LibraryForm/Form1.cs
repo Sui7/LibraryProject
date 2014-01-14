@@ -79,6 +79,24 @@ namespace LibraryForm
     }
 
 
+    private void DeleteOldMessages()
+    {
+        List<bibliothek.Message> messageList = libraryDB.GetMessages();
+
+        DateTime sixtyDays = DateTime.Now.AddDays(-60);
+
+        foreach (bibliothek.Message message in messageList)
+        {
+            DateTime creationDate = message.CreationDate;
+
+            if (creationDate < sixtyDays)
+            {
+                libraryDB.DeleteMessage(message.Id);
+            }
+        }
+    }
+
+
     private void btn_close_Click(object sender, EventArgs e)
     {
         this.Close();

@@ -704,6 +704,38 @@ namespace LibraryForm.Class
         }
 
 
+        public List<Message> GetMessages()
+        {
+            List<Message> messageList = new List<Message>();
+
+            // create command
+            SQLiteCommand command = new SQLiteCommand(connection);
+
+            // create query
+            command.CommandText = "SELECT * FROM messages";
+
+            //craete reader
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Message message = new Message();
+                message.Id = int.Parse(reader["id"].ToString());
+                message.PersonId = int.Parse(reader["person_id"].ToString());
+                message.MessageText = reader["message_text"].ToString();
+                message.CreationDate = DateTime.Parse(reader["creation_date"].ToString());
+
+                messageList.Add(message);
+            }
+
+            reader.Close();
+            reader.Dispose();
+            command.Dispose();
+
+            return messageList;
+        }
+
+
         public void DeleteMessage(int messageId)
         {
             // create command

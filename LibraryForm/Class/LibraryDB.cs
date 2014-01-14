@@ -811,7 +811,7 @@ namespace LibraryForm.Class
             command.CommandText = "INSERT INTO books(id, title, author, genre, access, count) VALUES (2, 'Sakrileg', 'Brown', 'Thriller', 'Reihe S', 0)";
             command.ExecuteNonQuery();
 
-            command.CommandText = "INSERT INTO messages(id, person_id, message_text, creation_date) VALUES (1, 3, 'Ihre Gesamtgebühren zum 1. Januar 2014 betragen 12 Euro', '01.01.2014')";
+            command.CommandText = "INSERT INTO messages(id, person_id, message_text, creation_date) VALUES (1, 3, 'Ihre Gesamtgebühren zum 01.01.2014 betragen 12 Euro', '01.01.2014')";
             command.ExecuteNonQuery();
 
             command.Dispose();

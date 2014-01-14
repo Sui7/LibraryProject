@@ -28,6 +28,8 @@ namespace LibraryForm
         lbl_welcome.Text = "Willkommen in Ihrer " + libraryDB.GetLibraryInfo().Name;
 
         DeleteOldMessages();
+
+        SendMonthlyMessages();
      }
 
     private void btn_login_Click(object sender, EventArgs e)
@@ -96,6 +98,26 @@ namespace LibraryForm
                 libraryDB.DeleteMessage(message.Id);
             }
         }
+    }
+
+
+    private void SendMonthlyMessages()
+    {
+        if (DateTime.Now.Day == 1)
+        {
+            List<Customer> customerList = libraryDB.GetCustomerList();
+
+            foreach (Customer customer in customerList)
+            {
+                bibliothek.Message message = new bibliothek.Message();
+                message.PersonId = customer.Id;
+
+                customer.ChargeAccount = libraryDB.GetChargeAccountByPersonId(customer.Id);
+                message.MessageText = "Ihre Gesamtgebühren zum " + DateTime.Now.ToShortDateString() + " betragen " + customer.ChargeAccount.Charges + " Euro.";
+
+                libraryDB.CreateMessage(message);
+            }
+        }        
     }
 
 

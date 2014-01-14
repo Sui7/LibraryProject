@@ -36,7 +36,7 @@
             this.lb_password = new System.Windows.Forms.Label();
             this.tb_loginName = new System.Windows.Forms.TextBox();
             this.gb_header = new System.Windows.Forms.GroupBox();
-            this.label2 = new System.Windows.Forms.Label();
+            this.lbl_welcome = new System.Windows.Forms.Label();
             this.gb_login.SuspendLayout();
             this.gb_header.SuspendLayout();
             this.SuspendLayout();
@@ -113,22 +113,22 @@
             // 
             // gb_header
             // 
-            this.gb_header.Controls.Add(this.label2);
+            this.gb_header.Controls.Add(this.lbl_welcome);
             this.gb_header.Location = new System.Drawing.Point(12, 12);
             this.gb_header.Name = "gb_header";
             this.gb_header.Size = new System.Drawing.Size(564, 54);
             this.gb_header.TabIndex = 1;
             this.gb_header.TabStop = false;
             // 
-            // label2
+            // lbl_welcome
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Elephant", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(103, 19);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(367, 21);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "Willkommen in Ihrer Wellensteyn Blibliothek";
+            this.lbl_welcome.AutoSize = true;
+            this.lbl_welcome.Font = new System.Drawing.Font("Elephant", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_welcome.Location = new System.Drawing.Point(12, 19);
+            this.lbl_welcome.Name = "lbl_welcome";
+            this.lbl_welcome.Size = new System.Drawing.Size(116, 21);
+            this.lbl_welcome.TabIndex = 0;
+            this.lbl_welcome.Text = "$lbl_welcome";
             // 
             // Form1
             // 
@@ -157,7 +157,7 @@
     private System.Windows.Forms.TextBox tb_loginName;
     private System.Windows.Forms.Button btn_close;
     private System.Windows.Forms.GroupBox gb_header;
-    private System.Windows.Forms.Label label2;
+    private System.Windows.Forms.Label lbl_welcome;
   }
 }
 

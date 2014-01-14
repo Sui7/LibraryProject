@@ -33,6 +33,40 @@ namespace LibraryForm.Class
         }
 
 
+		public LibraryInfo GetLibraryInfo()
+        {
+            LibraryInfo libraryInfo = null;
+
+            // create command
+            SQLiteCommand command = new SQLiteCommand(connection);
+
+            // create query
+            command.CommandText = "SELECT * FROM library_info";
+
+            //craete reader
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+
+                string name = reader["name"].ToString();
+                string address = reader["address"].ToString();
+                int periodOfLoan = int.Parse(reader["period_of_loan"].ToString());
+                double charge = double.Parse(reader["charge"].ToString());
+                double overdrowCharge = double.Parse(reader["overdrow_charge"].ToString());
+                int openingTime = int.Parse(reader["opening_time"].ToString());
+                int closingTime = int.Parse(reader["closing_time"].ToString());
+
+                libraryInfo = new LibraryInfo(name, address, charge, overdrowCharge, periodOfLoan, openingTime, closingTime);
+            }
+
+            reader.Close();
+            reader.Dispose();
+            command.Dispose();
+
+            return libraryInfo;
+        }
+
         public List<Person> GetPersonList()
         {
 
@@ -473,6 +507,33 @@ namespace LibraryForm.Class
         }
 
 
+		public void ReservedFirstLoanedSampleByBookId(int bookId, int customerId)
+        {
+            // create command
+            SQLiteCommand command = new SQLiteCommand(connection);
+
+            // create query
+            command.CommandText = "SELECT * FROM samples WHERE book_id =" + bookId + " AND status = 'ausgeliehen'";
+
+            //craete reader
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            string sampleId = null;
+
+            if (reader.Read())
+            {
+                sampleId = reader["id"].ToString();
+            }
+
+            reader.Close();
+            reader.Dispose();
+
+            // create query
+            command.CommandText = "UPDATE samples SET reserved_by_customer_id = " + customerId + " WHERE id = '" + sampleId +"';";
+            command.ExecuteNonQuery();
+
+            command.Dispose();
+        }
         public int CountFreeSamplesByBookId(int bookId)
         {
             int count = 0;
@@ -585,7 +646,7 @@ namespace LibraryForm.Class
         }
 
 
-        public void PayInCharges(int personId, double charges)
+        public void UpdateCharges(int personId, double charges)
         {
             // create command
             SQLiteCommand command = new SQLiteCommand(connection);
@@ -662,9 +723,9 @@ namespace LibraryForm.Class
             SQLiteCommand command = new SQLiteCommand(connection);
 
             // create tables query
-            command.CommandText = "CREATE TABLE IF NOT EXISTS library (name VARCHAR(100) NOT NULL, address VARCHAR(100) NOT NULL, period_of_loan INTEGER NOT NULL, charge INTEGER NOT NULL, overdrow_charge INTEGER NOT NULL, opening_time INTEGER NOT NULL, closing_time INTEGER NOT NULL);";
+            command.CommandText = "CREATE TABLE IF NOT EXISTS library_info (name VARCHAR(100) NOT NULL, address VARCHAR(100) NOT NULL, period_of_loan INTEGER NOT NULL, charge INTEGER NOT NULL, overdrow_charge INTEGER NOT NULL, opening_time INTEGER NOT NULL, closing_time INTEGER NOT NULL);";
             command.ExecuteNonQuery();
-            command.CommandText = "INSERT INTO library(name, address, period_of_loan, charge, overdrow_charge, opening_time, closing_time) VALUES ('Stadt Bibliothek', 'Schlossstraße 5, 12345 Berlin', 7, 4, 2, 8, 20)";
+            command.CommandText = "INSERT INTO library_info(name, address, period_of_loan, charge, overdrow_charge, opening_time, closing_time) VALUES ('Stadt Bibliothek', 'Schlossstraße 5, 12345 Berlin', 7, 4, 2, 8, 20)";
             command.ExecuteNonQuery();
 
             // create tables query

@@ -57,7 +57,7 @@ namespace bibliothek
     }
 
 
-    public void setCharges(double amount)
+    public void addCharges(double amount)
     {
         // add charges
         charges += amount; 

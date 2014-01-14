@@ -17,6 +17,7 @@ namespace LibraryForm
       Customer loggedCustomer;
 
       LibraryDB libraryDB;
+      LibraryInfo libraryInfo;
 
       List<Book> bookList = new List<Book>();
 
@@ -30,6 +31,14 @@ namespace LibraryForm
       // welcome text
       lbl_personName.Text = "Hallo " + loggedCustomer.Firstname + " " + loggedCustomer.Lastname;
 
+      // library infos
+      this.libraryInfo = libraryDB.GetLibraryInfo();
+      tb_library_name.Text = libraryInfo.Name;
+      tb_library_address.Text = libraryInfo.Address;
+      tb_library_charge.Text = libraryInfo.Charge.ToString() + " €";
+      tb_library_loan_period.Text = libraryInfo.PeriodOfLoan.ToString() + " Tage";
+      tb_library_overdrow_charge.Text = libraryInfo.OverdrowCharge.ToString() + " €";
+      tb_library_times.Text = libraryInfo.OpeningTime.ToString() + " - " + libraryInfo.ClosingTime.ToString() + " Uhr";
       // customer infos
       lbl_idTag.Text = loggedCustomer.Id.ToString();
       lbl_lastnameTag.Text = loggedCustomer.Lastname;
@@ -274,7 +283,7 @@ namespace LibraryForm
                 {
                     // pay in charges
                     double newCharges = loggedCustomer.ChargeAccount.payIn(realPayIn);
-                    libraryDB.PayInCharges(loggedCustomer.Id, newCharges);
+                    libraryDB.UpdateCharges(loggedCustomer.Id, newCharges);
                     tb_charges.Text = loggedCustomer.ChargeAccount.Charges.ToString();
                 }
 
@@ -300,19 +309,45 @@ namespace LibraryForm
     private void btn_loanBook_Click(object sender, EventArgs e)
     {
         int id = int.Parse(dgv_books.SelectedRows[0].Cells["Id"].Value.ToString());
-        int count = int.Parse(dgv_books.SelectedRows[0].Cells["Anzahl"].Value.ToString());
-        int freeBooks = int.Parse(dgv_books.SelectedRows[0].Cells["verfügbar"].Value.ToString());
+        int count = int.Parse(dgv_books.SelectedRows[0].Cells["column_count"].Value.ToString());
+        int freeBooks = int.Parse(dgv_books.SelectedRows[0].Cells["column_availible"].Value.ToString());
 
         if (count != 0)
         {
             if (freeBooks != 0)
             {
-								//DateTime endOfLoan = DateTime.Now.AddDays(Libary);
-								//libraryDB.UpdateSampleToCustomer(id, loggedCustomer.Id, endOfLoan, "ausgeliehen");
+				DateTime endOfLoan = DateTime.Now.AddDays(libraryInfo.PeriodOfLoan);
+				libraryDB.UpdateSampleToCustomer(id, loggedCustomer.Id, endOfLoan, "ausgeliehen");
+
+                loggedCustomer.ChargeAccount.addCharges(libraryInfo.Charge);
+                libraryDB.UpdateCharges(loggedCustomer.Id, loggedCustomer.ChargeAccount.Charges);
             }
             else
             {
                 MessageBox.Show("Derzeit keine freien Exemplare verfügbar.");
+            }
+        }
+        else
+        {
+            MessageBox.Show("Derzeit verfügen wir über keine Exemplare.");
+        }
+    }
+
+    private void btn_preorderBook_Click(object sender, EventArgs e)
+    {
+        int id = int.Parse(dgv_books.SelectedRows[0].Cells["Id"].Value.ToString());
+        int count = int.Parse(dgv_books.SelectedRows[0].Cells["Anzahl"].Value.ToString());
+        int freeBooks = int.Parse(dgv_books.SelectedRows[0].Cells["verfügbar"].Value.ToString());
+
+        if (count != 0)
+        {
+            if (freeBooks == 0)
+            {
+                libraryDB.ReservedFirstLoanedSampleByBookId(id, loggedCustomer.Id);
+            }
+            else
+            {
+                MessageBox.Show("Dieses Buch steht zum sofortigen Verleih zur Verfügung.");
             }
         }
         else

@@ -9,14 +9,14 @@ namespace LibraryForm.Class
     {
         string name;
         string address;
-        int charge;
-        int overdrowCharge;        
+        double charge;
+        double overdrowCharge;        
         int periodOfLoan;
         int openingTime;
         int closingTime;
 
 
-        public LibraryInfo(string name, string address, int charge, int overdrowCharge, int periodOfLoan, int openingTime, int closingTime) {
+        public LibraryInfo(string name, string address, double charge, double overdrowCharge, int periodOfLoan, int openingTime, int closingTime) {
             this.name = name;
             this.address = address;
             this.charge = charge;
@@ -45,7 +45,7 @@ namespace LibraryForm.Class
         }
 
 
-        public int Charge
+        public double Charge
         {
             get
             {
@@ -54,7 +54,7 @@ namespace LibraryForm.Class
         }
 
 
-        public int OverdrowCharge
+        public double OverdrowCharge
         {
             get
             {

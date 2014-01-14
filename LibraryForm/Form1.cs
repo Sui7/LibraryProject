@@ -24,7 +24,9 @@ namespace LibraryForm
       libraryDB.InitializeConnetion();
 
       this.personList = libraryDB.GetPersonList();
-    }
+
+      lbl_welcome.Text = "Willkommen in Ihrer " + libraryDB.GetLibraryInfo().Name;
+     }
 
     private void btn_login_Click(object sender, EventArgs e)
     {

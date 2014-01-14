@@ -75,6 +75,20 @@
             this.column_genre = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.column_count = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.column_availible = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tp_libraryInfo = new System.Windows.Forms.TabPage();
+            this.gb_data = new System.Windows.Forms.GroupBox();
+            this.tb_library_address = new System.Windows.Forms.TextBox();
+            this.tb_library_charge = new System.Windows.Forms.TextBox();
+            this.tb_library_times = new System.Windows.Forms.TextBox();
+            this.tb_library_loan_period = new System.Windows.Forms.TextBox();
+            this.tb_library_overdrow_charge = new System.Windows.Forms.TextBox();
+            this.tb_library_name = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.lbl_name = new System.Windows.Forms.Label();
             this.gb_header.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tp_books.SuspendLayout();
@@ -86,6 +100,8 @@
             this.gb_customerData.SuspendLayout();
             this.tp_messages.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_messages)).BeginInit();
+            this.tp_libraryInfo.SuspendLayout();
+            this.gb_data.SuspendLayout();
             this.SuspendLayout();
             // 
             // gb_header
@@ -160,6 +176,7 @@
             this.btn_preorderBook.TabIndex = 9;
             this.btn_preorderBook.Text = "Vorbestellen";
             this.btn_preorderBook.UseVisualStyleBackColor = true;
+            this.btn_preorderBook.Click += new System.EventHandler(this.btn_preorderBook_Click);
             // 
             // btn_loanBook
             // 
@@ -526,6 +543,15 @@
             this.Id.Name = "Id";
             this.Id.ReadOnly = true;
             this.Id.Width = 30;
+            // tp_libraryInfo
+            // 
+            this.tp_libraryInfo.Controls.Add(this.gb_data);
+            this.tp_libraryInfo.Location = new System.Drawing.Point(4, 22);
+            this.tp_libraryInfo.Name = "tp_libraryInfo";
+            this.tp_libraryInfo.Size = new System.Drawing.Size(552, 271);
+            this.tp_libraryInfo.TabIndex = 3;
+            this.tp_libraryInfo.Text = "Bilbliotheksinfos";
+            this.tp_libraryInfo.UseVisualStyleBackColor = true;
             // 
             // column_title
             // 
@@ -566,6 +592,157 @@
             this.column_availible.Name = "column_availible";
             this.column_availible.ReadOnly = true;
             this.column_availible.Width = 55;
+            // gb_data
+            // 
+
+
+
+
+
+            this.gb_data.Controls.Add(this.tb_library_address);
+            this.gb_data.Controls.Add(this.tb_library_charge);
+            this.gb_data.Controls.Add(this.tb_library_times);
+            this.gb_data.Controls.Add(this.tb_library_loan_period);
+            this.gb_data.Controls.Add(this.tb_library_overdrow_charge);
+            this.gb_data.Controls.Add(this.tb_library_name);
+            this.gb_data.Controls.Add(this.label8);
+            this.gb_data.Controls.Add(this.label7);
+            this.gb_data.Controls.Add(this.label6);
+            this.gb_data.Controls.Add(this.label5);
+            this.gb_data.Controls.Add(this.label4);
+            this.gb_data.Controls.Add(this.lbl_name);
+            this.gb_data.Location = new System.Drawing.Point(26, 19);
+            this.gb_data.Name = "gb_data";
+            this.gb_data.Size = new System.Drawing.Size(501, 226);
+            this.gb_data.TabIndex = 0;
+            this.gb_data.TabStop = false;
+            this.gb_data.Text = "Daten";
+            // 
+
+            // tb_library_address
+            // 
+
+
+
+
+
+            this.tb_library_address.Location = new System.Drawing.Point(227, 55);
+            this.tb_library_address.Name = "tb_library_address";
+            this.tb_library_address.ReadOnly = true;
+            this.tb_library_address.Size = new System.Drawing.Size(189, 20);
+            this.tb_library_address.TabIndex = 11;
+            // 
+
+            // tb_library_charge
+            // 
+
+
+
+
+
+            this.tb_library_charge.Location = new System.Drawing.Point(227, 85);
+            this.tb_library_charge.Name = "tb_library_charge";
+            this.tb_library_charge.ReadOnly = true;
+            this.tb_library_charge.Size = new System.Drawing.Size(189, 20);
+            this.tb_library_charge.TabIndex = 10;
+            // 
+
+            // tb_library_times
+            // 
+
+
+
+
+
+            this.tb_library_times.Location = new System.Drawing.Point(227, 175);
+            this.tb_library_times.Name = "tb_library_times";
+            this.tb_library_times.ReadOnly = true;
+            this.tb_library_times.Size = new System.Drawing.Size(189, 20);
+            this.tb_library_times.TabIndex = 9;
+            // 
+
+            // tb_library_loan_period
+            // 
+
+
+
+
+
+            this.tb_library_loan_period.Location = new System.Drawing.Point(227, 145);
+            this.tb_library_loan_period.Name = "tb_library_loan_period";
+            this.tb_library_loan_period.ReadOnly = true;
+            this.tb_library_loan_period.Size = new System.Drawing.Size(189, 20);
+            this.tb_library_loan_period.TabIndex = 8;
+            // 
+            // tb_library_overdrow_charge
+            // 
+            this.tb_library_overdrow_charge.Location = new System.Drawing.Point(227, 115);
+            this.tb_library_overdrow_charge.Name = "tb_library_overdrow_charge";
+            this.tb_library_overdrow_charge.ReadOnly = true;
+            this.tb_library_overdrow_charge.Size = new System.Drawing.Size(189, 20);
+            this.tb_library_overdrow_charge.TabIndex = 7;
+            // 
+            // tb_library_name
+            // 
+            this.tb_library_name.Location = new System.Drawing.Point(227, 25);
+            this.tb_library_name.Name = "tb_library_name";
+            this.tb_library_name.ReadOnly = true;
+            this.tb_library_name.Size = new System.Drawing.Size(189, 20);
+            this.tb_library_name.TabIndex = 6;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(101, 178);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(81, 13);
+            this.label8.TabIndex = 5;
+            this.label8.Text = "Öffnungszeiten:";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(101, 118);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(108, 13);
+            this.label7.TabIndex = 4;
+            this.label7.Text = "Überziehungsgebühr:";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(101, 148);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(57, 13);
+            this.label6.TabIndex = 3;
+            this.label6.Text = "Leihdauer:";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(101, 88);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(63, 13);
+            this.label5.TabIndex = 2;
+            this.label5.Text = "Leihgebühr:";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(101, 58);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(48, 13);
+            this.label4.TabIndex = 1;
+            this.label4.Text = "Adresse:";
+            // 
+            // lbl_name
+            // 
+            this.lbl_name.AutoSize = true;
+            this.lbl_name.Location = new System.Drawing.Point(101, 28);
+            this.lbl_name.Name = "lbl_name";
+            this.lbl_name.Size = new System.Drawing.Size(38, 13);
+            this.lbl_name.TabIndex = 0;
+            this.lbl_name.Text = "Name:";
             // 
             // Form_Customer
             // 
@@ -645,6 +822,19 @@
     private System.Windows.Forms.DataGridViewTextBoxColumn column_genre;
     private System.Windows.Forms.DataGridViewTextBoxColumn column_count;
     private System.Windows.Forms.DataGridViewTextBoxColumn column_availible;
-
+    private System.Windows.Forms.TabPage tp_libraryInfo;
+    private System.Windows.Forms.GroupBox gb_data;
+    private System.Windows.Forms.Label label8;
+    private System.Windows.Forms.Label label7;
+    private System.Windows.Forms.Label label6;
+    private System.Windows.Forms.Label label5;
+    private System.Windows.Forms.Label label4;
+    private System.Windows.Forms.Label lbl_name;
+    private System.Windows.Forms.TextBox tb_library_address;
+    private System.Windows.Forms.TextBox tb_library_charge;
+    private System.Windows.Forms.TextBox tb_library_times;
+    private System.Windows.Forms.TextBox tb_library_loan_period;
+    private System.Windows.Forms.TextBox tb_library_overdrow_charge;
+    private System.Windows.Forms.TextBox tb_library_name;
   }
 }

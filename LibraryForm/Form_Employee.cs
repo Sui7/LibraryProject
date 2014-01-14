@@ -502,8 +502,9 @@ namespace LibraryForm
 
         try
         {
-            Book book = (Book)((LibraryForm.ComboboxItem)(cbo_BookList.SelectedItem)).Value;
-            book.AddSample(int.Parse(tb_SampleID.Text), book, cbo_bookStatus.Text);
+            Book book = (Book)((LibraryForm.ComboboxItem)(cbo_BookList.SelectedItem)).Value;						
+            //book.AddSample(tb_SampleID.Text, book, cbo_bookStatus.Text);
+						libraryDB.CreateSample(new Sample(tb_SampleID.Text,book,cbo_bookStatus.Text));
         }
         catch (Exception ex)
         {

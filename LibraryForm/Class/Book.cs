@@ -79,7 +79,7 @@ namespace bibliothek
       }
 
 
-      public void AddSample(int id, Book book, string status)
+      public void AddSample(string id, Book book, string status)
       {
           this.sample.Add(new Sample(id, book, status));
       }

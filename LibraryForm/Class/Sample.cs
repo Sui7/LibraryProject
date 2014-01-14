@@ -7,13 +7,13 @@ namespace bibliothek
 {
   class Sample
   {
-    private int id;
+    private string id;
     private Book book;
     private int customerId;
     private DateTime endOfLoan;
     private string status;
 
-    public int Id
+    public string Id
     {
         get { return id; }
         set { this.id = value; }
@@ -49,11 +49,11 @@ namespace bibliothek
     }
 
 
-    public Sample(int id, Book book, string status)
+    public Sample(string Id, Book Book, string Status)
     {
-        this.id = id;
-        this.book = book;
-        this.status = status;
+        id = Id;
+        book = Book;
+        status = Status;
     }
 
 

@@ -15,7 +15,6 @@ C:\Users\Mario\Source\Repos\LibraryProject2\LibraryForm\bin\Debug\LibraryForm.pd
 C:\Users\Mario\Source\Repos\LibraryProject2\LibraryForm\obj\x86\Debug\LibraryForm.csprojResolveAssemblyReference.cache
 C:\Users\behrend\Source\Repos\LibraryProject\LibraryForm\obj\x86\Debug\LibraryForm.exe
 C:\Users\behrend\Source\Repos\LibraryProject\LibraryForm\obj\x86\Debug\LibraryForm.pdb
-C:\Users\behrend\Source\Repos\LibraryProject\LibraryForm\obj\x86\Debug\LibraryForm.csprojResolveAssemblyReference.cache
 C:\Users\behrend\Source\Repos\LibraryProject\LibraryForm\obj\x86\Debug\LibraryForm.Form1.resources
 C:\Users\behrend\Source\Repos\LibraryProject\LibraryForm\obj\x86\Debug\LibraryForm.Form_Customer.resources
 C:\Users\behrend\Source\Repos\LibraryProject\LibraryForm\obj\x86\Debug\LibraryForm.Form_Employee.resources
@@ -23,8 +22,5 @@ C:\Users\behrend\Source\Repos\LibraryProject\LibraryForm\obj\x86\Debug\LibraryFo
 C:\Users\behrend\Source\Repos\LibraryProject\LibraryForm\obj\x86\Debug\LibraryForm.csproj.GenerateResource.Cache
 C:\Users\behrend\Source\Repos\LibraryProject\LibraryForm\bin\Debug\x64\SQLite.Interop.dll
 C:\Users\behrend\Source\Repos\LibraryProject\LibraryForm\bin\Debug\x86\SQLite.Interop.dll
-C:\Users\behrend\Source\Repos\LibraryProject\LibraryForm\bin\Debug\System.Data.SQLite.dll
-C:\Users\behrend\Source\Repos\LibraryProject\LibraryForm\bin\Debug\System.Data.SQLite.Linq.dll
-C:\Users\behrend\Source\Repos\LibraryProject\LibraryForm\bin\Debug\System.Data.SQLite.xml
 C:\Users\behrend\Source\Repos\LibraryProject\LibraryForm\bin\Debug\LibraryForm.exe
 C:\Users\behrend\Source\Repos\LibraryProject\LibraryForm\bin\Debug\LibraryForm.pdb

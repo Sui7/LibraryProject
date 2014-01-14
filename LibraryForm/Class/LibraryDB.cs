@@ -35,6 +35,7 @@ namespace LibraryForm.Class
 
         public List<Person> GetPersonList()
         {
+
             List<Person> personList = new List<Person>();
 
             // create command
@@ -316,7 +317,7 @@ namespace LibraryForm.Class
         }
 
 
-        public Book GetBookBySampleId(int id)
+        public Book GetBookBySampleId(string id)
         {
             Book book = new Book();
 
@@ -331,7 +332,7 @@ namespace LibraryForm.Class
 
             while (reader.Read())
             {
-                book.Id = int.Parse(reader["id"].ToString());
+                //book.Id = reader["id"].ToString();   // Das macht kein Sinn... Exemplare haben eine einzigartige ID....
                 book.Title = reader["title"].ToString();
                 book.Author = reader["author"].ToString();
                 book.Genre = reader["genre"].ToString();
@@ -399,7 +400,7 @@ namespace LibraryForm.Class
             SQLiteCommand command = new SQLiteCommand(connection);
 
             // create query
-            command.CommandText = "INSERT INTO samples(book_id, customer_id, end_of_loan, status) VALUES ('" + sample.Book.Id + "', '" + sample.CustomerId + "', '" + sample.EndOfLoan.ToString() + "', '" + sample.Status + "');";
+						command.CommandText = "INSERT INTO samples(id,book_id, customer_id, end_of_loan, status) VALUES ('" + sample.Id + "', '" + sample.Book.Id + "', '" + sample.CustomerId + "', null, '" + sample.Status + "');";
             command.ExecuteNonQuery();
 
             command.Dispose();
@@ -436,7 +437,7 @@ namespace LibraryForm.Class
             {
                 Sample sample = new Sample();
 
-                sample.Id = int.Parse(reader["id"].ToString());
+                sample.Id = reader["id"].ToString();
                 sample.CustomerId = int.Parse(reader["customer_id"].ToString());
                 sample.EndOfLoan = DateTime.Parse(reader["end_of_loan"].ToString());
                 sample.Status = reader["status"].ToString();
@@ -497,7 +498,7 @@ namespace LibraryForm.Class
             {
                 Sample sample = new Sample();
 
-                sample.Id = int.Parse(reader["id"].ToString());
+                sample.Id = reader["id"].ToString();
                 sample.CustomerId = int.Parse(reader["customer_id"].ToString());
                 sample.EndOfLoan = DateTime.Parse(reader["end_of_loan"].ToString());
                 sample.Status = reader["status"].ToString();
@@ -659,10 +660,10 @@ namespace LibraryForm.Class
             command.CommandText = "CREATE TABLE IF NOT EXISTS customers (person_id INTEGER NOT NULL, register_date VARCHAR(100) NOT NULL);";
             command.ExecuteNonQuery();
 
-            command.CommandText = "DROP TABLE book; CREATE TABLE IF NOT EXISTS books (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, title VARCHAR(100) NOT NULL, author VARCHAR(100) NOT NULL, genre VARCHAR(100) NOT NULL, access VARCHAR(100) NOT NULL, count INTEGER NULL);";
+            command.CommandText = "CREATE TABLE IF NOT EXISTS books (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, title VARCHAR(100) NOT NULL, author VARCHAR(100) NOT NULL, genre VARCHAR(100) NOT NULL, access VARCHAR(100) NOT NULL, count INTEGER NULL);";
             command.ExecuteNonQuery();
-
-            command.CommandText = "CREATE TABLE IF NOT EXISTS samples (id INTEGER NOT NULL PRIMARY KEY  AUTOINCREMENT, book_id INTEGER NOT NULL, customer_id INTEGER NULL, end_of_loan VARCHAR(100) NULL, status VARCHAR(100) NOT NULL);";
+																																				// WICHTIG VARCHAR SIEHE ARBEITSANWEISUNG ID MUSS ERSTE BUCHSTABE  DES AUTHOR BEINHALTEN USW. 
+            command.CommandText = "CREATE TABLE IF NOT EXISTS samples (id VARCHAR(100) NOT NULL PRIMARY KEY, book_id INTEGER NOT NULL, customer_id INTEGER NULL, end_of_loan VARCHAR(100) NULL, status VARCHAR(100) NOT NULL);";
             command.ExecuteNonQuery();
 
             command.CommandText = "CREATE TABLE IF NOT EXISTS messages (id INTEGER NOT NULL PRIMARY KEY  AUTOINCREMENT, person_id INTEGER NOT NULL, message_text VARCHAR(100) NOT NULL, creation_date VARCHAR(100) NOT NULL);";

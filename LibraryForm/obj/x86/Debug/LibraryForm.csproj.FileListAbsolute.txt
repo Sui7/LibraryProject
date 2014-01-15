@@ -48,3 +48,4 @@ C:\Users\Luna\Documents\GitHub\LibraryProject\LibraryForm\bin\Debug\x86\SQLite.I
 C:\Users\Luna\Documents\GitHub\LibraryProject\LibraryForm\obj\x86\Debug\LibraryForm.pdb
 C:\Users\Luna\Documents\GitHub\LibraryProject\LibraryForm\bin\Debug\LibraryForm.exe
 C:\Users\Luna\Documents\GitHub\LibraryProject\LibraryForm\bin\Debug\LibraryForm.pdb
+C:\Users\behrend\Source\Repos\LibraryProject\LibraryForm\obj\x86\Debug\LibraryForm.csprojResolveAssemblyReference.cache

@@ -15,10 +15,10 @@ namespace LibraryForm
     static void Main()
     {
         // initialize tables by first run
-        // LibraryDB libraryDB = new LibraryDB();
-        // libraryDB.InitializeConnetion();
-        // libraryDB.CreateAllTables();
-        // libraryDB.CloseConnection();
+        LibraryDB libraryDB = new LibraryDB();
+        libraryDB.InitializeConnetion();
+        libraryDB.CreateAllTables();
+        libraryDB.CloseConnection();
 
         Application.EnableVisualStyles();
         Application.SetCompatibleTextRenderingDefault(false);

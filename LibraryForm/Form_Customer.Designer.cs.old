@@ -37,12 +37,6 @@
             this.btn_preorderBook = new System.Windows.Forms.Button();
             this.btn_loanBook = new System.Windows.Forms.Button();
             this.dgv_books = new System.Windows.Forms.DataGridView();
-            this.book_Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.book_title = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.book_author = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.book_genre = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.book_count = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.book_availible = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.gb_bookSearch = new System.Windows.Forms.GroupBox();
             this.rb_bookTitle = new System.Windows.Forms.RadioButton();
             this.rb_bookAuthor = new System.Windows.Forms.RadioButton();
@@ -75,7 +69,13 @@
             this.dgv_messages = new System.Windows.Forms.DataGridView();
             this.Column_message = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tp_library = new System.Windows.Forms.TabPage();
+            this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.column_title = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.column_author = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.column_genre = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.column_count = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.column_availible = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tp_libraryInfo = new System.Windows.Forms.TabPage();
             this.gb_data = new System.Windows.Forms.GroupBox();
             this.tb_library_address = new System.Windows.Forms.TextBox();
             this.tb_library_charge = new System.Windows.Forms.TextBox();
@@ -100,6 +100,7 @@
             this.gb_customerData.SuspendLayout();
             this.tp_messages.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_messages)).BeginInit();
+            this.tp_libraryInfo.SuspendLayout();
             this.gb_data.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -137,7 +138,6 @@
             this.tabControl1.Controls.Add(this.tp_books);
             this.tabControl1.Controls.Add(this.tp_personalInfo);
             this.tabControl1.Controls.Add(this.tp_messages);
-            this.tabControl1.Controls.Add(this.tp_library);
             this.tabControl1.Location = new System.Drawing.Point(13, 73);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -193,68 +193,18 @@
             this.dgv_books.AllowUserToAddRows = false;
             this.dgv_books.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_books.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.book_Id,
-            this.book_title,
-            this.book_author,
-            this.book_genre,
-            this.book_count,
-            this.book_availible});
+            this.Id,
+            this.column_title,
+            this.column_author,
+            this.column_genre,
+            this.column_count,
+            this.column_availible});
             this.dgv_books.Location = new System.Drawing.Point(3, 82);
-            this.dgv_books.MultiSelect = false;
             this.dgv_books.Name = "dgv_books";
             this.dgv_books.ReadOnly = true;
             this.dgv_books.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv_books.Size = new System.Drawing.Size(543, 183);
             this.dgv_books.TabIndex = 5;
-            this.dgv_books.TabStop = false;
-            // 
-            // book_Id
-            // 
-            this.book_Id.FillWeight = 30F;
-            this.book_Id.HeaderText = "Id";
-            this.book_Id.Name = "book_Id";
-            this.book_Id.ReadOnly = true;
-            this.book_Id.Width = 30;
-            // 
-            // book_title
-            // 
-            this.book_title.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.book_title.FillWeight = 170F;
-            this.book_title.HeaderText = "Titel";
-            this.book_title.Name = "book_title";
-            this.book_title.ReadOnly = true;
-            // 
-            // book_author
-            // 
-            this.book_author.FillWeight = 120F;
-            this.book_author.HeaderText = "Author";
-            this.book_author.Name = "book_author";
-            this.book_author.ReadOnly = true;
-            this.book_author.Width = 120;
-            // 
-            // book_genre
-            // 
-            this.book_genre.FillWeight = 80F;
-            this.book_genre.HeaderText = "Genre";
-            this.book_genre.Name = "book_genre";
-            this.book_genre.ReadOnly = true;
-            this.book_genre.Width = 80;
-            // 
-            // book_count
-            // 
-            this.book_count.FillWeight = 55F;
-            this.book_count.HeaderText = "Anzahl";
-            this.book_count.Name = "book_count";
-            this.book_count.ReadOnly = true;
-            this.book_count.Width = 55;
-            // 
-            // book_availible
-            // 
-            this.book_availible.FillWeight = 55F;
-            this.book_availible.HeaderText = "verfügbar";
-            this.book_availible.Name = "book_availible";
-            this.book_availible.ReadOnly = true;
-            this.book_availible.Width = 55;
             // 
             // gb_bookSearch
             // 
@@ -565,13 +515,11 @@
             this.Column_message,
             this.Column_date});
             this.dgv_messages.Location = new System.Drawing.Point(14, 13);
-            this.dgv_messages.MultiSelect = false;
             this.dgv_messages.Name = "dgv_messages";
             this.dgv_messages.ReadOnly = true;
             this.dgv_messages.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv_messages.Size = new System.Drawing.Size(521, 239);
-            this.dgv_messages.TabIndex = 99;
-            this.dgv_messages.TabStop = false;
+            this.dgv_messages.TabIndex = 0;
             // 
             // Column_message
             // 
@@ -588,18 +536,69 @@
             this.Column_date.ReadOnly = true;
             this.Column_date.Width = 120;
             // 
-            // tp_library
+            // Id
             // 
-            this.tp_library.Controls.Add(this.gb_data);
-            this.tp_library.Location = new System.Drawing.Point(4, 22);
-            this.tp_library.Name = "tp_library";
-            this.tp_library.Size = new System.Drawing.Size(552, 271);
-            this.tp_library.TabIndex = 3;
-            this.tp_library.Text = "Bibliotheksinformationen";
-            this.tp_library.UseVisualStyleBackColor = true;
+            this.Id.FillWeight = 30F;
+            this.Id.HeaderText = "Id";
+            this.Id.Name = "Id";
+            this.Id.ReadOnly = true;
+            this.Id.Width = 30;
+            // tp_libraryInfo
             // 
+            this.tp_libraryInfo.Controls.Add(this.gb_data);
+            this.tp_libraryInfo.Location = new System.Drawing.Point(4, 22);
+            this.tp_libraryInfo.Name = "tp_libraryInfo";
+            this.tp_libraryInfo.Size = new System.Drawing.Size(552, 271);
+            this.tp_libraryInfo.TabIndex = 3;
+            this.tp_libraryInfo.Text = "Bilbliotheksinfos";
+            this.tp_libraryInfo.UseVisualStyleBackColor = true;
+            // 
+            // column_title
+            // 
+            this.column_title.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.column_title.FillWeight = 170F;
+            this.column_title.HeaderText = "Titel";
+            this.column_title.Name = "column_title";
+            this.column_title.ReadOnly = true;
+            // 
+            // column_author
+            // 
+            this.column_author.FillWeight = 120F;
+            this.column_author.HeaderText = "Author";
+            this.column_author.Name = "column_author";
+            this.column_author.ReadOnly = true;
+            this.column_author.Width = 120;
+            // 
+            // column_genre
+            // 
+            this.column_genre.FillWeight = 80F;
+            this.column_genre.HeaderText = "Genre";
+            this.column_genre.Name = "column_genre";
+            this.column_genre.ReadOnly = true;
+            this.column_genre.Width = 80;
+            // 
+            // column_count
+            // 
+            this.column_count.FillWeight = 55F;
+            this.column_count.HeaderText = "Anzahl";
+            this.column_count.Name = "column_count";
+            this.column_count.ReadOnly = true;
+            this.column_count.Width = 55;
+            // 
+            // column_availible
+            // 
+            this.column_availible.FillWeight = 55F;
+            this.column_availible.HeaderText = "verfügbar";
+            this.column_availible.Name = "column_availible";
+            this.column_availible.ReadOnly = true;
+            this.column_availible.Width = 55;
             // gb_data
             // 
+
+
+
+
+
             this.gb_data.Controls.Add(this.tb_library_address);
             this.gb_data.Controls.Add(this.tb_library_charge);
             this.gb_data.Controls.Add(this.tb_library_times);
@@ -619,32 +618,56 @@
             this.gb_data.TabStop = false;
             this.gb_data.Text = "Daten";
             // 
+
             // tb_library_address
             // 
+
+
+
+
+
             this.tb_library_address.Location = new System.Drawing.Point(227, 55);
             this.tb_library_address.Name = "tb_library_address";
             this.tb_library_address.ReadOnly = true;
             this.tb_library_address.Size = new System.Drawing.Size(189, 20);
             this.tb_library_address.TabIndex = 11;
             // 
+
             // tb_library_charge
             // 
+
+
+
+
+
             this.tb_library_charge.Location = new System.Drawing.Point(227, 85);
             this.tb_library_charge.Name = "tb_library_charge";
             this.tb_library_charge.ReadOnly = true;
             this.tb_library_charge.Size = new System.Drawing.Size(189, 20);
             this.tb_library_charge.TabIndex = 10;
             // 
+
             // tb_library_times
             // 
+
+
+
+
+
             this.tb_library_times.Location = new System.Drawing.Point(227, 175);
             this.tb_library_times.Name = "tb_library_times";
             this.tb_library_times.ReadOnly = true;
             this.tb_library_times.Size = new System.Drawing.Size(189, 20);
             this.tb_library_times.TabIndex = 9;
             // 
+
             // tb_library_loan_period
             // 
+
+
+
+
+
             this.tb_library_loan_period.Location = new System.Drawing.Point(227, 145);
             this.tb_library_loan_period.Name = "tb_library_loan_period";
             this.tb_library_loan_period.ReadOnly = true;
@@ -746,10 +769,9 @@
             this.gb_customerData.PerformLayout();
             this.tp_messages.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_messages)).EndInit();
-            this.gb_data.ResumeLayout(false);
-            this.gb_data.PerformLayout();
             this.ResumeLayout(false);
-        }
+
+    }
 
     #endregion
 
@@ -794,6 +816,13 @@
     private System.Windows.Forms.GroupBox gb_bookAction;
     private System.Windows.Forms.Button btn_preorderBook;
     private System.Windows.Forms.Button btn_loanBook;
+    private System.Windows.Forms.DataGridViewTextBoxColumn Id;
+    private System.Windows.Forms.DataGridViewTextBoxColumn column_title;
+    private System.Windows.Forms.DataGridViewTextBoxColumn column_author;
+    private System.Windows.Forms.DataGridViewTextBoxColumn column_genre;
+    private System.Windows.Forms.DataGridViewTextBoxColumn column_count;
+    private System.Windows.Forms.DataGridViewTextBoxColumn column_availible;
+    private System.Windows.Forms.TabPage tp_libraryInfo;
     private System.Windows.Forms.GroupBox gb_data;
     private System.Windows.Forms.Label label8;
     private System.Windows.Forms.Label label7;
@@ -807,12 +836,5 @@
     private System.Windows.Forms.TextBox tb_library_loan_period;
     private System.Windows.Forms.TextBox tb_library_overdrow_charge;
     private System.Windows.Forms.TextBox tb_library_name;
-    private System.Windows.Forms.DataGridViewTextBoxColumn book_Id;
-    private System.Windows.Forms.DataGridViewTextBoxColumn book_title;
-    private System.Windows.Forms.DataGridViewTextBoxColumn book_author;
-    private System.Windows.Forms.DataGridViewTextBoxColumn book_genre;
-    private System.Windows.Forms.DataGridViewTextBoxColumn book_count;
-    private System.Windows.Forms.DataGridViewTextBoxColumn book_availible;
-    private System.Windows.Forms.TabPage tp_library;
   }
 }

@@ -64,3 +64,6 @@ C:\Users\behrend\Source\Repos\LibraryProject2\LibraryForm\obj\x86\Debug\LibraryF
 C:\Users\behrend\Source\Repos\LibraryProject2\LibraryForm\bin\Debug\LibraryForm.exe
 C:\Users\behrend\Source\Repos\LibraryProject2\LibraryForm\bin\Debug\LibraryForm.pdb
 C:\Users\behrend\Source\Repos\LibraryProject2\LibraryForm\obj\x86\Debug\LibraryForm.csprojResolveAssemblyReference.cache
+C:\Users\Luna\Documents\GitHub\LibraryProject\LibraryForm\bin\Debug\System.Data.SQLite.dll
+C:\Users\Luna\Documents\GitHub\LibraryProject\LibraryForm\bin\Debug\System.Data.SQLite.Linq.dll
+C:\Users\Luna\Documents\GitHub\LibraryProject\LibraryForm\bin\Debug\System.Data.SQLite.xml

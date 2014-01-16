@@ -5,93 +5,102 @@ using System.Text;
 
 namespace bibliothek
 {
-  class Sample
-  {
-    private string id;
-    private int customerId;
-    private DateTime endOfLoan;
-    private string status;
-		private string bookName;
-
-    public string Id
+    class Sample
     {
-        get { return id; }
-        set { this.id = value; }
+        private string id;
+        private int bookId;
+        private int customerId;
+        private DateTime endOfLoan;
+        private string status;
+        private int reservedByCustomerId;
+
+        public string Id
+        {
+            get { return id; }
+            set { this.id = value; }
+        }
+
+
+        public int BookId
+        {
+            get { return bookId; }
+            set { this.bookId = value; }
+        }
+
+
+        public int CustomerId
+        {
+            get { return customerId; }
+            set { this.customerId = value; }
+        }
+
+        public DateTime EndOfLoan
+        {
+            get { return endOfLoan; }
+            set { this.endOfLoan = value; }
+        }
+
+        public string Status
+        {
+            get { return status; }
+            set { this.status = value; }
+        }
+
+        public int ReservedByCustomerId
+        {
+            get { return reservedByCustomerId; }
+            set { this.reservedByCustomerId = value; }
+        }
+
+
+        public Sample()
+        {
+        }
+
+        public Sample(string Id, string Status)
+        {
+            id = Id;
+            status = Status;
+        }
+
+
+        public Sample(string Id, int CustomerId, DateTime EndOfLoan, string Status, int ReservedByCustomerId)
+        {
+            id = Id;
+            customerId = CustomerId;
+            endOfLoan = EndOfLoan;
+            status = Status;
+            reservedByCustomerId = ReservedByCustomerId;
+        }
+
+
+        public List<string> GetSampleAccessList()
+        {
+            List<string> sampleAccessList = new List<string>();
+            sampleAccessList.Add("Eingang");
+            sampleAccessList.Add("Regal A");
+            sampleAccessList.Add("Regal B");
+            sampleAccessList.Add("Regal C");
+            sampleAccessList.Add("Regal D");
+            sampleAccessList.Add("Regal E");
+            sampleAccessList.Add("Regal F");
+            sampleAccessList.Add("Regal G");
+            sampleAccessList.Add("Regal H");
+
+            return sampleAccessList;
+        }
+
+
+        public List<string> GetSampleStatusList()
+        {
+            List<string> sampleStatusList = new List<string>();
+            sampleStatusList.Add("frei verfügbar");
+            sampleStatusList.Add("nur einsehbar");
+            sampleStatusList.Add("beschädigt");
+            sampleStatusList.Add("vermisst");
+            sampleStatusList.Add("ausgeliehen");
+
+            return sampleStatusList;
+        }
     }
-
-
-
-    public int CustomerId 
-    { 
-        get { return customerId; }
-        set { this.customerId = value; }
-    }
-
-    public DateTime EndOfLoan 
-    {
-        get { return endOfLoan; }
-        set { this.endOfLoan = value; } 
-    }
-
-    public string Status
-    {
-        get { return status; }
-        set { this.status = value; }
-    }
-		public string BookName
-		{
-			get { return bookName; }
-			set { this.bookName = value; }
-		}
-
-    public Sample()
-    {
-    }
-
-    public Sample(string Id, string Status)
-    {
-        id = Id;
-        status = Status;
-    }
-
-
-    public Sample(string Id,int CustomerId, DateTime EndOfLoan, string Status,string BookName)
-    {
-        id = Id;
-        customerId = CustomerId;
-        endOfLoan = EndOfLoan;
-        status = Status;
-				bookName = BookName;
-    }
-
-
-    public List<string> GetSampleAccessList()
-    {
-        List<string> sampleAccessList = new List<string>();
-        sampleAccessList.Add("Eingang");
-        sampleAccessList.Add("Regal A");
-        sampleAccessList.Add("Regal B");
-        sampleAccessList.Add("Regal C");
-        sampleAccessList.Add("Regal D");
-        sampleAccessList.Add("Regal E");
-        sampleAccessList.Add("Regal F");
-        sampleAccessList.Add("Regal G");
-        sampleAccessList.Add("Regal H");
-
-        return sampleAccessList;
-    }
-
-
-    public List<string> GetSampleStatusList()
-    {
-        List<string> sampleStatusList = new List<string>();
-        sampleStatusList.Add("frei verfügbar");
-        sampleStatusList.Add("nur einsehbar");
-        sampleStatusList.Add("beschädigt");
-        sampleStatusList.Add("vermisst");
-        sampleStatusList.Add("ausgeliehen");
-
-        return sampleStatusList;
-    }
-  }
 }

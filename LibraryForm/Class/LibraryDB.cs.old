@@ -33,7 +33,7 @@ namespace LibraryForm.Class
         }
 
 
-        public LibraryInfo GetLibraryInfo()
+		public LibraryInfo GetLibraryInfo()
         {
             LibraryInfo libraryInfo = null;
 
@@ -77,9 +77,18 @@ namespace LibraryForm.Class
 
             // create query
             command.CommandText = "SELECT * FROM persons";
-
+            
             //craete reader
-            SQLiteDataReader reader = command.ExecuteReader();
+						
+					SQLiteDataReader reader = command.ExecuteReader();
+							
+								
+					
+						
+						
+						
+						
+					
 
             while (reader.Read())
             {
@@ -92,8 +101,8 @@ namespace LibraryForm.Class
                 DateTime Birthday = DateTime.Parse(reader["birthday"].ToString());
 
 
-                Person person = new Person(Id, Rank, Pw, Firstname, Lastname, Birthday);
-                personList.Add(person);
+                Person person = new Person(Id,Rank,Pw,Firstname,Lastname,Birthday);
+                personList.Add(person);                
             }
 
             reader.Close();
@@ -334,8 +343,8 @@ namespace LibraryForm.Class
             {
                 // create command
                 SQLiteCommand command = new SQLiteCommand(connection);
-
-
+              
+                
 
                 // create query
                 command.CommandText = "INSERT INTO books(title, author, genre, access, count) VALUES ('" + book.Title + "', '" + book.Author + "', '" + book.Genre + "', '" + book.Access + "', 0);";
@@ -366,7 +375,7 @@ namespace LibraryForm.Class
 
             while (reader.Read())
             {
-                book.Id = int.Parse(reader["id"].ToString());
+                //book.Id = reader["id"].ToString();   // Das macht kein Sinn... Exemplare haben eine einzigartige ID....
                 book.Title = reader["title"].ToString();
                 book.Author = reader["author"].ToString();
                 book.Genre = reader["genre"].ToString();
@@ -384,27 +393,51 @@ namespace LibraryForm.Class
         public List<Book> GetBookList()
         {
             List<Book> bookList = new List<Book>();
+            bookList.Clear();
 
             // create command
             SQLiteCommand command = new SQLiteCommand(connection);
 
             // create query
-            command.CommandText = "SELECT * FROM books";
+            command.CommandText = "SELECT books.id AS BookId, title,author,genre,access,count,samples.id AS SamplesId, (case when customer_id is null then 0 else customer_id end) AS customer_id ,CASE end_of_loan WHEN null THEN 1 ELSE 0 END AS chk_end_of_loan,end_of_loan,status FROM books LEFT JOIN samples ON books.id = samples.book_id";
 
             //craete reader
             SQLiteDataReader reader = command.ExecuteReader();
-
+            int bookId = 0;
+            int z = -1;
             while (reader.Read())
             {
-                Book book = new Book();
-                book.Id = int.Parse(reader["id"].ToString());
-                book.Title = reader["title"].ToString();
-                book.Author = reader["author"].ToString();
-                book.Genre = reader["genre"].ToString();
-                book.Count = int.Parse(reader["count"].ToString());
-                book.Sample = GetSamplesByBookId(book.Id);
+                if (bookId != Convert.ToInt32(reader["BookId"]))  // Überprüfe ob neues Buch oder gleiches Buch 
+                {                    
+                    Book book = new Book();
+                    book.Id = int.Parse(reader["BookId"].ToString());
+                    book.Title = reader["title"].ToString();
+                    book.Author = reader["author"].ToString();
+                    book.Genre = reader["genre"].ToString();
+                    book.Count = int.Parse(reader["count"].ToString());
+                    bookList.Add(book);  
+                    z++;
+                    bookId = Convert.ToInt32(reader["BookId"]);                    
+                }
 
-                bookList.Add(book);
+								if (reader["SamplesId"].ToString() != "")   // Falls Count = 0
+								{
+
+									string sampleId = reader["SamplesId"].ToString();
+									var customerId = int.Parse(reader["customer_id"].ToString());
+									int chk_endOfLoan = int.Parse(reader["chk_end_of_loan"].ToString());
+
+									DateTime endOfLoan = new DateTime(1970, 01, 01);
+									if (chk_endOfLoan == 1)
+									{
+										endOfLoan = Convert.ToDateTime(reader["end_of_loan]"]);
+									}
+
+									string status = reader["status"].ToString();
+									string bookName = reader["author"].ToString() + " / " + reader["title"].ToString();
+
+									bookList[z].AddSample(sampleId, customerId, endOfLoan, status,bookName);  // Füge Exemplar zur Exemplarliste des Buches     
+								}
             }
 
             reader.Close();
@@ -428,46 +461,26 @@ namespace LibraryForm.Class
         }
 
 
-        public void CreateSample(Sample sample, int bookId)
+        public void CreateSample(Sample sample,int bookId)
         {
             // create command
             SQLiteCommand command = new SQLiteCommand(connection);
 
             // create query
-            command.CommandText = "INSERT INTO samples(id, book_id, customer_id, status) VALUES ('" + sample.Id + "', '" + bookId.ToString() + "', '" + sample.CustomerId + "', '" + sample.Status + "');";
+						command.CommandText = "INSERT INTO samples(id,book_id, customer_id, end_of_loan, status) VALUES ('" + sample.Id + "', '" + bookId.ToString() + "', '" + sample.CustomerId + "', null, '" + sample.Status + "');";
             command.ExecuteNonQuery();
 
             command.Dispose();
         }
 
 
-        public void UpdateSample(string sampleId, int customerId, string status)
+        public void UpdateSampleToCustomer(int bookId, int customerId, DateTime endOfLoan, string status)
         {
             // create command
             SQLiteCommand command = new SQLiteCommand(connection);
 
             // create query
-            if (status == "ausgeliehen")
-            {
-                command.CommandText = "UPDATE samples SET customer_id = " + customerId + ", end_of_loan = '" + DateTime.Now + "', status = '" + status + "' WHERE id = '" + sampleId + "';";
-            }
-            else
-            {
-                command.CommandText = "UPDATE samples SET customer_id = " + customerId + ", end_of_loan = NULL, status = '" + status + "' WHERE id = '" + sampleId + "';";
-            }
-            command.ExecuteNonQuery();
-
-            command.Dispose();
-        }
-
-
-        public void UpdateSample(string sampleId, int customerId, DateTime endOfLoan, string status, int reservedByCustomerId)
-        {
-            // create command
-            SQLiteCommand command = new SQLiteCommand(connection);
-
-            // create query
-            command.CommandText = "UPDATE samples SET customer_id = " + customerId + ", end_of_loan = '" + endOfLoan.ToString() + "', status = '" + status + "', reserved_by_customer_id = " + reservedByCustomerId + " WHERE id = '" + sampleId + "';";
+            command.CommandText = "UPDATE samples SET customer_id = " + customerId + ", end_of_loan = '" + endOfLoan.ToShortDateString() + "', status = '" + status + "' WHERE book_id = " + bookId + ";";
             command.ExecuteNonQuery();
 
             command.Dispose();
@@ -482,7 +495,7 @@ namespace LibraryForm.Class
             SQLiteCommand command = new SQLiteCommand(connection);
 
             // create query
-            command.CommandText = "SELECT * FROM samples";
+						command.CommandText = "SELECT id,book_id,customer_id,CASE end_of_loan WHEN null THEN 1 ELSE 0 END AS chk_end_of_loan,end_of_loan ,status FROM samples";
 
             //craete reader
             SQLiteDataReader reader = command.ExecuteReader();
@@ -492,16 +505,14 @@ namespace LibraryForm.Class
                 Sample sample = new Sample();
 
                 sample.Id = reader["id"].ToString();
-                sample.BookId = int.Parse(reader["book_id"].ToString());
                 sample.CustomerId = int.Parse(reader["customer_id"].ToString());
-
-                if (!reader.IsDBNull(3))
-                {
-                    sample.EndOfLoan = DateTime.Parse(reader["end_of_loan"].ToString());
-                }
+								if (reader["chk_end_of_loan"].ToString() == "1")
+								{
+									sample.EndOfLoan = DateTime.Parse(reader["end_of_loan"].ToString());
+								}
 
                 sample.Status = reader["status"].ToString();
-                sample.ReservedByCustomerId = int.Parse(reader["reserved_by_customer_id"].ToString());
+
 
                 sampleList.Add(sample);
             }
@@ -514,13 +525,13 @@ namespace LibraryForm.Class
         }
 
 
-        public bool ReservedFirstLoanedSampleByBookId(int bookId, int customerId)
+		public void ReservedFirstLoanedSampleByBookId(int bookId, int customerId)
         {
             // create command
             SQLiteCommand command = new SQLiteCommand(connection);
 
             // create query
-            command.CommandText = "SELECT * FROM samples WHERE book_id =" + bookId + " AND status = 'ausgeliehen' AND reserved_by_customer_id = 0";
+            command.CommandText = "SELECT * FROM samples WHERE book_id =" + bookId + " AND status = 'ausgeliehen'";
 
             //craete reader
             SQLiteDataReader reader = command.ExecuteReader();
@@ -531,99 +542,39 @@ namespace LibraryForm.Class
             {
                 sampleId = reader["id"].ToString();
             }
-            else return false;
 
             reader.Close();
             reader.Dispose();
 
             // create query
-            command.CommandText = "UPDATE samples SET reserved_by_customer_id = " + customerId + " WHERE id = '" + sampleId + "';";
+            command.CommandText = "UPDATE samples SET reserved_by_customer_id = " + customerId + " WHERE id = '" + sampleId +"';";
             command.ExecuteNonQuery();
 
             command.Dispose();
-
-            return true;
         }
-
-
-        public List<Sample> GetReservedFreeSamples(int reservedByCustomerId)
+        public int CountFreeSamplesByBookId(int bookId)
         {
-            List<Sample> reservedSampleList = new List<Sample>();
+            int count = 0;
 
             // create command
             SQLiteCommand command = new SQLiteCommand(connection);
 
             // create query
-            command.CommandText = "SELECT * FROM samples WHERE reserved_by_customer_id =" + reservedByCustomerId + " AND status = 'frei'";
+            command.CommandText = "SELECT COUNT(id) FROM samples WHERE book_id =" + bookId + " AND status = 'frei'";
 
             //craete reader
             SQLiteDataReader reader = command.ExecuteReader();
 
             while (reader.Read())
             {
-                Sample sample = new Sample();
-
-                sample.Id = reader["id"].ToString();
-                sample.BookId = int.Parse(reader["book_id"].ToString());
-                sample.CustomerId = int.Parse(reader["customer_id"].ToString());
-
-                if (!reader.IsDBNull(3))
-                {
-                    sample.EndOfLoan = DateTime.Parse(reader["end_of_loan"].ToString());
-                }
-
-                sample.Status = reader["status"].ToString();
-                sample.ReservedByCustomerId = int.Parse(reader["reserved_by_customer_id"].ToString());
-
-                reservedSampleList.Add(sample);
-            }
-
-            reader.Close();
-            reader.Dispose();
-
-            command.Dispose();
-
-            return reservedSampleList;
-        }
-
-
-        public List<Sample> GetSamplesByBookId(int bookId)
-        {
-            List<Sample> sampleList = new List<Sample>();
-
-            // create command
-            SQLiteCommand command = new SQLiteCommand(connection);
-
-            // create query
-            command.CommandText = "SELECT * FROM samples WHERE book_id =" + bookId;
-
-            //craete reader
-            SQLiteDataReader reader = command.ExecuteReader();
-
-            while (reader.Read())
-            {
-                Sample sample = new Sample();
-
-                sample.Id = reader["id"].ToString();
-                sample.BookId = int.Parse(reader["book_id"].ToString());
-                sample.CustomerId = int.Parse(reader["customer_id"].ToString());
-
-                if (!reader.IsDBNull(3))
-                {
-                    sample.EndOfLoan = DateTime.Parse(reader["end_of_loan"].ToString());
-                }
-
-                sample.Status = reader["status"].ToString();
-                sample.ReservedByCustomerId = int.Parse(reader["reserved_by_customer_id"].ToString());
-
-                sampleList.Add(sample);
+                count = int.Parse(reader[0].ToString());
             }
 
             reader.Close();
             reader.Dispose();
             command.Dispose();
 
-            return sampleList;
+            return count;
         }
 
 
@@ -645,16 +596,10 @@ namespace LibraryForm.Class
                 Sample sample = new Sample();
 
                 sample.Id = reader["id"].ToString();
-                sample.BookId = int.Parse(reader["book_id"].ToString());
                 sample.CustomerId = int.Parse(reader["customer_id"].ToString());
-
-                if (!reader.IsDBNull(3))
-                {
-                    sample.EndOfLoan = DateTime.Parse(reader["end_of_loan"].ToString());
-                }
-
+                sample.EndOfLoan = DateTime.Parse(reader["end_of_loan"].ToString());
                 sample.Status = reader["status"].ToString();
-                sample.ReservedByCustomerId = int.Parse(reader["reserved_by_customer_id"].ToString());
+
 
                 sampleList.Add(sample);
             }
@@ -747,7 +692,7 @@ namespace LibraryForm.Class
 
         public Dictionary<int, Message> GetMessageDictByPersonId(int personId)
         {
-            Dictionary<int, Message> messageDict = new Dictionary<int, Message>();
+            Dictionary<int, Message> messageDict = new Dictionary<int,Message>();
 
             // create command
             SQLiteCommand command = new SQLiteCommand(connection);
@@ -759,7 +704,7 @@ namespace LibraryForm.Class
             SQLiteDataReader reader = command.ExecuteReader();
 
             while (reader.Read())
-            {
+            {  
                 Message message = new Message();
                 message.Id = int.Parse(reader["id"].ToString());
                 message.PersonId = int.Parse(reader["person_id"].ToString());
@@ -834,7 +779,7 @@ namespace LibraryForm.Class
             command.ExecuteNonQuery();
 
             // create tables query
-            command.CommandText = "CREATE TABLE IF NOT EXISTS persons (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, rank INTEGER NOT NULL, pw VARCHAR(100) NOT NULL, lastname VARCHAR(100) NOT NULL, firstname VARCHAR(100) NOT NULL, birthday VARCHAR(100) NOT NULL, charges DOUBLE DEFAULT 0);";
+            command.CommandText = "CREATE TABLE IF NOT EXISTS persons (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, rank INTEGER NOT NULL, pw VARCHAR(100) NOT NULL, lastname VARCHAR(100) NOT NULL, firstname VARCHAR(100) NOT NULL, birthday VARCHAR(100) NOT NULL, charges DOUBLE NULL);";
             command.ExecuteNonQuery();
 
             command.CommandText = "CREATE TABLE IF NOT EXISTS employees (person_id INTEGER NOT NULL);";
@@ -843,59 +788,48 @@ namespace LibraryForm.Class
             command.CommandText = "CREATE TABLE IF NOT EXISTS customers (person_id INTEGER NOT NULL, register_date VARCHAR(100) NOT NULL);";
             command.ExecuteNonQuery();
 
-            command.CommandText = "CREATE TABLE IF NOT EXISTS books (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, title VARCHAR(100) NOT NULL, author VARCHAR(100) NOT NULL, genre VARCHAR(100) NOT NULL, access VARCHAR(100) NOT NULL, count INTEGER DEFAULT 0);";
+            command.CommandText = "CREATE TABLE IF NOT EXISTS books (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, title VARCHAR(100) NOT NULL, author VARCHAR(100) NOT NULL, genre VARCHAR(100) NOT NULL, access VARCHAR(100) NOT NULL, count INTEGER NULL);";
             command.ExecuteNonQuery();
-            // WICHTIG VARCHAR SIEHE ARBEITSANWEISUNG ID MUSS ERSTE BUCHSTABE  DES AUTHOR BEINHALTEN USW. 
-            command.CommandText = "CREATE TABLE IF NOT EXISTS samples (id VARCHAR(100) NOT NULL PRIMARY KEY, book_id INTEGER NOT NULL, customer_id INTEGER DEFAULT 0, end_of_loan VARCHAR(100) DEFAULT NULL, status VARCHAR(100) NOT NULL, reserved_by_customer_id INTEGER DEFAULT 0);";
+																																				// WICHTIG VARCHAR SIEHE ARBEITSANWEISUNG ID MUSS ERSTE BUCHSTABE  DES AUTHOR BEINHALTEN USW. 
+            command.CommandText = "CREATE TABLE IF NOT EXISTS samples (id VARCHAR(100) NOT NULL PRIMARY KEY, book_id INTEGER NOT NULL, customer_id INTEGER NULL, end_of_loan VARCHAR(100) NULL, status VARCHAR(100) NOT NULL);";
             command.ExecuteNonQuery();
 
-            command.CommandText = "CREATE TABLE IF NOT EXISTS messages (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, person_id INTEGER NOT NULL, message_text VARCHAR(100) NOT NULL, creation_date VARCHAR(100) NOT NULL);";
+            command.CommandText = "CREATE TABLE IF NOT EXISTS messages (id INTEGER NOT NULL PRIMARY KEY  AUTOINCREMENT, person_id INTEGER NOT NULL, message_text VARCHAR(100) NOT NULL, creation_date VARCHAR(100) NOT NULL);";
             command.ExecuteNonQuery();
 
             // admin behrend
 
-            command.CommandText = "INSERT INTO persons(id, rank, pw, lastname, firstname, birthday, charges) VALUES (1, 1, 'admin', 'Behrend', 'Mario', '15.09.1989', 0)";
+            command.CommandText = "INSERT INTO persons(rank, pw, lastname, firstname, birthday, charges) VALUES (1, 'admin', 'Behrend', 'Mario', '15.09.1989', 0)";
             command.ExecuteNonQuery();
             command.CommandText = "INSERT INTO employees(person_id) VALUES (1)";
             command.ExecuteNonQuery();
 
             // admin belger
-            command.CommandText = "INSERT INTO persons(id, rank, pw, lastname, firstname, birthday, charges) VALUES (2, 1, 'admin', 'Belger', 'Norman', '18.01.1984', 0)";
+            command.CommandText = "INSERT INTO persons(rank, pw, lastname, firstname, birthday, charges) VALUES (1, 'admin', 'Belger', 'Norman', '18.01.1984', 0)";
             command.ExecuteNonQuery();
             command.CommandText = "INSERT INTO employees(person_id) VALUES (2)";
             command.ExecuteNonQuery();
 
             // test muster
-            command.CommandText = "INSERT INTO persons(id, rank, pw, lastname, firstname, birthday, charges) VALUES (3, 2, 'test', 'Muster', 'Max', '01.01.1970', 10)";
+            command.CommandText = "INSERT INTO persons(rank, pw, lastname, firstname, birthday, charges) VALUES (2, 'test', 'Muster', 'Max', '01.01.1970', 10)";
             command.ExecuteNonQuery();
-            command.CommandText = "INSERT INTO customers(person_id, register_date) VALUES (3, '03.01.2014')";
-            command.ExecuteNonQuery();
-
-            // test schulz
-            command.CommandText = "INSERT INTO persons(id, rank, pw, lastname, firstname, birthday, charges) VALUES (4, 2, 'test', 'Schulz', 'Harald', '12.07.1975', 12)";
-            command.ExecuteNonQuery();
-            command.CommandText = "INSERT INTO customers(person_id, register_date) VALUES (4, '05.01.2014')";
+            command.CommandText = "INSERT INTO customers(person_id, register_date) VALUES (3, '12.01.2014')";
             command.ExecuteNonQuery();
 
             // test books
-            command.CommandText = "INSERT INTO books(id, title, author, genre, access, count) VALUES (1, 'Herr der Ringe', 'Tolkien', 'Fantasy', 'Reihe H', 3)";
+            command.CommandText = "INSERT INTO books(title, author, genre, access, count) VALUES ('Herr der Ringe', 'Tolkien', 'Fantasy', 'Reihe H', 3)";
             command.ExecuteNonQuery();
-            command.CommandText = "INSERT INTO samples(id, book_id, end_of_loan, status) VALUES (1, 1, NULL, 'frei');";
-            command.ExecuteNonQuery();
-            command.CommandText = "INSERT INTO samples(id, book_id, end_of_loan, status) VALUES (2, 1, NULL, 'frei');";
-            command.ExecuteNonQuery();
-            command.CommandText = "INSERT INTO samples(id, book_id, end_of_loan, status) VALUES (3, 1, NULL, 'frei');";
+						//command.CommandText = "INSERT INTO samples(book_id, customer_id, end_of_loan, status) VALUES (1, 1, NULL, NULL, 'frei');";
+						//command.ExecuteNonQuery();
+						//command.CommandText = "INSERT INTO samples(book_id, customer_id, end_of_loan, status) VALUES (1, NULL, NULL, 'frei');";
+						//command.ExecuteNonQuery();
+						//command.CommandText = "INSERT INTO samples(book_id, customer_id, end_of_loan, status) VALUES (1, NULL, NULL, 'frei');";
+						//command.ExecuteNonQuery();
+
+            command.CommandText = "INSERT INTO books( title, author, genre, access, count) VALUES ('Sakrileg', 'Brown', 'Thriller', 'Reihe S', 0)";
             command.ExecuteNonQuery();
 
-            command.CommandText = "INSERT INTO books(id, title, author, genre, access, count) VALUES (2, 'Sakrileg', 'Brown', 'Thriller', 'Reihe S', 1)";
-            command.ExecuteNonQuery();
-            command.CommandText = "INSERT INTO samples(id, book_id, customer_id, end_of_loan, status) VALUES (4, 2, 4, '22.01.2014', 'ausgeliehen');";
-            command.ExecuteNonQuery();
-
-            command.CommandText = "INSERT INTO books(id, title, author, genre, access, count) VALUES (3, 'Headhunter', 'Nesbo', 'Thriller', 'Reihe H', 0)";
-            command.ExecuteNonQuery();
-
-            command.CommandText = "INSERT INTO messages(id, person_id, message_text, creation_date) VALUES (1, 3, 'Ihre Gesamtgebühren zum 01.01.2014 betragen 12 Euro', '01.01.2014')";
+            command.CommandText = "INSERT INTO messages(person_id, message_text, creation_date) VALUES (3, 'Ihre Gesamtgebühren zum 01.01.2014 betragen 12 Euro', '01.01.2014')";
             command.ExecuteNonQuery();
 
             command.Dispose();

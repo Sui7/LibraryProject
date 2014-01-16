@@ -79,9 +79,9 @@ namespace bibliothek
       }
 
 
-      public void AddSample(string id,int customerId, DateTime endOfLoan,string status)
+      public void AddSample(string id,int customerId, DateTime endOfLoan,string status,string bookName)
       {
-          this.sample.Add(new Sample(id, customerId, endOfLoan,status));
+          this.sample.Add(new Sample(id, customerId, endOfLoan,status,bookName));
       }
 
 

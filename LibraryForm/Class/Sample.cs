@@ -11,6 +11,7 @@ namespace bibliothek
     private int customerId;
     private DateTime endOfLoan;
     private string status;
+		private string bookName;
 
     public string Id
     {
@@ -37,7 +38,11 @@ namespace bibliothek
         get { return status; }
         set { this.status = value; }
     }
-
+		public string BookName
+		{
+			get { return bookName; }
+			set { this.bookName = value; }
+		}
 
     public Sample()
     {
@@ -50,12 +55,13 @@ namespace bibliothek
     }
 
 
-    public Sample(string Id,int CustomerId, DateTime EndOfLoan, string Status)
+    public Sample(string Id,int CustomerId, DateTime EndOfLoan, string Status,string BookName)
     {
         id = Id;
         customerId = CustomerId;
         endOfLoan = EndOfLoan;
         status = Status;
+				bookName = BookName;
     }
 
 

@@ -335,9 +335,10 @@ namespace LibraryForm
         {
             List<Customer> searchList = new List<Customer>();
             dgv_customerList.DataSource = null;
+						customerList = libraryDB.GetCustomerList();
             foreach (var item in customerList)
             {
-                if (namePerson.Text == item.Firstname || lastnamePerson.Text == item.Lastname || idPerson.Text == Convert.ToString(item.Id))
+							if (namePerson.Text.ToUpper() == item.Firstname.ToUpper() || lastnamePerson.Text.ToUpper() == item.Lastname.ToUpper() || idPerson.Text == Convert.ToString(item.Id))
                 {
                     searchList.Add(item);
                 }
@@ -357,9 +358,10 @@ namespace LibraryForm
         {
             List<Employee> searchList = new List<Employee>();
             dgv_employeeList.DataSource = null;
+						employeeList = libraryDB.GetEmployeeList();
             foreach (var item in employeeList)
             {
-                if (namePerson.Text == item.Firstname || lastnamePerson.Text == item.Lastname || idPerson.Text == Convert.ToString(item.Id))
+                if (namePerson.Text.ToUpper() == item.Firstname.ToUpper() || lastnamePerson.Text.ToUpper() == item.Lastname.ToUpper())
                 {
                     searchList.Add(item);
                 }

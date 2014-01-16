@@ -79,7 +79,16 @@ namespace LibraryForm.Class
             command.CommandText = "SELECT * FROM persons";
             
             //craete reader
-            SQLiteDataReader reader = command.ExecuteReader();
+						
+					SQLiteDataReader reader = command.ExecuteReader();
+							
+								
+					
+						
+						
+						
+						
+					
 
             while (reader.Read())
             {
@@ -390,7 +399,7 @@ namespace LibraryForm.Class
             SQLiteCommand command = new SQLiteCommand(connection);
 
             // create query
-            command.CommandText = "SELECT books.id AS BookId, title,author,genre,access,count,samples.id AS SamplesId, (case when customer_id is null then 0 else customer_id end) AS customer_id ,CASE end_of_loan WHEN null THEN 1 ELSE 0 END AS chk_end_of_loan,end_of_loan,status FROM books JOIN samples ON books.id = samples.book_id";
+            command.CommandText = "SELECT books.id AS BookId, title,author,genre,access,count,samples.id AS SamplesId, (case when customer_id is null then 0 else customer_id end) AS customer_id ,CASE end_of_loan WHEN null THEN 1 ELSE 0 END AS chk_end_of_loan,end_of_loan,status FROM books LEFT JOIN samples ON books.id = samples.book_id";
 
             //craete reader
             SQLiteDataReader reader = command.ExecuteReader();
@@ -411,19 +420,24 @@ namespace LibraryForm.Class
                     bookId = Convert.ToInt32(reader["BookId"]);                    
                 }
 
-                string sampleId = reader["SamplesId"].ToString();
-                var customerId = int.Parse(reader["customer_id"].ToString());
-                int chk_endOfLoan = int.Parse(reader["chk_end_of_loan"].ToString());
+								if (reader["SamplesId"].ToString() != "")   // Falls Count = 0
+								{
 
-                DateTime endOfLoan = new DateTime(1970,01,01);
-                if (chk_endOfLoan == 1)
-                {
-                    endOfLoan = Convert.ToDateTime(reader["end_of_loan]"]);
-                }
+									string sampleId = reader["SamplesId"].ToString();
+									var customerId = int.Parse(reader["customer_id"].ToString());
+									int chk_endOfLoan = int.Parse(reader["chk_end_of_loan"].ToString());
 
-                string status = reader["status"].ToString();
-                
-                bookList[z].AddSample(sampleId,customerId,endOfLoan,status);  // Füge Exemplar zur Exemplarliste des Buches                
+									DateTime endOfLoan = new DateTime(1970, 01, 01);
+									if (chk_endOfLoan == 1)
+									{
+										endOfLoan = Convert.ToDateTime(reader["end_of_loan]"]);
+									}
+
+									string status = reader["status"].ToString();
+									string bookName = reader["author"].ToString() + " / " + reader["title"].ToString();
+
+									bookList[z].AddSample(sampleId, customerId, endOfLoan, status,bookName);  // Füge Exemplar zur Exemplarliste des Buches     
+								}
             }
 
             reader.Close();
@@ -481,7 +495,7 @@ namespace LibraryForm.Class
             SQLiteCommand command = new SQLiteCommand(connection);
 
             // create query
-            command.CommandText = "SELECT * FROM samples";
+						command.CommandText = "SELECT id,book_id,customer_id,CASE end_of_loan WHEN null THEN 1 ELSE 0 END AS chk_end_of_loan,end_of_loan ,status FROM samples";
 
             //craete reader
             SQLiteDataReader reader = command.ExecuteReader();
@@ -492,7 +506,11 @@ namespace LibraryForm.Class
 
                 sample.Id = reader["id"].ToString();
                 sample.CustomerId = int.Parse(reader["customer_id"].ToString());
-                sample.EndOfLoan = DateTime.Parse(reader["end_of_loan"].ToString());
+								if (reader["chk_end_of_loan"].ToString() == "1")
+								{
+									sample.EndOfLoan = DateTime.Parse(reader["end_of_loan"].ToString());
+								}
+
                 sample.Status = reader["status"].ToString();
 
 
@@ -781,37 +799,37 @@ namespace LibraryForm.Class
 
             // admin behrend
 
-            command.CommandText = "INSERT INTO persons(id, rank, pw, lastname, firstname, birthday, charges) VALUES (1, 1, 'admin', 'Behrend', 'Mario', '15.09.1989', 0)";
+            command.CommandText = "INSERT INTO persons(rank, pw, lastname, firstname, birthday, charges) VALUES (1, 'admin', 'Behrend', 'Mario', '15.09.1989', 0)";
             command.ExecuteNonQuery();
             command.CommandText = "INSERT INTO employees(person_id) VALUES (1)";
             command.ExecuteNonQuery();
 
             // admin belger
-            command.CommandText = "INSERT INTO persons(id, rank, pw, lastname, firstname, birthday, charges) VALUES (2, 1, 'admin', 'Belger', 'Norman', '18.01.1984', 0)";
+            command.CommandText = "INSERT INTO persons(rank, pw, lastname, firstname, birthday, charges) VALUES (1, 'admin', 'Belger', 'Norman', '18.01.1984', 0)";
             command.ExecuteNonQuery();
             command.CommandText = "INSERT INTO employees(person_id) VALUES (2)";
             command.ExecuteNonQuery();
 
             // test muster
-            command.CommandText = "INSERT INTO persons(id, rank, pw, lastname, firstname, birthday, charges) VALUES (3, 2, 'test', 'Muster', 'Max', '01.01.1970', 10)";
+            command.CommandText = "INSERT INTO persons(rank, pw, lastname, firstname, birthday, charges) VALUES (2, 'test', 'Muster', 'Max', '01.01.1970', 10)";
             command.ExecuteNonQuery();
             command.CommandText = "INSERT INTO customers(person_id, register_date) VALUES (3, '12.01.2014')";
             command.ExecuteNonQuery();
 
             // test books
-            command.CommandText = "INSERT INTO books(id, title, author, genre, access, count) VALUES (1, 'Herr der Ringe', 'Tolkien', 'Fantasy', 'Reihe H', 3)";
+            command.CommandText = "INSERT INTO books(title, author, genre, access, count) VALUES ('Herr der Ringe', 'Tolkien', 'Fantasy', 'Reihe H', 3)";
             command.ExecuteNonQuery();
-            command.CommandText = "INSERT INTO samples(id, book_id, customer_id, end_of_loan, status) VALUES (1, 1, NULL, NULL, 'frei');";
-            command.ExecuteNonQuery();
-            command.CommandText = "INSERT INTO samples(id, book_id, customer_id, end_of_loan, status) VALUES (2, 1, NULL, NULL, 'frei');";
-            command.ExecuteNonQuery();
-            command.CommandText = "INSERT INTO samples(id, book_id, customer_id, end_of_loan, status) VALUES (3, 1, NULL, NULL, 'frei');";
+						//command.CommandText = "INSERT INTO samples(book_id, customer_id, end_of_loan, status) VALUES (1, 1, NULL, NULL, 'frei');";
+						//command.ExecuteNonQuery();
+						//command.CommandText = "INSERT INTO samples(book_id, customer_id, end_of_loan, status) VALUES (1, NULL, NULL, 'frei');";
+						//command.ExecuteNonQuery();
+						//command.CommandText = "INSERT INTO samples(book_id, customer_id, end_of_loan, status) VALUES (1, NULL, NULL, 'frei');";
+						//command.ExecuteNonQuery();
+
+            command.CommandText = "INSERT INTO books( title, author, genre, access, count) VALUES ('Sakrileg', 'Brown', 'Thriller', 'Reihe S', 0)";
             command.ExecuteNonQuery();
 
-            command.CommandText = "INSERT INTO books(id, title, author, genre, access, count) VALUES (2, 'Sakrileg', 'Brown', 'Thriller', 'Reihe S', 0)";
-            command.ExecuteNonQuery();
-
-            command.CommandText = "INSERT INTO messages(id, person_id, message_text, creation_date) VALUES (1, 3, 'Ihre Gesamtgebühren zum 01.01.2014 betragen 12 Euro', '01.01.2014')";
+            command.CommandText = "INSERT INTO messages(person_id, message_text, creation_date) VALUES (3, 'Ihre Gesamtgebühren zum 01.01.2014 betragen 12 Euro', '01.01.2014')";
             command.ExecuteNonQuery();
 
             command.Dispose();

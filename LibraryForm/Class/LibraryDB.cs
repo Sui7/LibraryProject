@@ -32,6 +32,52 @@ namespace LibraryForm.Class
             this.connection.Dispose();
         }
 
+				public bool ExistTables()
+				{
+
+					Boolean exist = false;
+
+
+
+					// create command
+
+					SQLiteCommand command = new SQLiteCommand(connection);
+
+
+
+					// create query
+
+					command.CommandText = "SELECT name FROM sqlite_master WHERE type='table'";
+
+
+
+					//craete reader
+
+					SQLiteDataReader reader = command.ExecuteReader();
+
+
+
+					if (reader.Read())
+					{
+
+						exist = true;
+
+					}
+
+
+
+					reader.Close();
+
+					reader.Dispose();
+
+					command.Dispose();
+
+
+
+					return exist;
+
+				}
+
 
         public LibraryInfo GetLibraryInfo()
         {
@@ -370,6 +416,7 @@ namespace LibraryForm.Class
                 book.Title = reader["title"].ToString();
                 book.Author = reader["author"].ToString();
                 book.Genre = reader["genre"].ToString();
+								book.Access = reader["access"].ToString();
                 book.Count = int.Parse(reader["count"].ToString());
             }
 
@@ -402,6 +449,7 @@ namespace LibraryForm.Class
                 book.Author = reader["author"].ToString();
                 book.Genre = reader["genre"].ToString();
                 book.Count = int.Parse(reader["count"].ToString());
+								book.Access = reader["access"].ToString();
                 book.Sample = GetSamplesByBookId(book.Id);
 
                 bookList.Add(book);
@@ -421,7 +469,8 @@ namespace LibraryForm.Class
             SQLiteCommand command = new SQLiteCommand(connection);
 
             // create query
-            command.CommandText = "DELETE FROM books WHERE id = " + bookId;
+						command.CommandText = "DELETE FROM books WHERE id = @id; DELETE FROM samples WHERE book_id = @id";
+						command.Parameters.AddWithValue("@id", bookId);
             command.ExecuteNonQuery();
 
             command.Dispose();
@@ -482,7 +531,7 @@ namespace LibraryForm.Class
             SQLiteCommand command = new SQLiteCommand(connection);
 
             // create query
-            command.CommandText = "SELECT * FROM samples";
+						command.CommandText = "SELECT * FROM samples LEFT JOIN books ON books.id = samples.book_id";
 
             //craete reader
             SQLiteDataReader reader = command.ExecuteReader();
@@ -501,6 +550,7 @@ namespace LibraryForm.Class
                 }
 
                 sample.Status = reader["status"].ToString();
+								sample.BookName = reader["author"].ToString() + " / " + reader["title"].ToString();
                 sample.ReservedByCustomerId = int.Parse(reader["reserved_by_customer_id"].ToString());
 
                 sampleList.Add(sample);
@@ -595,7 +645,7 @@ namespace LibraryForm.Class
             SQLiteCommand command = new SQLiteCommand(connection);
 
             // create query
-            command.CommandText = "SELECT * FROM samples WHERE book_id =" + bookId;
+            command.CommandText = "SELECT * FROM samples LEFT JOIN books ON books.id = samples.book_id WHERE book_id =" + bookId;
 
             //craete reader
             SQLiteDataReader reader = command.ExecuteReader();
@@ -614,6 +664,7 @@ namespace LibraryForm.Class
                 }
 
                 sample.Status = reader["status"].ToString();
+								sample.BookName = reader["author"].ToString() + " / " + reader["title"].ToString();
                 sample.ReservedByCustomerId = int.Parse(reader["reserved_by_customer_id"].ToString());
 
                 sampleList.Add(sample);
@@ -824,6 +875,7 @@ namespace LibraryForm.Class
 
         public void CreateAllTables()
         {
+					
             // create command
             SQLiteCommand command = new SQLiteCommand(connection);
 
@@ -852,53 +904,56 @@ namespace LibraryForm.Class
             command.CommandText = "CREATE TABLE IF NOT EXISTS messages (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, person_id INTEGER NOT NULL, message_text VARCHAR(100) NOT NULL, creation_date VARCHAR(100) NOT NULL);";
             command.ExecuteNonQuery();
 
-            // admin behrend
+						//// admin behrend
 
-            command.CommandText = "INSERT INTO persons(id, rank, pw, lastname, firstname, birthday, charges) VALUES (1, 1, 'admin', 'Behrend', 'Mario', '15.09.1989', 0)";
-            command.ExecuteNonQuery();
-            command.CommandText = "INSERT INTO employees(person_id) VALUES (1)";
-            command.ExecuteNonQuery();
+						command.CommandText = "INSERT INTO persons(rank, pw, lastname, firstname, birthday, charges) VALUES (1, 'admin', 'Behrend', 'Mario', '15.09.1989', 0)";
+						command.ExecuteNonQuery();
+						command.CommandText = "INSERT INTO employees(person_id) VALUES (1)";
+						command.ExecuteNonQuery();
 
-            // admin belger
-            command.CommandText = "INSERT INTO persons(id, rank, pw, lastname, firstname, birthday, charges) VALUES (2, 1, 'admin', 'Belger', 'Norman', '18.01.1984', 0)";
-            command.ExecuteNonQuery();
-            command.CommandText = "INSERT INTO employees(person_id) VALUES (2)";
-            command.ExecuteNonQuery();
+						//// admin belger
+						command.CommandText = "INSERT INTO persons(rank, pw, lastname, firstname, birthday, charges) VALUES (1, 'admin', 'Belger', 'Norman', '18.01.1984', 0)";
+						command.ExecuteNonQuery();
+						command.CommandText = "INSERT INTO employees(person_id) VALUES (2)";
+						command.ExecuteNonQuery();
 
-            // test muster
-            command.CommandText = "INSERT INTO persons(id, rank, pw, lastname, firstname, birthday, charges) VALUES (3, 2, 'test', 'Muster', 'Max', '01.01.1970', 10)";
-            command.ExecuteNonQuery();
-            command.CommandText = "INSERT INTO customers(person_id, register_date) VALUES (3, '03.01.2014')";
-            command.ExecuteNonQuery();
+						//// test muster
+						command.CommandText = "INSERT INTO persons(rank, pw, lastname, firstname, birthday, charges) VALUES (2, 'test', 'Muster', 'Max', '01.01.1970', 10)";
+						command.ExecuteNonQuery();
+						command.CommandText = "INSERT INTO customers(person_id, register_date) VALUES (3, '03.01.2014')";
+						command.ExecuteNonQuery();
 
-            // test schulz
-            command.CommandText = "INSERT INTO persons(id, rank, pw, lastname, firstname, birthday, charges) VALUES (4, 2, 'test', 'Schulz', 'Harald', '12.07.1975', 12)";
-            command.ExecuteNonQuery();
-            command.CommandText = "INSERT INTO customers(person_id, register_date) VALUES (4, '05.01.2014')";
-            command.ExecuteNonQuery();
+						//// test schulz
+						command.CommandText = "INSERT INTO persons(rank, pw, lastname, firstname, birthday, charges) VALUES (2, 'test', 'Schulz', 'Harald', '12.07.1975', 12)";
+						command.ExecuteNonQuery();
+						command.CommandText = "INSERT INTO customers(person_id, register_date) VALUES (4, '05.01.2014')";
+						command.ExecuteNonQuery();
 
             // test books
-            command.CommandText = "INSERT INTO books(id, title, author, genre, access, count) VALUES (1, 'Herr der Ringe', 'Tolkien', 'Fantasy', 'Reihe H', 3)";
-            command.ExecuteNonQuery();
-            command.CommandText = "INSERT INTO samples(id, book_id, end_of_loan, status) VALUES (1, 1, NULL, 'frei');";
-            command.ExecuteNonQuery();
-            command.CommandText = "INSERT INTO samples(id, book_id, end_of_loan, status) VALUES (2, 1, NULL, 'frei');";
-            command.ExecuteNonQuery();
-            command.CommandText = "INSERT INTO samples(id, book_id, end_of_loan, status) VALUES (3, 1, NULL, 'frei');";
-            command.ExecuteNonQuery();
+						command.CommandText = "INSERT INTO books(id, title, author, genre, access, count) VALUES (1, 'Herr der Ringe', 'Tolkien', 'Fantasy', 'Reihe H', 3)";
+						command.ExecuteNonQuery();
+						command.CommandText = "INSERT INTO samples(id, book_id, end_of_loan, status) VALUES ('FT-B40889289E', 1, NULL, 'frei');";
+						command.ExecuteNonQuery();
+						command.CommandText = "INSERT INTO samples(id, book_id, end_of_loan, status) VALUES ('FT-B40789289E', 1, NULL, 'frei');";
+						command.ExecuteNonQuery();
+						command.CommandText = "INSERT INTO samples(id, book_id, end_of_loan, status) VALUES ('FT-B40869289E', 1, NULL, 'frei');";
+						command.ExecuteNonQuery();
 
-            command.CommandText = "INSERT INTO books(id, title, author, genre, access, count) VALUES (2, 'Sakrileg', 'Brown', 'Thriller', 'Reihe S', 1)";
-            command.ExecuteNonQuery();
-            command.CommandText = "INSERT INTO samples(id, book_id, customer_id, end_of_loan, status) VALUES (4, 2, 4, '22.01.2014', 'ausgeliehen');";
-            command.ExecuteNonQuery();
+						command.CommandText = "INSERT INTO books(id, title, author, genre, access, count) VALUES (2, 'Sakrileg', 'Brown', 'Thriller', 'Reihe S', 1)";
+						command.ExecuteNonQuery();
+						command.CommandText = "INSERT INTO samples(id, book_id, customer_id, end_of_loan, status) VALUES ('TB-270FE7241F', 2, 4, '22.01.2014', 'ausgeliehen');";
+						command.ExecuteNonQuery();
 
-            command.CommandText = "INSERT INTO books(id, title, author, genre, access, count) VALUES (3, 'Headhunter', 'Nesbo', 'Thriller', 'Reihe H', 0)";
-            command.ExecuteNonQuery();
+						command.CommandText = "INSERT INTO books(id, title, author, genre, access, count) VALUES (3, 'Headhunter', 'Nesbo', 'Thriller', 'Reihe H', 0)";
+						command.ExecuteNonQuery();
 
-            command.CommandText = "INSERT INTO messages(id, person_id, message_text, creation_date) VALUES (1, 3, 'Ihre Gesamtgebühren zum 01.01.2014 betragen 12 Euro', '01.01.2014')";
-            command.ExecuteNonQuery();
+						command.CommandText = "INSERT INTO messages(id, person_id, message_text, creation_date) VALUES (1, 3, 'Ihre Gesamtgebühren zum 01.01.2014 betragen 12 Euro', '01.01.2014')";
+						command.ExecuteNonQuery();
 
             command.Dispose();
+				  
+				   
+				  
         }
     }
 }

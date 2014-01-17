@@ -13,6 +13,7 @@ namespace bibliothek
         private DateTime endOfLoan;
         private string status;
         private int reservedByCustomerId;
+				private string bookName;
 
         public string Id
         {
@@ -52,6 +53,12 @@ namespace bibliothek
             set { this.reservedByCustomerId = value; }
         }
 
+				public string BookName
+				{
+					get { return bookName; }
+					set { this.bookName = value; }
+				}
+
 
         public Sample()
         {
@@ -72,6 +79,15 @@ namespace bibliothek
             status = Status;
             reservedByCustomerId = ReservedByCustomerId;
         }
+
+				public Sample(string Id, int CustomerId, DateTime EndOfLoan, string Status, string BookName)
+				{
+					id = Id;
+					customerId = CustomerId;
+					endOfLoan = EndOfLoan;
+					status = Status;
+					bookName = BookName;
+				}
 
 
         public List<string> GetSampleAccessList()

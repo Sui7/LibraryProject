@@ -90,6 +90,13 @@ namespace bibliothek
             this.sample.Add(new Sample(id, customerId, endOfLoan, status, reservedByCustomerId));
         }
 
+				public void AddSample(string id,int customerId, DateTime endOfLoan,string status,string bookName)				
+				{
+				
+				    this.sample.Add(new Sample(id, customerId, endOfLoan,status,bookName));
+				
+				}
+
 
         public List<string> GetBookGenreList()
         {

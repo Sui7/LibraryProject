@@ -61,10 +61,6 @@
 			this.label7 = new System.Windows.Forms.Label();
 			this.tp_books = new System.Windows.Forms.TabPage();
 			this.dgv_Book = new System.Windows.Forms.DataGridView();
-			this.column_BookTitle = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.column_BookAuthor = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.column_BookGenre = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.column_BookCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.gb_bookSearch = new System.Windows.Forms.GroupBox();
 			this.cbo_access = new System.Windows.Forms.ComboBox();
 			this.tbx_access = new System.Windows.Forms.Label();
@@ -79,6 +75,10 @@
 			this.tbx_BookAuthor = new System.Windows.Forms.TextBox();
 			this.tp_Samples = new System.Windows.Forms.TabPage();
 			this.dgv_Sample = new System.Windows.Forms.DataGridView();
+			this.Buch = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.column_SampleID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.column_SampleState = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.cbo_bookStatus = new System.Windows.Forms.ComboBox();
 			this.cbo_BookList = new System.Windows.Forms.ComboBox();
@@ -92,10 +92,11 @@
 			this.btn_logout = new System.Windows.Forms.Button();
 			this.lbl_personName = new System.Windows.Forms.Label();
 			this.gb_header = new System.Windows.Forms.GroupBox();
-			this.Buch = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.column_SampleID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.column_SampleState = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.column_BookTitle = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.column_BookAuthor = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.column_BookGenre = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.access = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.column_BookCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.tabControl1.SuspendLayout();
 			this.tp_PersonManagement.SuspendLayout();
 			this.dgv_persons.SuspendLayout();
@@ -463,6 +464,7 @@
             this.column_BookTitle,
             this.column_BookAuthor,
             this.column_BookGenre,
+            this.access,
             this.column_BookCount});
 			this.dgv_Book.Location = new System.Drawing.Point(5, 94);
 			this.dgv_Book.Name = "dgv_Book";
@@ -470,42 +472,6 @@
 			this.dgv_Book.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
 			this.dgv_Book.Size = new System.Drawing.Size(543, 170);
 			this.dgv_Book.TabIndex = 7;
-			// 
-			// column_BookTitle
-			// 
-			this.column_BookTitle.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-			this.column_BookTitle.DataPropertyName = "title";
-			this.column_BookTitle.FillWeight = 170F;
-			this.column_BookTitle.HeaderText = "Titel";
-			this.column_BookTitle.Name = "column_BookTitle";
-			this.column_BookTitle.ReadOnly = true;
-			// 
-			// column_BookAuthor
-			// 
-			this.column_BookAuthor.DataPropertyName = "author";
-			this.column_BookAuthor.FillWeight = 120F;
-			this.column_BookAuthor.HeaderText = "Author";
-			this.column_BookAuthor.Name = "column_BookAuthor";
-			this.column_BookAuthor.ReadOnly = true;
-			this.column_BookAuthor.Width = 120;
-			// 
-			// column_BookGenre
-			// 
-			this.column_BookGenre.DataPropertyName = "genre";
-			this.column_BookGenre.FillWeight = 80F;
-			this.column_BookGenre.HeaderText = "Genre";
-			this.column_BookGenre.Name = "column_BookGenre";
-			this.column_BookGenre.ReadOnly = true;
-			this.column_BookGenre.Width = 80;
-			// 
-			// column_BookCount
-			// 
-			this.column_BookCount.DataPropertyName = "count";
-			this.column_BookCount.FillWeight = 60F;
-			this.column_BookCount.HeaderText = "Anzahl";
-			this.column_BookCount.Name = "column_BookCount";
-			this.column_BookCount.ReadOnly = true;
-			this.column_BookCount.Width = 60;
 			// 
 			// gb_bookSearch
 			// 
@@ -552,6 +518,7 @@
 			this.btn_BookSearch.TabIndex = 14;
 			this.btn_BookSearch.Text = "Suchen";
 			this.btn_BookSearch.UseVisualStyleBackColor = true;
+			this.btn_BookSearch.Click += new System.EventHandler(this.btn_BookSearch_Click);
 			// 
 			// btn_DelBook
 			// 
@@ -561,6 +528,7 @@
 			this.btn_DelBook.TabIndex = 13;
 			this.btn_DelBook.Text = "Entfernen";
 			this.btn_DelBook.UseVisualStyleBackColor = true;
+			this.btn_DelBook.Click += new System.EventHandler(this.btn_DelBook_Click);
 			// 
 			// lbl_Genre
 			// 
@@ -649,6 +617,40 @@
 			this.dgv_Sample.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
 			this.dgv_Sample.Size = new System.Drawing.Size(543, 170);
 			this.dgv_Sample.TabIndex = 9;
+			// 
+			// Buch
+			// 
+			this.Buch.DataPropertyName = "bookName";
+			this.Buch.HeaderText = "Buch";
+			this.Buch.Name = "Buch";
+			this.Buch.ReadOnly = true;
+			this.Buch.Width = 200;
+			// 
+			// column_SampleID
+			// 
+			this.column_SampleID.DataPropertyName = "Id";
+			this.column_SampleID.FillWeight = 40F;
+			this.column_SampleID.HeaderText = "ID";
+			this.column_SampleID.Name = "column_SampleID";
+			this.column_SampleID.ReadOnly = true;
+			this.column_SampleID.Width = 120;
+			// 
+			// Column1
+			// 
+			this.Column1.DataPropertyName = "end_of_loan";
+			this.Column1.HeaderText = "Ausgeliehen bis";
+			this.Column1.Name = "Column1";
+			this.Column1.ReadOnly = true;
+			this.Column1.Width = 150;
+			// 
+			// column_SampleState
+			// 
+			this.column_SampleState.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+			this.column_SampleState.DataPropertyName = "Status";
+			this.column_SampleState.FillWeight = 60F;
+			this.column_SampleState.HeaderText = "Status";
+			this.column_SampleState.Name = "column_SampleState";
+			this.column_SampleState.ReadOnly = true;
 			// 
 			// groupBox1
 			// 
@@ -775,39 +777,47 @@
 			this.gb_header.TabIndex = 6;
 			this.gb_header.TabStop = false;
 			// 
-			// Buch
+			// column_BookTitle
 			// 
-			this.Buch.DataPropertyName = "bookName";
-			this.Buch.HeaderText = "Buch";
-			this.Buch.Name = "Buch";
-			this.Buch.ReadOnly = true;
-			this.Buch.Width = 200;
+			this.column_BookTitle.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+			this.column_BookTitle.DataPropertyName = "title";
+			this.column_BookTitle.FillWeight = 170F;
+			this.column_BookTitle.HeaderText = "Titel";
+			this.column_BookTitle.Name = "column_BookTitle";
+			this.column_BookTitle.ReadOnly = true;
 			// 
-			// column_SampleID
+			// column_BookAuthor
 			// 
-			this.column_SampleID.DataPropertyName = "Id";
-			this.column_SampleID.FillWeight = 40F;
-			this.column_SampleID.HeaderText = "ID";
-			this.column_SampleID.Name = "column_SampleID";
-			this.column_SampleID.ReadOnly = true;
-			this.column_SampleID.Width = 120;
+			this.column_BookAuthor.DataPropertyName = "author";
+			this.column_BookAuthor.FillWeight = 120F;
+			this.column_BookAuthor.HeaderText = "Author";
+			this.column_BookAuthor.Name = "column_BookAuthor";
+			this.column_BookAuthor.ReadOnly = true;
+			this.column_BookAuthor.Width = 120;
 			// 
-			// Column1
+			// column_BookGenre
 			// 
-			this.Column1.DataPropertyName = "end_of_loan";
-			this.Column1.HeaderText = "Ausgeliehen bis";
-			this.Column1.Name = "Column1";
-			this.Column1.ReadOnly = true;
-			this.Column1.Width = 150;
+			this.column_BookGenre.DataPropertyName = "genre";
+			this.column_BookGenre.FillWeight = 80F;
+			this.column_BookGenre.HeaderText = "Genre";
+			this.column_BookGenre.Name = "column_BookGenre";
+			this.column_BookGenre.ReadOnly = true;
+			this.column_BookGenre.Width = 80;
 			// 
-			// column_SampleState
+			// access
 			// 
-			this.column_SampleState.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-			this.column_SampleState.DataPropertyName = "Status";
-			this.column_SampleState.FillWeight = 60F;
-			this.column_SampleState.HeaderText = "Status";
-			this.column_SampleState.Name = "column_SampleState";
-			this.column_SampleState.ReadOnly = true;
+			this.access.HeaderText = "Zugang";
+			this.access.Name = "access";
+			this.access.ReadOnly = true;
+			// 
+			// column_BookCount
+			// 
+			this.column_BookCount.DataPropertyName = "count";
+			this.column_BookCount.FillWeight = 60F;
+			this.column_BookCount.HeaderText = "Anzahl";
+			this.column_BookCount.Name = "column_BookCount";
+			this.column_BookCount.ReadOnly = true;
+			this.column_BookCount.Width = 60;
 			// 
 			// Form_Employee
 			// 
@@ -898,11 +908,7 @@
     private System.Windows.Forms.DataGridViewTextBoxColumn column_Birthday;
     private System.Windows.Forms.Button resetSearch;
     private System.Windows.Forms.Label tbx_access;
-    private System.Windows.Forms.ComboBox cbo_access;
-    private System.Windows.Forms.DataGridViewTextBoxColumn column_BookTitle;
-    private System.Windows.Forms.DataGridViewTextBoxColumn column_BookAuthor;
-    private System.Windows.Forms.DataGridViewTextBoxColumn column_BookGenre;
-    private System.Windows.Forms.DataGridViewTextBoxColumn column_BookCount;
+		private System.Windows.Forms.ComboBox cbo_access;
     private System.Windows.Forms.ComboBox cbo_bookStatus;
 		private System.Windows.Forms.ComboBox cbo_BookList;
     private System.Windows.Forms.TextBox idPerson;
@@ -911,6 +917,11 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn column_SampleID;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
 		private System.Windows.Forms.DataGridViewTextBoxColumn column_SampleState;
+		private System.Windows.Forms.DataGridViewTextBoxColumn column_BookTitle;
+		private System.Windows.Forms.DataGridViewTextBoxColumn column_BookAuthor;
+		private System.Windows.Forms.DataGridViewTextBoxColumn column_BookGenre;
+		private System.Windows.Forms.DataGridViewTextBoxColumn access;
+		private System.Windows.Forms.DataGridViewTextBoxColumn column_BookCount;
 
   }
 }

@@ -40,7 +40,7 @@ namespace LibraryForm
             foreach (Person person in personList)
             {
                 // check if name and pw is in person list
-                if (tb_loginName.Text.ToLower().Equals(person.Lastname.ToLower()) && tb_password.Text.Equals(person.Pw))
+                if (tb_loginName.Text.Equals(person.Id.ToString()) && tb_password.Text.Equals(person.Pw))
                 {
                     // rank 1 = employee
                     if (person.Rank == 1)

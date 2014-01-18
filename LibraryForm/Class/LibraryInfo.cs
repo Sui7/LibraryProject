@@ -12,11 +12,12 @@ namespace LibraryForm.Class
         double charge;
         double overdrowCharge;        
         int periodOfLoan;
-        int openingTime;
-        int closingTime;
+        DateTime openingTime;
+        DateTime closingTime;
 
 
-        public LibraryInfo(string name, string address, double charge, double overdrowCharge, int periodOfLoan, int openingTime, int closingTime) {
+        public LibraryInfo(string name, string address, double charge, double overdrowCharge, int periodOfLoan, DateTime openingTime, DateTime closingTime)
+        {
             this.name = name;
             this.address = address;
             this.charge = charge;
@@ -72,7 +73,7 @@ namespace LibraryForm.Class
         }
 
 
-        public int OpeningTime
+        public DateTime OpeningTime
         {
             get
             {
@@ -81,7 +82,7 @@ namespace LibraryForm.Class
         }
 
 
-        public int ClosingTime
+        public DateTime ClosingTime
         {
             get
             {

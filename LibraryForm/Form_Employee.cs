@@ -18,6 +18,8 @@ namespace LibraryForm
 
 		Employee loggedEmployee;
 
+        LibraryInfo libraryInfo;
+
 		List<Employee> employeeList;
 		List<Customer> customerList;
 		List<String> bookGenreList;
@@ -25,6 +27,7 @@ namespace LibraryForm
 		List<Book> bookList;
 		List<Sample> sampleList = new List<Sample>();
 		List<String> bookStatus;
+        
 
 
 		public Form_Employee(LibraryDB libraryDB, Person person)
@@ -33,6 +36,7 @@ namespace LibraryForm
 
 			this.libraryDB = libraryDB;
 			this.loggedEmployee = libraryDB.GetEmployeeById(person.Id);
+            lbl_personName.Text = "Hallo " + loggedEmployee.Firstname + " " + loggedEmployee.Lastname + ",";
 
 			employeeList = libraryDB.GetEmployeeList();
 			customerList = libraryDB.GetCustomerList();
@@ -41,7 +45,7 @@ namespace LibraryForm
 			bookAccessList = new Sample().GetSampleAccessList();
 			bookStatus = new Sample().GetSampleStatusList();
 
-
+            refreshBibliothekData();
 			loadPersonList();
 			loadBookList();
 			loadBookAccessList();
@@ -50,6 +54,17 @@ namespace LibraryForm
 			loadSampleList();
 		}
 
+        public void refreshBibliothekData()
+        {
+            libraryInfo = libraryDB.GetLibraryInfo();
+            lbl_libraryName.Text = libraryInfo.Name;
+            lbl_libraryAddress.Text = libraryInfo.Address;
+            dTP_open.Text = libraryInfo.OpeningTime.TimeOfDay.ToString();
+            dTP_close.Text = libraryInfo.ClosingTime.TimeOfDay.ToString();
+            num_charges.Value = Convert.ToDecimal(libraryInfo.Charge);
+            num_period_of_loan.Value = libraryInfo.PeriodOfLoan;
+
+        }
 
 		public void refreshCustomerList()
 		{
@@ -74,6 +89,7 @@ namespace LibraryForm
 			dgv_Book.DataSource = null;
 			dgv_Book.DataSource = libraryDB.GetBookList();
 
+            cbo_BookList.Items.Clear();
 			foreach (var item in bookList)
 			{
 				ComboboxItem comboItem = new ComboboxItem();
@@ -94,6 +110,15 @@ namespace LibraryForm
 			pwPerson.Text = "";
 			chkCustomer.Checked = false;
 			bdayPerson.Text = DateTime.Now.ToString();
+
+            tbx_BookTitle.Text = "";
+            tbx_BookAuthor.Text = "";
+            cbo_access.Text = "";
+            cbo_BookGenre.Text = "";
+
+            cbo_BookList.Text = "";
+            cbo_bookStatus.Text = "";
+            tb_SampleID.Text = "";
 		}
 
 
@@ -285,6 +310,21 @@ namespace LibraryForm
 
 		}
 
+        private bool chkDeleteCustomer(Customer customer)
+        {
+            ChargeAccount chargeAccount = libraryDB.GetChargeAccountByPersonId(customer.Id);
+            bool chkLoan = libraryDB.chkLoan(customer.Id);
+
+            if (chkLoan || (chargeAccount.Charges > 0))
+            {
+                MessageBox.Show("Kunde kann nicht gelöscht werden. Gebühren Konto ausgleichen oder ausgeliehene Bücher zurück geben.");
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
 
 		private void deletePersonButton_Click(object sender, EventArgs e)
 		{
@@ -292,11 +332,13 @@ namespace LibraryForm
 			{
 				try
 				{
-
-					customerList.Remove((Customer)dgv_customerList.SelectedRows[0].DataBoundItem);
-					libraryDB.DeletePerson(((bibliothek.Person)(dgv_customerList.SelectedRows[0].DataBoundItem)).Id);
-					//customerList.Rows.RemoveAt(this.customerList.SelectedRows[0].Index);
-					refreshCustomerList();
+                    if (chkDeleteCustomer((Customer)dgv_customerList.SelectedRows[0].DataBoundItem))
+                    {
+                        customerList.Remove((Customer)dgv_customerList.SelectedRows[0].DataBoundItem);
+                        libraryDB.DeletePerson(((bibliothek.Person)(dgv_customerList.SelectedRows[0].DataBoundItem)).Id);
+                        //customerList.Rows.RemoveAt(this.customerList.SelectedRows[0].Index);
+                        refreshCustomerList();
+                    }
 				}
 				catch (Exception ex)
 				{
@@ -523,29 +565,38 @@ namespace LibraryForm
 			finally
 			{
 				refreshSampleList();
+                refreshBookList();
+                resetTextBoxes();
 			}
 
 		}
 
 		private void btn_DelBook_Click(object sender, EventArgs e)
 		{
-			bookList.Remove((Book)dgv_Book.SelectedRows[0].DataBoundItem);
-			libraryDB.DeleteBook(((Book)dgv_Book.SelectedRows[0].DataBoundItem).Id);
-			refreshBookList();
-			refreshSampleList();
+            Book book = (Book)dgv_Book.SelectedRows[0].DataBoundItem;
+
+            if (libraryDB.chkDeleteBook(book.Id))
+            {
+                bookList.Remove(book);
+                libraryDB.DeleteBook(((Book)dgv_Book.SelectedRows[0].DataBoundItem).Id);
+                refreshBookList();
+                refreshSampleList();
+            }
+            else
+            {
+                MessageBox.Show("Das ausgewählte Buch kann nicht gelöscht werden, da es noch Exemplare besitzt die noch nicht zurück gegeben wurden!");
+            }
 
 		}
 
 		private void btn_BookSearch_Click(object sender, EventArgs e)
 		{
-
-
 			List<Book> searchList = new List<Book>();
 			dgv_Book.DataSource = null;
 			bookList = libraryDB.GetBookList();
 			foreach (var item in bookList)
 			{
-				if (tbx_BookAuthor.Text.ToUpper() == item.Author.ToUpper() || cbo_BookGenre.Text.ToUpper() == item.Genre.ToUpper() || tbx_BookTitle.Text == item.Title.ToUpper() || tbx_access.Text == item.Access.ToUpper())
+				if (tbx_BookAuthor.Text.ToUpper() == item.Author.ToUpper() || cbo_BookGenre.Text.ToUpper() == item.Genre.ToUpper() || tbx_BookTitle.Text.ToUpper() == item.Title.ToUpper() || tbx_access.Text.ToUpper() == item.Access.ToUpper())
 				{
 					searchList.Add(item);
 				}
@@ -560,6 +611,128 @@ namespace LibraryForm
 				MessageBox.Show("Es wurden " + searchList.Count + " Übereinstimmungen gefunden");
 			}
 		}
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            resetTextBoxes();
+            refreshBookList();
+        }
+
+        private void btn_SampleSearch_Click(object sender, EventArgs e)
+        {
+            List<Sample> searchList = new List<Sample>();
+            dgv_Sample.DataSource = null;
+            sampleList = libraryDB.GetSampleList();
+            foreach (var item in sampleList)
+            {
+                string title = libraryDB.GetBookBySampleId(item.BookId.ToString()).Title;
+
+                if (((item.BookName.ToUpper()).Contains(cbo_BookList.Text.ToUpper()) || (title.ToUpper()).Contains(cbo_BookList.Text.ToUpper())) || cbo_bookStatus.Text.ToUpper() == item.Status.ToUpper() || tb_SampleID.Text.ToUpper() == item.Id.ToUpper())
+                {
+                    searchList.Add(item);
+                }
+            }
+            dgv_Sample.DataSource = searchList;
+            if (searchList.Count == 0)
+            {
+                MessageBox.Show("Es wurde keine Übereinstimmung gefunden");
+            }
+            else
+            {
+                MessageBox.Show("Es wurden " + searchList.Count + " Übereinstimmungen gefunden");
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            resetTextBoxes();
+            refreshSampleList();
+        }
+
+     
+
+        private void btn_change_Click_1(object sender, EventArgs e)
+        {
+            Book book = (Book)dgv_Book.SelectedRows[0].DataBoundItem;
+            
+            if (tbx_BookTitle.Text == "")
+			{
+				MessageBox.Show("Bitte einen Buchtitel vergeben!");
+				return;
+			}
+			if (tbx_BookAuthor.Text == "")
+			{
+				MessageBox.Show("Bitte einen Buchauthor vergeben!");
+				return;
+			}
+			if (cbo_access.Text == "")
+			{
+				MessageBox.Show("Bitte einen Zugang auswählen oder einen neuen eingeben!");
+				return;
+			}
+			if (cbo_BookGenre.Text == "")
+			{
+				MessageBox.Show("Bitte eine Genre auswählen oder eine neue eingeben!");
+				return;
+			}
+
+            bool chk = libraryDB.UpdateBook(book.Id, tbx_BookAuthor.Text, cbo_BookGenre.Text, tbx_BookTitle.Text, cbo_access.Text);
+
+            if (chk)
+            {
+                MessageBox.Show("Buchdaten erfolgreich geändert!");
+            }
+            else
+            {
+                MessageBox.Show("Buchdaten konnte nicht geändert werden!");
+            }
+            refreshBookList();
+            
+        }
+
+
+        private void dgv_Book_CellContentClick(object sender, EventArgs e)
+        {
+            Book book = (Book)dgv_Book.SelectedRows[0].DataBoundItem;
+
+            tbx_BookTitle.Text = book.Title;
+            tbx_BookAuthor.Text = book.Author;
+            cbo_BookGenre.Text = book.Genre;
+            cbo_access.Text = book.Access;
+
+        }
+
+        private void btn_DelSample_Click(object sender, EventArgs e)
+        {
+            Sample sample = (Sample)dgv_Sample.SelectedRows[0].DataBoundItem;
+            if (sample.Status.ToUpper() == "AUSGELIEHEN")
+            {
+                MessageBox.Show("Exemplar kann nicht gelöscht werden, da es noch ausgliehen ist.");
+            }
+            else
+            {
+                libraryDB.DeleteSample(sample.Id);
+                refreshBookList();
+                refreshSampleList();
+            }
+        }
+
+        private void btn_logout_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void btn_change_bib_Click(object sender, EventArgs e)
+        {
+            int period_of_loan = Convert.ToInt32(num_period_of_loan.Value);
+            int charges = Convert.ToInt32(num_charges.Value);
+            DateTime open = dTP_open.Value;
+            DateTime close = dTP_close.Value;
+
+            libraryDB.SetLibaryInfo(period_of_loan,charges,open,close);
+            MessageBox.Show("Die Bibliotheksdaten wurden geändert!");
+            refreshBibliothekData();
+        }
 
 
 

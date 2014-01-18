@@ -100,8 +100,8 @@ namespace LibraryForm.Class
                 int periodOfLoan = int.Parse(reader["period_of_loan"].ToString());
                 double charge = double.Parse(reader["charge"].ToString());
                 double overdrowCharge = double.Parse(reader["overdrow_charge"].ToString());
-                int openingTime = int.Parse(reader["opening_time"].ToString());
-                int closingTime = int.Parse(reader["closing_time"].ToString());
+                DateTime openingTime = Convert.ToDateTime(reader["opening_time"].ToString());
+                DateTime closingTime = Convert.ToDateTime(reader["closing_time"].ToString());
 
                 libraryInfo = new LibraryInfo(name, address, charge, overdrowCharge, periodOfLoan, openingTime, closingTime);
             }
@@ -112,6 +112,23 @@ namespace LibraryForm.Class
 
             return libraryInfo;
         }
+
+        public void SetLibaryInfo(int period_of_loan,int charge,DateTime open, DateTime close)
+        {
+            // create command
+            SQLiteCommand command = new SQLiteCommand(connection);
+
+            // create query
+            command.CommandText = "Update library_info SET period_of_loan = @period_of_loan, charge = @charge, opening_time = @open, closing_time = @close";
+            command.Parameters.AddWithValue("@period_of_loan", period_of_loan);
+            command.Parameters.AddWithValue("@charge", charge);
+            command.Parameters.AddWithValue("@open", open.TimeOfDay);
+            command.Parameters.AddWithValue("@close", close.TimeOfDay);
+            command.ExecuteNonQuery();
+            
+        }
+
+      
 
         public List<Person> GetPersonList()
         {
@@ -180,6 +197,28 @@ namespace LibraryForm.Class
             command.Dispose();
         }
 
+        public bool chkLoan(int customerId)
+        {
+            // create command
+            SQLiteCommand command = new SQLiteCommand(connection);
+
+            // create query
+            command.CommandText = "Select * FROM customers JOIN samples ON customers.person_id =samples.customer_id WHERE customer_id = @id";
+            command.Parameters.AddWithValue("@id", customerId);
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            if (reader.HasRows)
+            {
+                reader.Close();
+                return true;
+            }
+            else
+            {
+                reader.Close();
+                return false;
+            }
+            
+        }
 
         public Employee GetEmployeeById(int id)
         {
@@ -405,7 +444,8 @@ namespace LibraryForm.Class
             SQLiteCommand command = new SQLiteCommand(connection);
 
             // create query
-            command.CommandText = "SELECT * FROM books WHERE id = " + id;
+            command.CommandText = "SELECT * FROM books  JOIN samples ON books.id = samples.book_id WHERE samples.id = @id";
+            command.Parameters.AddWithValue("@id", id);
 
             //craete reader
             SQLiteDataReader reader = command.ExecuteReader();
@@ -449,7 +489,7 @@ namespace LibraryForm.Class
                 book.Author = reader["author"].ToString();
                 book.Genre = reader["genre"].ToString();
                 book.Count = int.Parse(reader["count"].ToString());
-								book.Access = reader["access"].ToString();
+				book.Access = reader["access"].ToString();
                 book.Sample = GetSamplesByBookId(book.Id);
 
                 bookList.Add(book);
@@ -462,6 +502,45 @@ namespace LibraryForm.Class
             return bookList;
         }
 
+        public bool UpdateBook(int id, string author, string genre, string title, string access)
+        {
+            // create command
+            SQLiteCommand command = new SQLiteCommand(connection);
+
+            // create query
+            command.CommandText = "UPDATE books SET title = @title, author = @author, genre = @genre, access = @access WHERE id = @id";
+            command.Parameters.AddWithValue("@title", title);
+            command.Parameters.AddWithValue("@author", author);
+            command.Parameters.AddWithValue("@genre", genre);
+            command.Parameters.AddWithValue("@access", access);
+            command.Parameters.AddWithValue("@id", id);
+            return Convert.ToBoolean(command.ExecuteNonQuery());
+
+        }
+
+        public bool chkDeleteBook(int bookId)
+        {
+            // create command
+            SQLiteCommand command = new SQLiteCommand(connection);
+
+            // create query
+            command.CommandText = "Select * FROM books JOIN samples ON books.id = samples.book_id WHERE end_of_loan IS NOT NULL  AND status like 'ausgeliehen' AND books.id = @id";
+            command.Parameters.AddWithValue("@id", bookId);
+
+
+            //craete reader
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            if (reader.HasRows)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+
+        }
 
         public void DeleteBook(int bookId)
         {
@@ -483,7 +562,12 @@ namespace LibraryForm.Class
             SQLiteCommand command = new SQLiteCommand(connection);
 
             // create query
-            command.CommandText = "INSERT INTO samples(id, book_id, customer_id, status) VALUES ('" + sample.Id + "', '" + bookId.ToString() + "', '" + sample.CustomerId + "', '" + sample.Status + "');";
+            command.CommandText = "INSERT INTO samples(id, book_id, customer_id, status) VALUES (@sampleID,@bookId,@sampleCustomerId,@sampleStatus); UPDATE books SET count = count+1 WHERE id = @bookId";
+            command.Parameters.AddWithValue("@sampleID", sample.Id);
+            command.Parameters.AddWithValue("@bookId", bookId);
+            command.Parameters.AddWithValue("@sampleCustomerId", sample.CustomerId);
+            command.Parameters.AddWithValue("@sampleStatus", sample.Status);
+
             command.ExecuteNonQuery();
 
             command.Dispose();
@@ -718,13 +802,17 @@ namespace LibraryForm.Class
         }
 
 
-        public void DeleteSample(int sampleId)
+        public void DeleteSample(string sampleId)
         {
+            Book book = GetBookBySampleId(sampleId);
+
             // create command
             SQLiteCommand command = new SQLiteCommand(connection);
 
             // create query
-            command.CommandText = "DELETE FROM samples WHERE id = " + sampleId;
+            command.CommandText = "DELETE FROM samples WHERE id = @sampleID; UPDATE books SET count = count -1 WHERE id=@bookId";
+            command.Parameters.AddWithValue("@sampleID", sampleId);
+            command.Parameters.AddWithValue("@bookId", book.Id);
             command.ExecuteNonQuery();
 
             command.Dispose();
@@ -880,9 +968,11 @@ namespace LibraryForm.Class
             SQLiteCommand command = new SQLiteCommand(connection);
 
             // create tables query
-            command.CommandText = "CREATE TABLE IF NOT EXISTS library_info (name VARCHAR(100) NOT NULL, address VARCHAR(100) NOT NULL, period_of_loan INTEGER NOT NULL, charge INTEGER NOT NULL, overdrow_charge INTEGER NOT NULL, opening_time INTEGER NOT NULL, closing_time INTEGER NOT NULL);";
+            command.CommandText = "CREATE TABLE IF NOT EXISTS library_info (name VARCHAR(100) NOT NULL, address VARCHAR(100) NOT NULL, period_of_loan INTEGER NOT NULL, charge INTEGER NOT NULL, overdrow_charge INTEGER NOT NULL, opening_time TIME NOT NULL, closing_time TIME NOT NULL);";
             command.ExecuteNonQuery();
-            command.CommandText = "INSERT INTO library_info(name, address, period_of_loan, charge, overdrow_charge, opening_time, closing_time) VALUES ('Stadt Bibliothek', 'Schlossstraße 5, 12345 Berlin', 7, 4, 2, 8, 20)";
+            command.CommandText = "INSERT INTO library_info(name, address, period_of_loan, charge, overdrow_charge, opening_time, closing_time) VALUES ('Stadt Bibliothek', 'Schlossstraße 5, 12345 Berlin', 7, 4, 2, @open, @close)";
+            command.Parameters.AddWithValue("@open", "08:00");
+            command.Parameters.AddWithValue("@close", "20:00");
             command.ExecuteNonQuery();
 
             // create tables query
